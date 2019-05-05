@@ -1,32 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controladores;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import icliente.ICliente;
+import iserver.IServer;
+import java.awt.Color;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import snake.Snake;
 
 /**
- * Esta clase se encarga de inicializar la interfaz gráfica.
- * @author Luis Aduana.
+ *
+ * @author soy-y
  */
-public class ClienteSnake extends Application {
+public class ClienteSnake extends UnicastRemoteObject implements ICliente{
     
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/vistas/VistaPrincipal.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+    private Snake serpiente;
+    private static final long  SerialVersionUID = 9090898209349823403L;
+    private final int PORT = 3232;
+    public  IServer server;
+
+    public Snake getSerpiente() {
+        return serpiente;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+    public void setSerpiente(Snake serpiente) {
+        this.serpiente = serpiente;
+    }
+
+    public IServer getServer() {
+        return server;
+    }
+
+    public void setServer(IServer server) {
+        this.server = server;
+    }
+    
+    ClienteSnake(IServer server) throws RemoteException{
+        this.server =server;
+    }
+    
+    
+
+    @Override
+    public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
+        this.serpiente = new Snake(color, this, nombre);
+        System.out.println(color);
     }
     
 }

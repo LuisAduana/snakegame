@@ -1,7 +1,15 @@
 package controladores;
 
+
+import iserver.IServer;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
@@ -20,6 +28,10 @@ public class VistaPrincipalController implements Initializable {
     TextField nombreJugador;
     @FXML
     Label mensajeError;
+    
+    private IServer server;
+    
+    public  ClienteSnake clienteSnake;
     
     private String validarNickname() {
         if ("".equals(nombreJugador.getText().trim())) {
@@ -46,6 +58,18 @@ public class VistaPrincipalController implements Initializable {
             mensajeError.setText(validacion);
             System.out.println("ENTRO");
             // TODO Se inicia el juego aquí <-----------------------------------------
+            try {
+                if (this.server.esDisponible()) {
+                    this.server.iniciarJugador(
+                            this.clienteSnake, nombreJugador.getText());
+                
+                } else {
+                    System.out.println("no disponible");
+                }
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            
         } else {
             mensajeError.setText(validacion);
             /*Alert dialogo = new Alert(AlertType.INFORMATION);
@@ -59,6 +83,20 @@ public class VistaPrincipalController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        
+        String nombre = "GameServer";
+        String serverName = "localhost";
+        int serverPort = 3232;
+        try {
+            Registry registro = LocateRegistry.getRegistry(serverName, serverPort);
+            server = (IServer) registro.lookup(nombre);
+
+            this.clienteSnake = new ClienteSnake(server);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         // TODO
     }    
     
