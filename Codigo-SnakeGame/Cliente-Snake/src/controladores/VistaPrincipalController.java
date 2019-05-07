@@ -1,13 +1,12 @@
 package controladores;
 
-
 import iserver.IServer;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -15,8 +14,11 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.StageStyle;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
@@ -29,6 +31,7 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     Label mensajeError;
     
+    private Alert dialogo;
     private IServer server;
     
     public  ClienteSnake clienteSnake;
@@ -56,35 +59,36 @@ public class VistaPrincipalController implements Initializable {
         String validacion = validarNickname();
         if ("".equals(validacion)) {
             mensajeError.setText(validacion);
-            System.out.println("ENTRO");
-            // TODO Se inicia el juego aquí <-----------------------------------------
             try {
                 if (this.server.esDisponible()) {
                     this.server.iniciarJugador(
                             this.clienteSnake, nombreJugador.getText());
-                
+                    System.out.println("ENTRO");
                 } else {
-                    System.out.println("no disponible");
+                    dialogo = new Alert(AlertType.INFORMATION);
+                    dialogo.setTitle("Información del sistema.");
+                    dialogo.setHeaderText(null);
+                    dialogo.setContentText("La sala está llena, inténtelo más tarde");
+                    dialogo.initStyle(StageStyle.UTILITY);
+                    dialogo.showAndWait();
                 }
             } catch (RemoteException ex) {
-                ex.printStackTrace();
+                dialogo = new Alert(AlertType.INFORMATION);
+                dialogo.setTitle("Información del sistema.");
+                dialogo.setHeaderText(null);
+                dialogo.setContentText("No se ha podido lograr una conexión "
+                        + "con el servidor \nInténtelo más tarde.");
+                dialogo.initStyle(StageStyle.UTILITY);
+                dialogo.showAndWait();
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
         } else {
             mensajeError.setText(validacion);
-            /*Alert dialogo = new Alert(AlertType.INFORMATION);
-            dialogo.setTitle("Nombre incorrecto");
-            dialogo.setHeaderText(null);
-            dialogo.setContentText(validacion);
-            dialogo.initStyle(StageStyle.UTILITY);
-            dialogo.showAndWait();*/
         }
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
         String nombre = "GameServer";
         String serverName = "localhost";
         int serverPort = 3232;
@@ -94,10 +98,9 @@ public class VistaPrincipalController implements Initializable {
 
             this.clienteSnake = new ClienteSnake(server);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (NotBoundException | RemoteException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // TODO
     }    
     
 }

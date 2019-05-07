@@ -38,9 +38,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         Color color = colores.get(0);
         colores.remove(0);
         serpientes.add(new Snake(color, cliente, nombre));
-        cliente.iniciarSerpiente(color, nombre);
-        
-        
+        cliente.iniciarSerpiente(color, nombre);        
     }
     
     public void iniciarServidor() {

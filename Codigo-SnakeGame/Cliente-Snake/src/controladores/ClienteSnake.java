@@ -16,7 +16,7 @@ import snake.Snake;
  *
  * @author soy-y
  */
-public class ClienteSnake extends UnicastRemoteObject implements ICliente{
+public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
     private Snake serpiente;
     private static final long  SerialVersionUID = 9090898209349823403L;
@@ -43,8 +43,6 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente{
         this.server =server;
     }
     
-    
-
     @Override
     public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
         this.serpiente = new Snake(color, this, nombre);
