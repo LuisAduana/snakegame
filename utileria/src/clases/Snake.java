@@ -1,4 +1,4 @@
-package snake;
+package clases;
 
 
 import icliente.ICliente;

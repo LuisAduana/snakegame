@@ -1,6 +1,6 @@
 package controladores;
 
-import iserver.IServer;
+import interfaz.IServer;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

@@ -5,9 +5,9 @@
  */
 package servidor.snake;
 
-import icliente.ICliente;
-import snake.Snake;
-import iserver.IServer;
+import interfaz.ICliente;
+import interfaz.Snake;
+import interfaz.IServer;
 import java.awt.Color;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
