@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -13,13 +14,20 @@ import javafx.stage.Stage;
 public class Main extends Application {
         
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/vistas/VistaPrincipal.fxml"));
+    public void start(Stage primaryStage) throws Exception {
+        System.out.println("Hola1");
+        primaryStage.setTitle("Inicio de Sesión");
+        primaryStage.setResizable(false);
         
-        Scene scene = new Scene(root);
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/vistas/VistaPrincipal.fxml"));
+        Pane myPane = (Pane) myLoader.load();
+        VistaPrincipalController controlador = (VistaPrincipalController) myLoader.getController();
+        controlador.setStage(primaryStage);
         
-        stage.setScene(scene);
-        stage.show();
+        Scene scene = new Scene(myPane);
+        primaryStage.setScene(scene);
+        
+        primaryStage.show();
     }
 
     /**

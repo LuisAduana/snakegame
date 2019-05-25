@@ -14,18 +14,38 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logica.CicloJuego;
+import logica.PintarJuego;
+import logica.Snake;
+import logica.Tablero;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
  * @author Luis Aduana.
  */
 public class VistaPrincipalController implements Initializable {
-       
+    
+    private static final int ANCHO_VENTANA = 500;
+    private static final int ALTURA_VENTANA = 500;
+    private static final String NOMBRE_REGISTRO = "GameServer";
+    private static final String NOMBRE_SERVIDOR = "localhost";
+    private static final int PUERTO_SERVIDOR = 3232;
+    private Registry registro;
+    private Stage stageActual;
+    private CicloJuego ciclo;
+    private Tablero tablero;
+    private GraphicsContext contexto;
+    
     @FXML
     TextField nombreJugador;
     @FXML
@@ -34,8 +54,12 @@ public class VistaPrincipalController implements Initializable {
     private Alert dialogo;
     private IServer server;
     
-    public  ClienteSnake clienteSnake;
+    private  ClienteSnake clienteSnake;
     
+    /**
+     * Valida el nombre de usuario antes de ser enviado al servidor para registrarse.
+     * @return 
+     */
     private String validarNickname() {
         if ("".equals(nombreJugador.getText().trim())) {
             return "Ingrese un nombre";
@@ -54,16 +78,22 @@ public class VistaPrincipalController implements Initializable {
         }
     }
     
+    /**
+     * Método que controla el evento del botón de la interfaz al presionarse.
+     * @param event Evento del boton presionado
+     */
     @FXML
     private void iniciarJuego(ActionEvent event) {
         String validacion = validarNickname();
         if ("".equals(validacion)) {
             mensajeError.setText(validacion);
             try {
-                if (this.server.esDisponible()) {
-                    this.server.iniciarJugador(
-                            this.clienteSnake, nombreJugador.getText());
-                    System.out.println("ENTRO");
+                intentoConexion();
+                if (server.esDisponible()) {
+                    server.iniciarJugador(
+                            clienteSnake, nombreJugador.getText());
+                    iniciarJuego();
+                    // System.out.println("ENTRO");
                 } else {
                     dialogo = new Alert(AlertType.INFORMATION);
                     dialogo.setTitle("Información del sistema.");
@@ -72,7 +102,7 @@ public class VistaPrincipalController implements Initializable {
                     dialogo.initStyle(StageStyle.UTILITY);
                     dialogo.showAndWait();
                 }
-            } catch (RemoteException ex) {
+            } catch (NotBoundException | RemoteException ex) {
                 dialogo = new Alert(AlertType.INFORMATION);
                 dialogo.setTitle("Información del sistema.");
                 dialogo.setHeaderText(null);
@@ -80,27 +110,86 @@ public class VistaPrincipalController implements Initializable {
                         + "con el servidor \nInténtelo más tarde.");
                 dialogo.initStyle(StageStyle.UTILITY);
                 dialogo.showAndWait();
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             mensajeError.setText(validacion);
         }
     }
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        String nombre = "GameServer";
-        String serverName = "localhost";
-        int serverPort = 3232;
-        try {
-            Registry registro = LocateRegistry.getRegistry(serverName, serverPort);
-            server = (IServer) registro.lookup(nombre);
+    private void iniciarJuego() {
+        Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
+        contexto = canvas.getGraphicsContext2D();
+        StackPane root = new StackPane();
+        
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(e ->{
+            Snake snake = tablero.getSnake();
+            if(ciclo.teclaPresionada()){
+                return;
+            }
+            switch (e.getCode()){
+                case UP:
+                   snake.setArriba();
+                   break;
+                case DOWN:
+                    snake.setAbajo();
+                    break;
+                case LEFT:
+                    snake.setIzq();
+                    break;
+                case RIGHT:
+                    snake.setDer();
+                    break;
+                case ENTER: 
+                    if(ciclo.estaPausado()){
+                        resetGame();
+                        (new Thread(ciclo)).start();
+                    }
+            }
+        });
+        
+        resetGame();
+        
+        root.getChildren().add(canvas);
+        Scene scene = new Scene(root);
+        
+        stageActual.setTitle("Snake Game");
+        stageActual.setOnCloseRequest(e -> System.exit(0));
+        stageActual.setScene(scene);
+        
+        (new Thread(ciclo)).start();
+    }
+    
+    /**
+     * Este método intenta realizar la conexión al servidor.
+     * @throws RemoteException Si no se logra conectar al servidor lanza la excepción al método padre.
+     * @throws NotBoundException Si no se encuentra el puerto disponible lanza la excepción al méotodo padre.
+     */
+    private void intentoConexion() throws RemoteException, NotBoundException {
+        //try {
+            registro = LocateRegistry.getRegistry(NOMBRE_SERVIDOR, PUERTO_SERVIDOR);
+            server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 
             this.clienteSnake = new ClienteSnake(server);
 
-        } catch (NotBoundException | RemoteException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }    
+        //} catch (NotBoundException | RemoteException ex) {
+            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        //}
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
+
+    private void resetGame(){
+        tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
+        ciclo = new CicloJuego(tablero, contexto);
+        PintarJuego.pintar(tablero, contexto);        
+    }
+    
+    void setStage(Stage stage) {
+        this.stageActual = stage;
+    }
     
 }
