@@ -5,6 +5,7 @@
  */
 package snake;
 
+import Utileria.Comida;
 import Utileria.Snake;
 import interfaz.Client;
 import interfaz.Server;
@@ -17,11 +18,17 @@ import javafx.scene.input.KeyCode;
  *
  * @author soy-y
  */
-public class Cliente extends UnicastRemoteObject implements Client{
-    
-    private static final long  SerialVersionUID = 9090898209349823403L;
-   private ArrayList<Snake> serpientes;
-   private String color;
+public class Cliente extends UnicastRemoteObject implements Client {
+
+    private static final long SerialVersionUID = 9090898209349823403L;
+    private ArrayList<Snake> serpientes;
+    private String color;
+    private Server servidor;
+    private Comida comida;
+
+    public Cliente(Server servidor) throws RemoteException {
+        this.servidor = servidor;
+    }
 
     public String getColor() {
         return color;
@@ -46,29 +53,24 @@ public class Cliente extends UnicastRemoteObject implements Client{
     public void setServidor(Server servidor) {
         this.servidor = servidor;
     }
-   private Server servidor;
     
-   
-    public Cliente(Server servidor)  throws RemoteException {
-        this.servidor = servidor;
+    public Comida getComida () {
+        return comida;
     }
 
-    @Override
+    /*@Override
     public void iniciar() throws RemoteException{
         this.servidor.iniciarPartida(this);
         System.out.println("Hola");
-    }
-    
-    @Override
+    }*/
+ /*@Override
     public void mover() throws RemoteException {
         this.servidor.mover(this, KeyCode.PERIOD);
-    }
-    
-    @Override
+    }*/
+ /*@Override
     public void iniciarMovimiento() throws RemoteException {
     this.servidor.iniciarMovimiento(this, true);
-    }
-    
+    }*/
     @Override
     public void mover(ArrayList<Snake> serpientes) throws RemoteException {
         this.serpientes = serpientes;
@@ -92,13 +94,12 @@ public class Cliente extends UnicastRemoteObject implements Client{
         this.serpientes = serpientes;
     }
 
-    
     public Snake getSerpiente() {
         for (Snake s : this.serpientes) {
-            if (s.getColor().equalsIgnoreCase(this.color)){
+            if (s.getColor().equalsIgnoreCase(this.color)) {
                 return s;
             }
-                
+
         }
         return null;
     }
@@ -108,6 +109,11 @@ public class Cliente extends UnicastRemoteObject implements Client{
         this.serpientes = serpientes;
     }
 
-    
-    
+    @Override
+    public void recibirComida(Comida comida) throws RemoteException {
+        System.out.println("COMIDA RECIBIDA....");
+        this.comida = comida;
+        System.out.println("Comida en X: " + comida.getPoint().getX() + " Y: " + comida.getPoint().getY());
+    }
+
 }

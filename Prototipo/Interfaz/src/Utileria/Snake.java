@@ -24,29 +24,15 @@ public class Snake implements Serializable{
     private boolean enMovimiento;
     private String color;
     private Client cliente;
-
-    public Client getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Client cliente) {
+    
+    public Snake(Point cabeza, String color, Client cliente) {
+        this.cuerpo = new ArrayList();
+        this.cabeza = cabeza;
+        this.cuerpo.add(cabeza);
         this.cliente = cliente;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
         this.color = color;
-    }
-
-    public KeyCode getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(KeyCode direccion) {
-        this.direccion = direccion;
+        this.direccion = KeyCode.SPACE;
+        this.enMovimiento = false;
     }
 
     public boolean isEnMovimiento() {
@@ -57,17 +43,6 @@ public class Snake implements Serializable{
         this.enMovimiento = enMovimiento;
     }
 
-    public Snake(Point cabeza, String color, Client cliente) {
-        this.cuerpo = new ArrayList();
-        this.cabeza = cabeza;
-        this.cuerpo.add(cabeza);
-        this.cliente = cliente;
-        this.color = color;
-        this.direccion = KeyCode.SPACE;
-        this.enMovimiento = false;
-    }
-    
-    
     public void crecer(Point punto) {
         this.cabeza = punto;
         this.cuerpo.add(punto);
@@ -76,8 +51,6 @@ public class Snake implements Serializable{
     
     public void Mover(KeyCode direccion) {
         this.direccion = direccion;
-        
-        
     }
     
     public void actualizarPosicion() {
@@ -108,12 +81,7 @@ public class Snake implements Serializable{
                 this.cuerpo.add(aux);
                 this.cuerpo.remove(0);
                 break;
-                
-                
-                
         }
-        
-        
     }
 
     public ArrayList<Point> getCuerpo() {
@@ -132,7 +100,28 @@ public class Snake implements Serializable{
         this.cabeza = cabeza;
     }
     
-   
-    
-    
+    public Client getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Client cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public KeyCode getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(KeyCode direccion) {
+        this.direccion = direccion;
+    }
+
 }

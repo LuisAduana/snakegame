@@ -5,6 +5,7 @@
  */
 package snake;
 
+import Utileria.Comida;
 import Utileria.Snake;
 import javafx.scene.paint.Color;
 
@@ -23,11 +24,12 @@ public class Loop extends Thread {
     public void run() {
         while (true) {
             try {
-                System.out.println("Actualizar pantalla");
+                //System.out.println("Actualizar pantalla");
                 
-                 this.escena.context.setFill(Color.BLACK);
-                 this.escena.context.fillRect(0, 0, 604, 442);
-                 
+                this.escena.context.setFill(Color.BLACK);
+                this.escena.context.fillRect(0, 0, 604, 442);
+                
+                this.escena.pintarNodo(this.escena.getCliente().getComida().getPoint(), "RED");
 
                 for (Snake s : this.escena.getCliente().getSerpientes()) {
                     if (s.isEnMovimiento()) {
@@ -43,5 +45,4 @@ public class Loop extends Thread {
             }
         }
     }
-
 }

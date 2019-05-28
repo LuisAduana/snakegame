@@ -5,6 +5,7 @@
  */
 package servidor;
 
+import Utileria.Comida;
 import Utileria.Point;
 import Utileria.Snake;
 import interfaz.Client;
@@ -29,6 +30,7 @@ public class Servidor extends UnicastRemoteObject implements Server {
     private final int PORT = 3232;
     private ArrayList<Snake> serpientes;
     private ArrayList<String> colores;
+    private Comida comida;
 
     public Servidor() throws RemoteException {
 
@@ -43,6 +45,7 @@ public class Servidor extends UnicastRemoteObject implements Server {
         colores.add("RED");
         colores.add("YELLOW");
         this.serpientes = new ArrayList();
+        comida = new Comida(getFreeRandomPosition());
 
         try {
             String direccion = (InetAddress.getLocalHost()).toString();
@@ -50,6 +53,7 @@ public class Servidor extends UnicastRemoteObject implements Server {
             Registry registro = LocateRegistry.createRegistry(PORT);
             registro.bind("GameServer", (Server) this);
             System.out.println("Servidor Iniciado");
+            System.out.println("Comida creada en posicion X : " + comida.getPoint().getX() + " Y: " + comida.getPoint().getY());
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -71,7 +75,7 @@ public class Servidor extends UnicastRemoteObject implements Server {
             point = new Point(aleatorio.nextInt(604 / 10), aleatorio.nextInt(442 / 10));
 
             for (Snake s : this.serpientes) {
-                if (s.getCabeza() == point) {
+                if (s.getCabeza() == point || comida.getPoint() == point) {
                     posicionOcupada = false;
                     break;
                 } else {
@@ -110,6 +114,8 @@ public class Servidor extends UnicastRemoteObject implements Server {
                 this.colores.get(0).toString(), serpiente));
         serpiente.iniciarPartida(this.serpientes, this.colores.get(0));
         this.colores.remove(0);
+        System.out.println("ENVIANDO....");
+        serpiente.recibirComida(comida);
 
     }
 

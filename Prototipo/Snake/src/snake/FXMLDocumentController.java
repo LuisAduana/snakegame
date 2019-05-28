@@ -87,11 +87,12 @@ public class FXMLDocumentController implements Initializable {
         int serverPort = 3232;
         try {
             Registry registro = LocateRegistry.getRegistry(serverName, serverPort);
-            this.server = (Server) registro.lookup(nombre);
+            server = (Server) registro.lookup(nombre);
 
-            this.cliente = new Cliente(this.server);
+            cliente = new Cliente(server);
 
-            this.cliente.iniciar();
+            //this.cliente.iniciar();
+            server.iniciarPartida(cliente);
             System.out.println("Iniciado");
             System.out.println("----------------");
             System.out.println(this.cliente.getSerpientes().size());
@@ -184,8 +185,6 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void pintarSerpiente(Snake snake) {
-        
-        
         snake.getCuerpo().forEach(punto -> pintarNodo(punto, snake.getColor()));
     }
 

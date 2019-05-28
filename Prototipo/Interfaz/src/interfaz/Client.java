@@ -5,6 +5,7 @@
  */
 package interfaz;
 
+import Utileria.Comida;
 import Utileria.Snake;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,18 +18,17 @@ import javafx.scene.input.KeyCode;
  */
 public interface Client extends Remote{
    
-    public void iniciar() throws RemoteException;
+    // public void iniciar() throws RemoteException;
     
-    public void mover() throws RemoteException;
+    // public void mover() throws RemoteException;
     
-    public void iniciarMovimiento() throws RemoteException;
+    // public void iniciarMovimiento() throws RemoteException;
     
     public void mover(ArrayList<Snake> serpientes) throws RemoteException;
-    
     public void iniciarPartida(ArrayList<Snake> serpientes, String color) throws RemoteException;
-    
     public void iniciarMovimiento(ArrayList<Snake> serpientes) throws RemoteException;
     public void actualizar(ArrayList<Snake> serpientes) throws RemoteException;
+    public void recibirComida(Comida comida) throws RemoteException;
     
     
     
