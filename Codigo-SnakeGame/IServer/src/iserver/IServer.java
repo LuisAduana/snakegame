@@ -18,5 +18,5 @@ public interface IServer extends Remote{
     
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException;
     public boolean esDisponible() throws RemoteException;
-    public void eliminarSerpiente(Color color) throws RemoteException;
+    public void eliminarSerpiente(String color) throws RemoteException;
 }

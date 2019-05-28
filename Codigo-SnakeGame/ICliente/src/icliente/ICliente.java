@@ -5,9 +5,9 @@
  */
 package icliente;
 
-import java.awt.Color;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import snake.Snake;
 
 /**
  *
@@ -15,5 +15,5 @@ import java.rmi.RemoteException;
  */
 public interface ICliente extends Remote{
     
-   public void iniciarSerpiente(Color color, String nombre) throws RemoteException;
+   public void iniciarSerpiente(Snake snake) throws RemoteException;
 }

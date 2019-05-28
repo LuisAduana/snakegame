@@ -8,13 +8,13 @@ package servidor.snake;
 import icliente.ICliente;
 import snake.Snake;
 import iserver.IServer;
-import java.awt.Color;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import snake.Coordenada;
 
 /**
  *
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class ServidorSnake extends UnicastRemoteObject  implements IServer{
 
-    private ArrayList<Color> colores;
+    private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     private static final long  SerialVersionUID = 9090898209349823403L;
     private final int PORT = 3232;
@@ -35,10 +35,12 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     @Override
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-        Color color = colores.get(0);
+        String color = colores.get(0);
         colores.remove(0);
-        serpientes.add(new Snake(color, cliente, nombre));
-        cliente.iniciarSerpiente(color, nombre);        
+        Snake serpiente =  new Snake(color, nombre, 
+                new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
+        serpientes.add(serpiente);
+        cliente.iniciarSerpiente(serpiente);        
     }
     
     public void iniciarServidor() {
@@ -59,16 +61,14 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     private void iniciarListaDeColores() {
         this. colores = new ArrayList();
-        colores.add(Color.red);
-        colores.add(Color.blue);
-        colores.add(Color.green);
-        colores.add(Color.yellow);
-        colores.add(Color.pink);
-        colores.add(Color.black);
-        colores.add(Color.cyan);
-        colores.add(Color.orange);
-        colores.add(Color.white);
-        colores.add(Color.gray);
+        colores.add("CYAN");
+        colores.add("BLUE");
+        colores.add("GREEN");
+        colores.add("YELLOW");
+        colores.add("PINK");
+        colores.add("ORANGE");
+        colores.add("WHITE");
+        colores.add("GRAY");
     }
 
     @Override
@@ -81,9 +81,9 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     }
 
     @Override
-    public void eliminarSerpiente(Color color) throws RemoteException {
+    public void eliminarSerpiente(String color) throws RemoteException {
         for(Snake snake : this.serpientes){
-            if (snake.getColor() == color) {
+            if (snake.getColorViva() == color) {
                 colores.add(color);
                 serpientes.remove(snake);
             }

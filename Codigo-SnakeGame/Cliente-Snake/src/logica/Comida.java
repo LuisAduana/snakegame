@@ -1,5 +1,6 @@
 package logica;
 
+import snake.Coordenada;
 import javafx.scene.paint.Color;
 
 /**
@@ -8,7 +9,7 @@ import javafx.scene.paint.Color;
  */
 public class Comida {
     private Coordenada coordenada;
-    public static final Color COLOR = Color.WHITE;
+    public static final String COLOR = "WHITE";
     
     
     Comida(Coordenada coord){

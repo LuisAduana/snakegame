@@ -5,6 +5,7 @@
  */
 package logica;
 
+import snake.Snake;
 import javafx.scene.canvas.GraphicsContext;
 /**
  *
@@ -25,14 +26,28 @@ public class CicloJuego implements Runnable{
     //El contexto se encarga de renderizar la parte gráfica del tablero
     private final GraphicsContext contexto;
     
-    public CicloJuego(Tablero tablero, GraphicsContext contexto){
+    private Snake serpiente;
+    
+    
+    public CicloJuego(Tablero tablero, GraphicsContext contexto, Snake serpiente){
         this.contexto = contexto;
         this.tablero = tablero;
         framerate = 20;
         tiempo = 1000.0f / framerate;
         ejecucion = true;
-        teclaPresionada = false;      
+        teclaPresionada = false;    
+        this.serpiente = serpiente;
         
+    }
+    
+    
+    public boolean estaViva() {
+        if(!this.serpiente.estaViva()){
+                pausar();
+                PintarJuego.pintarMensajeReset(contexto);
+                return false;
+            }
+        return true;
     }
     
     @Override
@@ -49,9 +64,8 @@ public class CicloJuego implements Runnable{
             
             //Si el jugador ha muerto se muestra el mensaje para reseteat
             // el juego
-            if(!tablero.getSnake().estaViva()){
-                pausar();
-                PintarJuego.pintarMensajeReset(contexto);
+            
+            if (estaViva()) {
                 break;
             }
             

@@ -1,10 +1,13 @@
-package logica;
+package snake;
+
+import java.io.Serializable;
 
 /**
  *
  * @author ferzo
  */
-public class Coordenada {
+public class Coordenada implements Serializable{
+    private static final long serialVersionUID = 879965647867471663L;
     private int coordX;
     private int coordY;
     

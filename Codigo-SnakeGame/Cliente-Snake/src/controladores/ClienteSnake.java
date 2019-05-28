@@ -7,9 +7,9 @@ package controladores;
 
 import icliente.ICliente;
 import iserver.IServer;
-import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import snake.Coordenada;
 import snake.Snake;
 
 /**
@@ -44,9 +44,8 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     }
     
     @Override
-    public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
-        this.serpiente = new Snake(color, this, nombre);
-        System.out.println(color);
+    public void iniciarSerpiente(Snake snake) throws RemoteException {
+        this.serpiente = snake;
     }
     
 }

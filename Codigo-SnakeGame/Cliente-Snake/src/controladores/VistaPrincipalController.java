@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logica.CicloJuego;
 import logica.PintarJuego;
-import logica.Snake;
+import snake.Snake;
 import logica.Tablero;
 
 /**
@@ -124,22 +124,22 @@ public class VistaPrincipalController implements Initializable {
         
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e ->{
-            Snake snake = tablero.getSnake();
+           
             if(ciclo.teclaPresionada()){
                 return;
             }
             switch (e.getCode()){
                 case UP:
-                   snake.setArriba();
+                   this.clienteSnake.getSerpiente().setArriba();
                    break;
                 case DOWN:
-                    snake.setAbajo();
+                    this.clienteSnake.getSerpiente().setAbajo();
                     break;
                 case LEFT:
-                    snake.setIzq();
+                    this.clienteSnake.getSerpiente().setIzq();
                     break;
                 case RIGHT:
-                    snake.setDer();
+                    this.clienteSnake.getSerpiente().setDer();
                     break;
                 case ENTER: 
                     if(ciclo.estaPausado()){
@@ -184,7 +184,7 @@ public class VistaPrincipalController implements Initializable {
 
     private void resetGame(){
         tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
-        ciclo = new CicloJuego(tablero, contexto);
+        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake.getSerpiente());
         PintarJuego.pintar(tablero, contexto);        
     }
     

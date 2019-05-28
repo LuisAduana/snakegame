@@ -5,9 +5,11 @@
  */
 package logica;
 
+import snake.Coordenada;
+import snake.Snake;
+import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  *
@@ -19,22 +21,25 @@ public class PintarJuego {
         contexto.fillRect(0, 0, tablero.getAncho(), tablero.getAltura());               
     }
     public static void pintarComida(Tablero tablero, GraphicsContext contexto){
-        contexto.setFill(Comida.COLOR);
-        pintarCoordenada(tablero.getComida().getCoordenada(), contexto);
+        pintarCoordenada(tablero.getComida().getCoordenada(), contexto, Comida.COLOR);
     }
     
-    public static void pintarSnake(Tablero tablero,  GraphicsContext contexto){
-        Snake snake = tablero.getSnake();
-        contexto.setFill((Paint)Snake.VIVA);
-        snake.getCuerpo().forEach(coord -> pintarCoordenada(coord, contexto));
-        if(!snake.estaViva()){
-            contexto.setFill(Snake.MUERTA);
-            pintarCoordenada(snake.getCabeza(), contexto);
+    public static void pintarSnake(Tablero tablero, GraphicsContext contexto) {
+        ArrayList<Snake> serpientes = tablero.getSnakes();
+
+        for (Snake snake : serpientes) {
+            snake.getCuerpo().forEach(coord -> 
+                    pintarCoordenada(coord, contexto, snake.getColorViva()));
+            
+            if (!snake.estaViva()) {
+                pintarCoordenada(snake.getCabeza(), contexto, Snake.MUERTA);
+            }
         }
-        
+
     }
     
-    private static void pintarCoordenada(Coordenada coord, GraphicsContext contexto){
+    private static void pintarCoordenada(Coordenada coord, GraphicsContext contexto, String color){
+        contexto.setFill(Color.web(color));
         contexto.fillRect(coord.getCoordX()*Tablero.TAMANO, coord.getCoordY() * Tablero.TAMANO, 
                 Tablero.TAMANO, Tablero.TAMANO);
     }

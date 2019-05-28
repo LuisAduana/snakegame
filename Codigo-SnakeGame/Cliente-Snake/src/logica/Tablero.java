@@ -5,6 +5,9 @@
  */
 package logica;
 
+import snake.Coordenada;
+import snake.Snake;
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.paint.Color;
 
@@ -19,14 +22,13 @@ public class Tablero {
     private final int columnas;
     private final int filas;
     
-    private Snake snake;
+    private ArrayList<Snake> snakes;
     private Comida comida;
 
     public Tablero(double ancho, double alto){
         this.columnas = (int) ancho/TAMANO;
         this.filas = (int) alto/TAMANO;
-        
-        snake = new Snake(this, new Coordenada(columnas/2, filas/2));
+        snakes = new ArrayList();
         comida = new Comida(getPosicionAleatoria());
     }
     
@@ -50,12 +52,17 @@ public class Tablero {
     }
     
     public void actualizarPosicion(){
-        if(comida.getCoordenada().equals(snake.getCabeza())){
-            snake.extender();
+        
+        for (Snake snake : this.snakes) {
+            if(comida.getCoordenada().equals(snake.getCabeza())){
+            snake.extender(wrap(snake.transferirCoordenada()));
             comida.setCoordenada(getPosicionAleatoria());
         }else{
-            snake.mover();
+            snake.mover(wrap(snake.transferirCoordenada()));
         }
+        }
+        
+        
     }
     
     public int getColumnas() {
@@ -74,8 +81,12 @@ public class Tablero {
         return columnas * TAMANO;
     }
 
-    public Snake getSnake() {
-        return snake;
+    public ArrayList<Snake> getSnakes() {
+        return snakes;
+    }
+    
+    public void setSnakes(ArrayList<Snake> serpientes) {
+        this.snakes = serpientes;
     }
 
     public Comida getComida() {
