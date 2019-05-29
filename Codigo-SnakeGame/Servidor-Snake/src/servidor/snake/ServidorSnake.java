@@ -5,8 +5,8 @@
  */
 package servidor.snake;
 
+import clases.Snake;
 import interfaz.ICliente;
-import interfaz.Snake;
 import interfaz.IServer;
 import java.awt.Color;
 import java.net.InetAddress;

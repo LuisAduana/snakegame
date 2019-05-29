@@ -5,12 +5,13 @@
  */
 package controladores;
 
+import clases.Snake;
 import interfaz.ICliente;
 import interfaz.IServer;
 import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import interfaz.Snake;
+
 
 /**
  *
