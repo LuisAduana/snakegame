@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Snake implements Serializable{
     private static final long serialVersionUID = 8799656478674716638L;
-    private static String colorViva;
+    private String colorViva;
     public static final String MUERTA = "RED";
     
     private Coordenada cabeza;
@@ -20,6 +20,14 @@ public class Snake implements Serializable{
     private String nombre;
     private int avanceX;
     private int avanceY;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     
     public Snake(String nombre, String color, Coordenada cabeza){
         this.nombre = nombre;
@@ -140,7 +148,7 @@ public class Snake implements Serializable{
     }
 
     public void setColorViva(String colorViva) {
-        Snake.colorViva = colorViva;
+        this.colorViva = colorViva;
     }
    
 }

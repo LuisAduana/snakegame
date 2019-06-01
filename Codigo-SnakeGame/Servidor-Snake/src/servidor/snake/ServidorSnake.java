@@ -5,15 +5,17 @@
  */
 package servidor.snake;
 
-import icliente.ICliente;
+import Interfaces.ICliente;
 import snake.Snake;
-import iserver.IServer;
+import Interfaces.IServer;
+import Interfaces.IServer;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import javafx.scene.input.KeyCode;
 import snake.Coordenada;
 
 /**
@@ -23,7 +25,6 @@ import snake.Coordenada;
  */
 
 public class ServidorSnake extends UnicastRemoteObject  implements IServer{
-
     private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     private static final long  SerialVersionUID = 9090898209349823403L;
@@ -33,15 +34,30 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         
     }
     
+    /**
+     * Permite registrar un jugador nuevo si colores disponibles 
+     * @param cliente del jugador que es iniciado.
+     * @param nombre nombre del jugador registrado.
+     * @throws RemoteException 
+     */
+    
     @Override
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-        String color = colores.get(0);
-        colores.remove(0);
-        Snake serpiente =  new Snake(color, nombre, 
-                new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
-        serpientes.add(serpiente);
-        cliente.iniciarSerpiente(serpiente);        
+        if (colores.size() > 0) {
+            String color = colores.get(0);
+            this.colores.remove(0);
+            System.out.println("1" + color);
+            Snake serpiente = new Snake(nombre, color,
+                    new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
+            serpientes.add(serpiente);
+            cliente.definirColor(color);
+        }
+
     }
+    
+    /**
+     * Inicializa el sevidor.
+     */
     
     public void iniciarServidor() {
         this.iniciarListaDeColores();
@@ -61,8 +77,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     private void iniciarListaDeColores() {
         this. colores = new ArrayList();
-        colores.add("CYAN");
-        colores.add("BLUE");
+        colores.add("blue");
         colores.add("GREEN");
         colores.add("YELLOW");
         colores.add("PINK");
@@ -71,6 +86,12 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         colores.add("GRAY");
     }
 
+    /**
+     * Permite saber si hay lugares disponibles para un jugador nuevo.
+     * @return true si hay menos de 10 jugadores registrado
+     * @throws RemoteException 
+     */
+    
     @Override
     public boolean esDisponible() throws RemoteException {
         boolean dispoibilidad = true;
@@ -80,12 +101,46 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         return dispoibilidad;
     }
 
+    
+    
     @Override
     public void eliminarSerpiente(String color) throws RemoteException {
         for(Snake snake : this.serpientes){
             if (snake.getColorViva() == color) {
                 colores.add(color);
                 serpientes.remove(snake);
+            }
+        }
+    }
+
+    /**
+     * Recupera las serpientes registradas en el servidor.
+     * @return lista vacía si no se ha registrado ningun jugador.
+     * @throws RemoteException.
+     */
+    
+    @Override
+    public ArrayList<Snake> recuperarSerpientes() throws RemoteException {
+        System.out.println("serpientes:" + this.serpientes.size());
+        for(Snake s: this.serpientes) {
+          System.out.println(s.getColorViva());
+        }
+        return this.serpientes;
+    }
+
+    /**
+     * Recupera la dirección nueva para cambiar la dirección de una serpiente con un color determinado
+     * @param direccion dirección nueva de la serpiente
+     * @param color color de la serpiente que se va a mover
+     * @throws RemoteException 
+     */
+    
+    @Override
+    public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
+        for (Snake snake : this.serpientes) {
+            if (snake.getColorViva().equalsIgnoreCase(color)) {
+                //TODO    
+                
             }
         }
     }

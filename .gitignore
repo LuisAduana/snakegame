@@ -33,3 +33,6 @@ hs_err_pid*
 /Codigo-SnakeGame/Snake/build/
 /Codigo-SnakeGame/Snake/dist/
 /Codigo-SnakeGame/ICliente/dist/
+/Codigo-SnakeGame/Interfaces/nbproject/private/
+/Codigo-SnakeGame/Interfaces/build/
+/Codigo-SnakeGame/Interfaces/dist/

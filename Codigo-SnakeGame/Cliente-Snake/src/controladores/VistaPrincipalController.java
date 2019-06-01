@@ -1,6 +1,6 @@
 package controladores;
 
-import iserver.IServer;
+import Interfaces.IServer;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -25,8 +25,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logica.CicloJuego;
-import logica.PintarJuego;
-import snake.Snake;
 import logica.Tablero;
 
 /**
@@ -90,8 +88,7 @@ public class VistaPrincipalController implements Initializable {
             try {
                 intentoConexion();
                 if (server.esDisponible()) {
-                    server.iniciarJugador(
-                            clienteSnake, nombreJugador.getText());
+                    this.clienteSnake.iniciarJugador(nombreJugador.getText());
                     iniciarJuego();
                     // System.out.println("ENTRO");
                 } else {
@@ -124,7 +121,9 @@ public class VistaPrincipalController implements Initializable {
         
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e ->{
-           
+           /* TODO
+            
+            
             if(ciclo.teclaPresionada()){
                 return;
             }
@@ -147,9 +146,13 @@ public class VistaPrincipalController implements Initializable {
                         (new Thread(ciclo)).start();
                     }
             }
-        });
+        */});
         
-        resetGame();
+        try {
+            resetGame();
+        } catch (RemoteException ex) {
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         root.getChildren().add(canvas);
         Scene scene = new Scene(root);
@@ -166,26 +169,24 @@ public class VistaPrincipalController implements Initializable {
      * @throws RemoteException Si no se logra conectar al servidor lanza la excepción al método padre.
      * @throws NotBoundException Si no se encuentra el puerto disponible lanza la excepción al méotodo padre.
      */
+    
     private void intentoConexion() throws RemoteException, NotBoundException {
-        //try {
+        
             registro = LocateRegistry.getRegistry(NOMBRE_SERVIDOR, PUERTO_SERVIDOR);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 
             this.clienteSnake = new ClienteSnake(server);
 
-        //} catch (NotBoundException | RemoteException ex) {
-            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        //}
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
 
-    private void resetGame(){
+    private void resetGame() throws RemoteException{
         tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
-        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake.getSerpiente());
-        PintarJuego.pintar(tablero, contexto);        
+        tablero.setSnakes(this.clienteSnake.recuperarSerpientes());
+        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake);     
     }
     
     void setStage(Stage stage) {

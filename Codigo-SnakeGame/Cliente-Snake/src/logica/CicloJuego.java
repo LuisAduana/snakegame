@@ -5,6 +5,10 @@
  */
 package logica;
 
+import controladores.ClienteSnake;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import snake.Snake;
 import javafx.scene.canvas.GraphicsContext;
 /**
@@ -26,57 +30,47 @@ public class CicloJuego implements Runnable{
     //El contexto se encarga de renderizar la parte gráfica del tablero
     private final GraphicsContext contexto;
     
-    private Snake serpiente;
+    private ClienteSnake cliente;
     
     
-    public CicloJuego(Tablero tablero, GraphicsContext contexto, Snake serpiente){
+    public CicloJuego(Tablero tablero, GraphicsContext contexto, ClienteSnake cliente){
         this.contexto = contexto;
         this.tablero = tablero;
         framerate = 20;
         tiempo = 1000.0f / framerate;
         ejecucion = true;
         teclaPresionada = false;    
-        this.serpiente = serpiente;
+        this.cliente = cliente;
         
     }
-    
-    
-    public boolean estaViva() {
-        if(!this.serpiente.estaViva()){
-                pausar();
-                PintarJuego.pintarMensajeReset(contexto);
-                return false;
-            }
-        return true;
-    }
+   
     
     @Override
     public void run(){
         while(ejecucion && !pausado){
+            
+            try {
+                this.tablero.setSnakes(this.cliente.recuperarSerpientes());
+            } catch (RemoteException ex) {
+                Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             float t = System.currentTimeMillis();
             
-            teclaPresionada = false;
-            tablero.actualizarPosicion();
             PintarJuego.pintar(tablero, contexto);
-            PintarJuego.pintarComida(tablero, contexto);
+            //PintarJuego.pintarComida(tablero, contexto);
             PintarJuego.pintarSnake(tablero, contexto);
             
             
-            //Si el jugador ha muerto se muestra el mensaje para reseteat
-            // el juego
-            
-            if (estaViva()) {
-                break;
-            }
             
             t = System.currentTimeMillis() - t;
             
-            //Fragmento para ajustar el tiempo correctamente
             if(t<tiempo){
                 try{
                     Thread.sleep((long) (tiempo - t));
                     
                 }catch(InterruptedException ex){
+                    
                     
                 }
             }

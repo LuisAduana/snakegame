@@ -5,11 +5,11 @@
  */
 package controladores;
 
-import icliente.ICliente;
-import iserver.IServer;
+import Interfaces.ICliente;
+import Interfaces.IServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import snake.Coordenada;
+import java.util.ArrayList;
 import snake.Snake;
 
 /**
@@ -18,18 +18,20 @@ import snake.Snake;
  */
 public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
-    private Snake serpiente;
+    private String color;
     private static final long  SerialVersionUID = 9090898209349823403L;
     private final int PORT = 3232;
     public  IServer server;
 
-    public Snake getSerpiente() {
-        return serpiente;
+    public String getColor() {
+        return color;
     }
 
-    public void setSerpiente(Snake serpiente) {
-        this.serpiente = serpiente;
+    public void setColor(String color) {
+        this.color = color;
     }
+
+    
 
     public IServer getServer() {
         return server;
@@ -43,9 +45,37 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
         this.server =server;
     }
     
+    
+    /**
+     * Define el color del cliente.
+     * @param color String.
+     * @throws RemoteException 
+     */
     @Override
-    public void iniciarSerpiente(Snake snake) throws RemoteException {
-        this.serpiente = snake;
+    public void definirColor(String color) throws RemoteException {
+        this.color = color;
+        System.out.println(this.color);
     }
+    
+    
+    /**
+     * permite recuperar las serpientes registradas en el servidor.
+     * @return null si no hay jugadores registrados.
+     * @throws RemoteException 
+     */
+    
+   public ArrayList<Snake> recuperarSerpientes() throws RemoteException {
+       return this.server.recuperarSerpientes();
+    }
+   
+   /**
+    * Permite registrar un jugador nuevo.
+    * @param nombre del jugador.
+    * @throws RemoteException 
+    */
+   
+   public void iniciarJugador(String nombre) throws RemoteException {
+       this.server.iniciarJugador(this, nombre);
+   }
     
 }

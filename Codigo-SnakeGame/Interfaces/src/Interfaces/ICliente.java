@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package icliente;
+package Interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import snake.Snake;
+
 
 /**
  *
@@ -15,5 +16,5 @@ import snake.Snake;
  */
 public interface ICliente extends Remote{
     
-   public void iniciarSerpiente(Snake snake) throws RemoteException;
+   public void definirColor(String color) throws RemoteException;
 }

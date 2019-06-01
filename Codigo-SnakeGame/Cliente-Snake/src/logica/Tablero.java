@@ -5,6 +5,7 @@
  */
 package logica;
 
+import snake.Comida;
 import snake.Coordenada;
 import snake.Snake;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javafx.scene.paint.Color;
  *
  * @author ferzo
  */
+
 public class Tablero {
     public static final int TAMANO = 10;
     public static final Color COLOR = new Color(0.1, 0.1, 0.1,1);
@@ -29,7 +31,7 @@ public class Tablero {
         this.columnas = (int) ancho/TAMANO;
         this.filas = (int) alto/TAMANO;
         snakes = new ArrayList();
-        comida = new Comida(getPosicionAleatoria());
+        this.comida = new Comida(getPosicionAleatoria());
     }
     
     public Coordenada wrap(Coordenada coord){
