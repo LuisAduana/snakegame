@@ -5,6 +5,7 @@
  */
 package logica;
 
+import snake.Tablero;
 import controladores.ClienteSnake;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -58,7 +59,6 @@ public class CicloJuego implements Runnable{
             float t = System.currentTimeMillis();
             
             PintarJuego.pintar(tablero, contexto);
-            //PintarJuego.pintarComida(tablero, contexto);
             PintarJuego.pintarSnake(tablero, contexto);
             
             

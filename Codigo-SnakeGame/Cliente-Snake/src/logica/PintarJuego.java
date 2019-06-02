@@ -5,6 +5,7 @@
  */
 package logica;
 
+import snake.Tablero;
 import snake.Comida;
 import snake.Coordenada;
 import snake.Snake;

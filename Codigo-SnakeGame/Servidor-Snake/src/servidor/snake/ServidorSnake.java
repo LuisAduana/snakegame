@@ -8,7 +8,6 @@ package servidor.snake;
 import Interfaces.ICliente;
 import snake.Snake;
 import Interfaces.IServer;
-import Interfaces.IServer;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,6 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
 import snake.Coordenada;
+import snake.Tablero;
 
 /**
  *
@@ -29,6 +29,9 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     private ArrayList<Snake> serpientes;
     private static final long  SerialVersionUID = 9090898209349823403L;
     private final int PORT = 3232;
+    private Tablero tablero;
+    private static final int ANCHO_VENTANA = 500;
+    private static final int ALTURA_VENTANA = 500;
     
     public ServidorSnake() throws RemoteException {
         
@@ -50,6 +53,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
             Snake serpiente = new Snake(nombre, color,
                     new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
             serpientes.add(serpiente);
+            actualizarTablero();
             cliente.definirColor(color);
         }
 
@@ -59,9 +63,14 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
      * Inicializa el sevidor.
      */
     
+    private void actualizarTablero() {
+        this.tablero.setSnakes(this.serpientes);
+    }
+    
     public void iniciarServidor() {
         this.iniciarListaDeColores();
         this.serpientes = new ArrayList();
+        this.tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
         try {
             String direccion = (InetAddress.getLocalHost()).toString();
             System.out.println("Servidor iniciado en " + direccion + ":" + PORT);
@@ -74,16 +83,17 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     }
     
     
-    
     private void iniciarListaDeColores() {
         this. colores = new ArrayList();
-        colores.add("blue");
+        colores.add("CYAN");
+        colores.add("PURPLE");
         colores.add("GREEN");
         colores.add("YELLOW");
         colores.add("PINK");
         colores.add("ORANGE");
         colores.add("WHITE");
         colores.add("GRAY");
+        
     }
 
     /**
@@ -121,10 +131,6 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     @Override
     public ArrayList<Snake> recuperarSerpientes() throws RemoteException {
-        System.out.println("serpientes:" + this.serpientes.size());
-        for(Snake s: this.serpientes) {
-          System.out.println(s.getColorViva());
-        }
         return this.serpientes;
     }
 
@@ -139,12 +145,28 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
         for (Snake snake : this.serpientes) {
             if (snake.getColorViva().equalsIgnoreCase(color)) {
-                //TODO    
-                
+
+                switch (direccion) {
+                    case UP:
+                        snake.setArriba();
+                        break;
+                    case DOWN:
+                        snake.setAbajo();
+                        break;
+                    case LEFT:
+                        snake.setIzq();
+                        break;
+                    case RIGHT:
+                        snake.setDer();
+                        break;
+
+                }
             }
         }
-    }
 
+    }
     
-    
+    public Tablero getTablero() {
+        return this.tablero;
+    }
 }

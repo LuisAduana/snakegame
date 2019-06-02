@@ -25,7 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logica.CicloJuego;
-import logica.Tablero;
+import snake.Tablero;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
@@ -90,7 +90,7 @@ public class VistaPrincipalController implements Initializable {
                 if (server.esDisponible()) {
                     this.clienteSnake.iniciarJugador(nombreJugador.getText());
                     iniciarJuego();
-                    // System.out.println("ENTRO");
+                    
                 } else {
                     dialogo = new Alert(AlertType.INFORMATION);
                     dialogo.setTitle("Información del sistema.");
@@ -121,32 +121,13 @@ public class VistaPrincipalController implements Initializable {
         
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e ->{
-           /* TODO
-            
-            
-            if(ciclo.teclaPresionada()){
-                return;
-            }
-            switch (e.getCode()){
-                case UP:
-                   this.clienteSnake.getSerpiente().setArriba();
-                   break;
-                case DOWN:
-                    this.clienteSnake.getSerpiente().setAbajo();
-                    break;
-                case LEFT:
-                    this.clienteSnake.getSerpiente().setIzq();
-                    break;
-                case RIGHT:
-                    this.clienteSnake.getSerpiente().setDer();
-                    break;
-                case ENTER: 
-                    if(ciclo.estaPausado()){
-                        resetGame();
-                        (new Thread(ciclo)).start();
-                    }
-            }
-        */});
+           
+            try {
+                    this.clienteSnake.moverSerpiente(e.getCode());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        });
         
         try {
             resetGame();
