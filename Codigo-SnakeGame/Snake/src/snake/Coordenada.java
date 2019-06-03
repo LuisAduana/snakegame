@@ -52,5 +52,5 @@ public class Coordenada implements Serializable{
         this.coordY = coordY;
     }
     
-    
+
 }

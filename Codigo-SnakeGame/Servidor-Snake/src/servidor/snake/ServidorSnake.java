@@ -145,7 +145,6 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
         for (Snake snake : this.serpientes) {
             if (snake.getColorViva().equalsIgnoreCase(color)) {
-
                 switch (direccion) {
                     case UP:
                         snake.setArriba();

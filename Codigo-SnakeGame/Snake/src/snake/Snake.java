@@ -12,7 +12,17 @@ public class Snake implements Serializable{
     private static final long serialVersionUID = 8799656478674716638L;
     private String colorViva;
     public static final String MUERTA = "RED";
-    
+    private ArrayList<Coordenada> posicionSerpiente;
+
+  public ArrayList<Coordenada> getPosicionSerpiente() {
+    return posicionSerpiente;
+  }
+
+  public void setPosicionSerpiente(ArrayList<Coordenada> posicionSerpiente) {
+    this.posicionSerpiente = posicionSerpiente;
+  }
+
+
     private Coordenada cabeza;
     private List<Coordenada> cuerpo;
     private int longitud;
@@ -92,6 +102,10 @@ public class Snake implements Serializable{
         if (!estaParada()) {
             moverCoordenada(coord);
         }
+    }
+    
+    public void despliegaCoordenada(Coordenada direccion){
+      
     }
     
     public Coordenada transferirCoordenada(){

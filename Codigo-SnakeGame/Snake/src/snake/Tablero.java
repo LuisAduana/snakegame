@@ -54,13 +54,13 @@ public class Tablero {
     }
     
     public void actualizarPosicion(){
-        
         for (Snake snake : this.snakes) {
             if(comida.getCoordenada().equals(snake.getCabeza())){
             snake.extender(wrap(snake.transferirCoordenada()));
             comida.setCoordenada(getPosicionAleatoria());
         }else{
             snake.mover(wrap(snake.transferirCoordenada()));
+           
         }
         }
         
