@@ -21,10 +21,7 @@ public class ActualizarSerpientes implements Runnable{
     public ActualizarSerpientes(ServidorSnake server) {
         this.server = server;
     }
-    
-    
-    
-    
+
     @Override
     public void run() {
         while (true) {

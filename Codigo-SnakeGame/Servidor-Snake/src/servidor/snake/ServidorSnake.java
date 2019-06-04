@@ -36,6 +36,21 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     public ServidorSnake() throws RemoteException {
         
     }
+
+  @Override
+  public void colisionSerpiente(String colorSerpiente) throws RemoteException {
+    for (Snake snake : this.serpientes) {
+            if (snake.getColorViva().equalsIgnoreCase(colorSerpiente)) {
+                Coordenada coordenada = snake.getCabeza();
+                int x = coordenada.getCoordX();
+                int y = coordenada.getCoordY();
+                if (){
+                  
+                }
+            }
+        }
+     System.out.println("coco");
+  }
     
     /**
      * Permite registrar un jugador nuevo si colores disponibles 
@@ -58,6 +73,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         }
 
     }
+    
     
     /**
      * Inicializa el sevidor.

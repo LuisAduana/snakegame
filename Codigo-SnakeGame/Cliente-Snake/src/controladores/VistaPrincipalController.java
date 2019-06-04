@@ -123,6 +123,7 @@ public class VistaPrincipalController implements Initializable {
         canvas.setOnKeyPressed(e ->{
            
             try {
+                    this.clienteSnake.colisionSerpiente();
                     this.clienteSnake.moverSerpiente(e.getCode());
                 } catch (RemoteException ex) {
                     Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,7 +153,6 @@ public class VistaPrincipalController implements Initializable {
      */
     
     private void intentoConexion() throws RemoteException, NotBoundException {
-        
             registro = LocateRegistry.getRegistry(NOMBRE_SERVIDOR, PUERTO_SERVIDOR);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 
