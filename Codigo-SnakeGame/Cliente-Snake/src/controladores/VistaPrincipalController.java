@@ -1,6 +1,7 @@
 package controladores;
 
 import interfaz.IServer;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,11 +14,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
@@ -30,6 +36,8 @@ public class VistaPrincipalController implements Initializable {
     TextField nombreJugador;
     @FXML
     Label mensajeError;
+    @FXML
+    Button btnVerPuntuaciones;
     
     private Alert dialogo;
     private IServer server;
@@ -101,6 +109,20 @@ public class VistaPrincipalController implements Initializable {
         } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        btnVerPuntuaciones.setOnAction((ActionEvent event) -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml"), rb);
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                
+                stage.show();
+            } catch (IOException ex) {
+                Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }    
     
 }

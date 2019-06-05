@@ -8,12 +8,15 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Cliente-Snake.jar" size="5516" download="eager" />
-    <jar href="lib\ICliente.jar" size="345" download="eager" />
-    <jar href="lib\IServer.jar" size="464" download="eager" />
-    <jar href="lib\Snake.jar" size="345" download="eager" />
-    <jar href="lib\utileria.jar" size="2618" download="eager" />
+    <jar href="Cliente-Snake.jar" size="7637" download="eager" />
+    <jar href="lib\ICliente.jar" size="344" download="eager" />
+    <jar href="lib\IServer.jar" size="463" download="eager" />
+    <jar href="lib\Snake.jar" size="344" download="eager" />
+    <jar href="lib\utileria.jar" size="2617" download="eager" />
   </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Cliente-Snake" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
   <jfx:javafx-desc  width="800" height="600" main-class="controladores.Main"  name="Cliente-Snake" />
   <update check="always"/>
 </jnlp>
