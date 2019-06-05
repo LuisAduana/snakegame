@@ -90,7 +90,6 @@ public class VistaPrincipalController implements Initializable {
                 if (server.esDisponible()) {
                     this.clienteSnake.iniciarJugador(nombreJugador.getText());
                     iniciarJuego();
-                    
                 } else {
                     dialogo = new Alert(AlertType.INFORMATION);
                     dialogo.setTitle("Información del sistema.");

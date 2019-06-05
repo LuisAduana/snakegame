@@ -28,7 +28,6 @@ public class ActualizarSerpientes implements Runnable{
             System.out.println(this.server.getTablero().getSnakes().size());
             if (this.server.getTablero().getSnakes().size() >= 1 ) {
                 this.server.getTablero().actualizarPosicion();
-                System.out.println("actualizar");
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {

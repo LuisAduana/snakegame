@@ -23,6 +23,6 @@ public interface IServer extends Remote{
     public boolean esDisponible() throws RemoteException;
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException;
     public void eliminarSerpiente(String color) throws RemoteException;
-    public void colisionSerpiente() throws RemoteException;
+    public void colisionSerpiente(String color) throws RemoteException;
     public ArrayList<Snake> recuperarSerpientes() throws RemoteException;
 }

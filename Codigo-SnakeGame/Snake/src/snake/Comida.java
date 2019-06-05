@@ -1,25 +1,27 @@
 package snake;
 
+import java.awt.*;
+
 
 /**
  *
  * @author ferzo
  */
 public class Comida {
-    private Coordenada coordenada;
+    private Point coordenada;
     public static final String COLOR = "WHITE";
     
     
-    public Comida(Coordenada coord){
+    public Comida(Point coord){
         this.coordenada = coord;
         
     }
 
-    public Coordenada getCoordenada() {
+    public Point getCoordenada() {
         return coordenada;
     }
 
-    public void setCoordenada(Coordenada coordenada) {
+    public void setCoordenada(Point coordenada) {
         this.coordenada = coordenada;
     }
     

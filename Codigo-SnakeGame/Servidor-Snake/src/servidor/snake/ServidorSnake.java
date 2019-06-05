@@ -39,18 +39,26 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
 
   @Override
   public void colisionSerpiente(String colorSerpiente) throws RemoteException {
+    System.out.println("Se ejecutó");
+    Snake snakeCliente = obtieneSerpiente(colorSerpiente);
+    for (Snake snakeEnemiga : this.serpientes) {
+      if (!(snakeCliente.equals(snakeEnemiga))){
+        if (snakeCliente.getCabeza().getLocation().equals(snakeEnemiga.getCabeza().getLocation())) {
+          System.out.println(snakeCliente.getColorViva() + " choco con " + snakeEnemiga.getColorViva());
+        }
+      }
+    }
+  }
+  
+  private Snake obtieneSerpiente(String colorSerpiente){
     for (Snake snake : this.serpientes) {
             if (snake.getColorViva().equalsIgnoreCase(colorSerpiente)) {
-                Coordenada coordenada = snake.getCabeza();
-                int x = coordenada.getCoordX();
-                int y = coordenada.getCoordY();
-                if (){
-                  
-                }
+                return snake;
             }
-        }
-     System.out.println("coco");
   }
+    return null;
+  }
+
     
     /**
      * Permite registrar un jugador nuevo si colores disponibles 
@@ -64,7 +72,6 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         if (colores.size() > 0) {
             String color = colores.get(0);
             this.colores.remove(0);
-            System.out.println("1" + color);
             Snake serpiente = new Snake(nombre, color,
                     new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
             serpientes.add(serpiente);
