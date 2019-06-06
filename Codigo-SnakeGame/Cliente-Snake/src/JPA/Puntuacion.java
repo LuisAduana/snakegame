@@ -26,7 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Puntuacion.findAll", query = "SELECT p FROM Puntuacion p")
     , @NamedQuery(name = "Puntuacion.findByIdcliente", query = "SELECT p FROM Puntuacion p WHERE p.idcliente = :idcliente")
     , @NamedQuery(name = "Puntuacion.findByNombre", query = "SELECT p FROM Puntuacion p WHERE p.nombre = :nombre")
-    , @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacion = :puntuacion")})
+    , @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacion = :puntuacion")
+    , @NamedQuery(name = "Puntuacion.findSortByPuntuacion", query = "SELECT p FROM Puntuacion p ORDER BY p.puntuacion DESC" )})
 public class Puntuacion implements Serializable {
 
     private static final long serialVersionUID = 1L;

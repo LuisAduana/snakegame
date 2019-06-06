@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controladores.TablaPuntuacionesController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.TablaPuntuacionesController">
    <children>
       <BorderPane prefHeight="500.0" prefWidth="675.0">
          <center>
@@ -16,9 +14,8 @@
                <children>
                   <TableView fx:id="tbvPuntuaciones" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="573.0">
                     <columns>
-                      <TableColumn fx:id="tbcPosicion" prefWidth="190.0" resizable="false" text="Posición" />
-                      <TableColumn fx:id="tbcJugador" prefWidth="190.0" text="Jugador" />
-                        <TableColumn fx:id="tbcPuntuacion" prefWidth="190.0" text="Puntuación" />
+                      <TableColumn fx:id="tbcJugador" prefWidth="286.5" text="Jugador" />
+                        <TableColumn fx:id="tbcPuntuacion" prefWidth="286.5" text="Puntuación" />
                     </columns>
                   </TableView>
                </children>
@@ -34,11 +31,7 @@
             <Pane prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <Pane prefHeight="50.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="btnAtras" layoutX="312.0" layoutY="13.0" mnemonicParsing="false" text="Atrás" />
-               </children>
-            </Pane>
+            <Pane prefHeight="50.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </children>
