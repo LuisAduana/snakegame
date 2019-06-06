@@ -93,6 +93,8 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         colores.add("ORANGE");
         colores.add("WHITE");
         colores.add("GRAY");
+        colores.add("SALMON");
+        colores.add("BLUE");
         
     }
 
