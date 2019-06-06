@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Cliente-Snake.jar" size="7637" download="eager" />
+    <jar href="Cliente-Snake.jar" size="9116" download="eager" />
     <jar href="lib\ICliente.jar" size="344" download="eager" />
     <jar href="lib\IServer.jar" size="463" download="eager" />
     <jar href="lib\Snake.jar" size="344" download="eager" />
