@@ -23,6 +23,10 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     private static final long  SerialVersionUID = 9090898209349823403L;
     private final int PORT = 3232;
     public  IServer server;
+    
+    ClienteSnake(IServer server) throws RemoteException{
+        this.server =server;
+    }
 
     public Snake getSerpiente() {
         return serpiente;
@@ -39,11 +43,7 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     public void setServer(IServer server) {
         this.server = server;
     }
-    
-    ClienteSnake(IServer server) throws RemoteException{
-        this.server =server;
-    }
-    
+
     @Override
     public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
         this.serpiente = new Snake(color, this, nombre);

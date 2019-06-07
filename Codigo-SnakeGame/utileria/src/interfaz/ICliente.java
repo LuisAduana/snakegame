@@ -16,4 +16,5 @@ import java.rmi.RemoteException;
 public interface ICliente extends Remote{
     
    public void iniciarSerpiente(Color color, String nombre) throws RemoteException;
+   
 }

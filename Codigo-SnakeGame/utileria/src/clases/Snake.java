@@ -15,6 +15,7 @@ import java.awt.Color;
  */
 
 public class Snake {
+    
     private Color color;
     private ICliente cliente;
     private String nombre;

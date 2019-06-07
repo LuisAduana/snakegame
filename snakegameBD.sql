@@ -24,4 +24,3 @@ INSERT INTO RODRIGO.PUNTUACION (idcliente, nombre, puntuacion) VALUES (12, 'FFF'
 INSERT INTO RODRIGO.PUNTUACION (idcliente, nombre, puntuacion) VALUES (13, 'Hugo', 550);
 INSERT INTO RODRIGO.PUNTUACION (idcliente, nombre, puntuacion) VALUES (14, 'awer', 320);
 INSERT INTO RODRIGO.PUNTUACION (idcliente, nombre, puntuacion) VALUES (15, 'Tania', 140);
-INSERT INTO RODRIGO.PUNTUACION (idcliente, nombre, puntuacion) VALUES (0, 'Rodrigo', 100);

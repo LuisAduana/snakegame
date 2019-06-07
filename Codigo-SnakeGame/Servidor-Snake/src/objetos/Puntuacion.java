@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JPA;
+package objetos;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -17,17 +17,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ferzo
+ * @author luisb
  */
 @Entity
 @Table(name = "PUNTUACION")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Puntuacion.findAll", query = "SELECT p FROM Puntuacion p")
-    , @NamedQuery(name = "Puntuacion.findByIdcliente", query = "SELECT p FROM Puntuacion p WHERE p.idcliente = :idcliente")
-    , @NamedQuery(name = "Puntuacion.findByNombre", query = "SELECT p FROM Puntuacion p WHERE p.nombre = :nombre")
-    , @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacion = :puntuacion")
-    , @NamedQuery(name = "Puntuacion.findSortByPuntuacion", query = "SELECT p FROM Puntuacion p ORDER BY p.puntuacion DESC" )})
+    @NamedQuery(name = "Puntuacion.findAll", query = "SELECT p FROM Puntuacion p"),
+    @NamedQuery(name = "Puntuacion.findByIdcliente", query = "SELECT p FROM Puntuacion p WHERE p.idcliente = :idcliente"),
+    @NamedQuery(name = "Puntuacion.findByNombre", query = "SELECT p FROM Puntuacion p WHERE p.nombre = :nombre"),
+    @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacion = :puntuacion"),
+    @NamedQuery(name = "Puntuacion.findSortByPuntuacion", query = "SELECT p FROM Puntuacion p ORDER BY p.puntuacion DESC" )})
 public class Puntuacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,7 +99,7 @@ public class Puntuacion implements Serializable {
 
     @Override
     public String toString() {
-        return "DAO.Puntuacion[ idcliente=" + idcliente + " ]";
+        return "objetos.Puntuacion[ idcliente=" + idcliente + " ]";
     }
     
 }

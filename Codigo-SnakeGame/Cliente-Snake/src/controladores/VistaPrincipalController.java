@@ -7,6 +7,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import clases.PuntuacionObtenida;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
@@ -39,11 +41,87 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     Button btnVerPuntuaciones;
     
+    private static final String NOMBRE_REGISTRO = "GameServer";
+    private static final String NOMBRE_SERVER = "localhost";
+    private static final int PUERTO_SERVER = 3232;
+    private Registry registro;
     private Alert dialogo;
     private IServer server;
+    private ResourceBundle resourceBundle;
+    private ClienteSnake clienteSnake;
+    private List<PuntuacionObtenida> puntuaciones;
     
-    public  ClienteSnake clienteSnake;
+    /**
+     * Método que maneja el evento al pulsar el botón iniciar juego.
+     * @param event Evento de ActionEvent
+     */
+    @FXML
+    private void iniciarJuego(ActionEvent event) {
+        String validacion = validarNickname();
+        if ("".equals(validacion)) {
+            mensajeError.setText(validacion);
+            try {
+                prepararConexion();
+                if (this.server.esDisponible()) {
+                    server.iniciarJugador(clienteSnake, nombreJugador.getText());
+                } else {
+                    informacionSistema("La sala está llena, inténtelo más tarde");
+                }
+            } catch (RemoteException ex) {
+                informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            mensajeError.setText(validacion);
+        }
+    }
     
+    /**
+     * Método que maneja el evento al pulsar el botón ver puntuaciones.
+     * @param event Evento de ActionEvent
+     */
+    @FXML
+    private void verPuntuaciones(ActionEvent event) {
+        try {
+            
+            prepararConexion();
+            puntuaciones = server.consultarPuntuaciones();
+            
+            TablaPuntuacionesController puntuacionesController = new TablaPuntuacionesController();
+            puntuacionesController.setListaPuntuaciones(puntuaciones);
+                     
+            Parent root = FXMLLoader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml"), resourceBundle);
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+                
+            stage.show();
+        } catch (RemoteException ex) {
+            informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void prepararConexion() throws RemoteException {
+        try {
+            registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
+            server = (IServer) registro.lookup(NOMBRE_REGISTRO);
+            
+            clienteSnake = new ClienteSnake(server);
+
+        } catch (NotBoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Método que valida el nombre del usuario.
+     * @return Regresa el resultado de la validacion (Si la validación es correcta regresa una cadena vacía)
+     */
     private String validarNickname() {
         if ("".equals(nombreJugador.getText().trim())) {
             return "Ingrese un nombre";
@@ -62,67 +140,22 @@ public class VistaPrincipalController implements Initializable {
         }
     }
     
-    @FXML
-    private void iniciarJuego(ActionEvent event) {
-        String validacion = validarNickname();
-        if ("".equals(validacion)) {
-            mensajeError.setText(validacion);
-            try {
-                if (this.server.esDisponible()) {
-                    this.server.iniciarJugador(
-                            this.clienteSnake, nombreJugador.getText());
-                    System.out.println("ENTRO");
-                } else {
-                    dialogo = new Alert(AlertType.INFORMATION);
-                    dialogo.setTitle("Información del sistema.");
-                    dialogo.setHeaderText(null);
-                    dialogo.setContentText("La sala está llena, inténtelo más tarde");
-                    dialogo.initStyle(StageStyle.UTILITY);
-                    dialogo.showAndWait();
-                }
-            } catch (RemoteException ex) {
-                dialogo = new Alert(AlertType.INFORMATION);
-                dialogo.setTitle("Información del sistema.");
-                dialogo.setHeaderText(null);
-                dialogo.setContentText("No se ha podido lograr una conexión "
-                        + "con el servidor \nInténtelo más tarde.");
-                dialogo.initStyle(StageStyle.UTILITY);
-                dialogo.showAndWait();
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            mensajeError.setText(validacion);
-        }
+    /**
+     * Este método despliega un mensaje de información del sistema.
+     * @param informacionMensajeError Mensaje que se muestra en la información del dialogo.
+     */
+    private void informacionSistema(String informacionMensajeError) {
+        dialogo = new Alert(AlertType.INFORMATION);
+        dialogo.setTitle("Información del sistema.");
+        dialogo.setHeaderText(null);
+        dialogo.setContentText(informacionMensajeError);
+        dialogo.initStyle(StageStyle.UTILITY);
+        dialogo.showAndWait();
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        String nombre = "GameServer";
-        String serverName = "localhost";
-        int serverPort = 3232;
-        try {
-            Registry registro = LocateRegistry.getRegistry(serverName, serverPort);
-            server = (IServer) registro.lookup(nombre);
-
-            this.clienteSnake = new ClienteSnake(server);
-
-        } catch (NotBoundException | RemoteException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        btnVerPuntuaciones.setOnAction((ActionEvent event) -> {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml"), rb);
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setResizable(false);
-                
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
     }    
     
 }

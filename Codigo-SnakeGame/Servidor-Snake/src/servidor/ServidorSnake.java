@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servidor.snake;
+package servidor;
 
-import clases.Snake;
+import clases.PuntuacionObtenida;
 import interfaz.ICliente;
 import interfaz.IServer;
+import clases.Snake;
 import java.awt.Color;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
@@ -15,6 +16,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,7 +24,7 @@ import java.util.ArrayList;
  * @author FerC
  */
 
-public class ServidorSnake extends UnicastRemoteObject  implements IServer{
+public class ServidorSnake extends UnicastRemoteObject implements IServer {
 
     private ArrayList<Color> colores;
     private ArrayList<Snake> serpientes;
@@ -88,6 +90,12 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
                 serpientes.remove(snake);
             }
         }
+    }
+
+    @Override
+    public List<PuntuacionObtenida> consultarPuntuaciones() throws RemoteException {
+        ConexionBD conexion = new ConexionBD();
+        return conexion.consultarPuntiaciones();
     }
 
     

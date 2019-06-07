@@ -5,26 +5,19 @@
  */
 package controladores;
 
-import JPA.Puntuacion;
+import clases.PuntuacionObtenida;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
 
 /**
  * FXML Controller class
@@ -38,35 +31,34 @@ public class TablaPuntuacionesController implements Initializable {
     @FXML
     private TableView<?> tbvPuntuaciones;
     @FXML
-    private TableColumn<Puntuacion, String> tbcJugador;
+    private TableColumn<PuntuacionObtenida, String> tbcJugador;
     @FXML
-    private TableColumn<Puntuacion, Integer> tbcPuntuacion;
+    private TableColumn<PuntuacionObtenida, Integer> tbcPuntuacion;
 
-    ObservableList<Puntuacion> puntuaciones;
-    
+    ObservableList<PuntuacionObtenida> puntuaciones;
+    //List<PuntuacionObtenida> listaPuntuaciones;
+        
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try{
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("Cliente-SnakePU");
-            EntityManager em = emf.createEntityManager();
-
-            em.getTransaction().begin();
-            
-            List<Puntuacion> query = em.createNamedQuery("Puntuacion.findSortByPuntuacion", Puntuacion.class).getResultList();
-            puntuaciones = FXCollections.observableList(query);
-            
-            em.getTransaction().commit();
-            em.close();
-            emf.close();
-        }catch(Exception ex){
-            System.err.println("Error en la conexión con la BD: " + ex.getMessage());
-        }
-        tbcJugador.setCellValueFactory( new PropertyValueFactory<Puntuacion, String>("nombre"));
-        tbcPuntuacion.setCellValueFactory( new PropertyValueFactory<Puntuacion, Integer>("puntuacion"));
+        /*List<PuntuacionObtenida> listaPuntuaciones = new ArrayList<>();
+        PuntuacionObtenida punto = new PuntuacionObtenida();
+        punto.setIdcliente(1);
+        punto.setNombre("Luis");
+        punto.setPuntuacion(100);
+        listaPuntuaciones.add(punto);
+        puntuaciones = FXCollections.observableList(listaPuntuaciones);*/
+        
+        tbcJugador.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, String>("nombre"));
+        tbcPuntuacion.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, Integer>("puntuacion"));
         tbvPuntuaciones.setItems((ObservableList) puntuaciones);
-    }    
+        
+    }
+
+    public void setListaPuntuaciones(List<PuntuacionObtenida> listaPuntuaciones) {
+        puntuaciones = FXCollections.observableList(listaPuntuaciones);
+    }
     
 }
