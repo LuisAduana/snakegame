@@ -2,6 +2,10 @@ package clases;
 
 import java.io.Serializable;
 
+/**
+ * Clase PuntuacionObtenida por consultas a la BD.
+ * @author Luis Bonilla
+ */
 public class PuntuacionObtenida implements Serializable {
     
     private static final long serialVersionUID = 2L;

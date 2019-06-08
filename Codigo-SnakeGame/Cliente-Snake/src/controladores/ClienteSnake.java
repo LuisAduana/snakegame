@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controladores;
 
 import clases.Snake;
@@ -14,8 +9,10 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 /**
- *
- * @author soy-y
+ * Clase encargada de manejar los atributos de la Serpiente del cliente e implementa los métdos de la interfaz de usuario.
+ * 
+ * @author Fernando.
+ * @author Luis Bonilla.
  */
 public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
@@ -24,6 +21,11 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     private final int PORT = 3232;
     public  IServer server;
     
+    /**
+     * Constructor de la clase ClienteSnake.
+     * @param server Recibe la interfaz a implementar.
+     * @throws RemoteException Excepcion en caso de que no se logre una conexión.
+     */
     ClienteSnake(IServer server) throws RemoteException{
         this.server =server;
     }

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 /**
  * Esta clase se encarga de inicializar la interfaz gráfica.
- * @author Luis Aduana.
+ * @author Luis Bonilla.
  */
 public class Main extends Application {
         

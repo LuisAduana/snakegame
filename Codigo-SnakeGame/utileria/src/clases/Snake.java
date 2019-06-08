@@ -3,15 +3,9 @@ package clases;
 import interfaz.ICliente;
 import java.awt.Color;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author soy-y
+ * Clase Snake que maneja sus atributos.
+ * @author Fernando.
  */
 
 public class Snake {
@@ -19,6 +13,12 @@ public class Snake {
     private Color color;
     private ICliente cliente;
     private String nombre;
+    
+    public Snake(Color color, ICliente cliente, String nombre){
+        this.color = color;
+        this.cliente = cliente;
+        this.nombre = nombre;
+    }
 
     public String getNombre() {
         return nombre;
@@ -43,15 +43,5 @@ public class Snake {
     public void setColor(Color color) {
         this.color = color;
     }
-    
-    
-    public Snake(Color color, ICliente cliente, String nombre){
-        this.color = color;
-        this.cliente = cliente;
-        this.nombre = nombre;
-    }
-    
-    
-    
     
 }

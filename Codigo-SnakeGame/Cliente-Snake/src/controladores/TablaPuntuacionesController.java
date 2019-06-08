@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controladores;
 
 import clases.PuntuacionObtenida;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,9 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
- * FXML Controller class
+ * Clase que gestiona los eventos en la TablaPuntuaciones.
  *
- * @author ferzo
+ * @author Luis Bonilla
+ * @author Rodrigo
  */
 public class TablaPuntuacionesController implements Initializable {
 
@@ -35,30 +29,32 @@ public class TablaPuntuacionesController implements Initializable {
     @FXML
     private TableColumn<PuntuacionObtenida, Integer> tbcPuntuacion;
 
-    ObservableList<PuntuacionObtenida> puntuaciones;
-    //List<PuntuacionObtenida> listaPuntuaciones;
+    private ObservableList<PuntuacionObtenida> puntuacionesObtenidas;
+    private VistaPrincipalController vistaPrincipalControler;
+    
+    /**
+     * Método que pinta la lista en la ventana.
+     * @param vistaPrincipalController Recibe la instancia que lo invoca para acceder a sus parámetros.
+     */
+    public void setListaPuntuaciones(VistaPrincipalController vistaPrincipalController) {
+        vistaPrincipalControler = vistaPrincipalController;
         
+        puntuacionesObtenidas = FXCollections.observableList(vistaPrincipalControler.getPuntuaciones());
+        
+        tbcJugador.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, String>("nombre"));
+        tbcPuntuacion.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, Integer>("puntuacion"));
+        tbvPuntuaciones.setItems((ObservableList) puntuacionesObtenidas);
+    }
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*List<PuntuacionObtenida> listaPuntuaciones = new ArrayList<>();
-        PuntuacionObtenida punto = new PuntuacionObtenida();
-        punto.setIdcliente(1);
-        punto.setNombre("Luis");
-        punto.setPuntuacion(100);
-        listaPuntuaciones.add(punto);
-        puntuaciones = FXCollections.observableList(listaPuntuaciones);*/
-        
-        tbcJugador.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, String>("nombre"));
-        tbcPuntuacion.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, Integer>("puntuacion"));
-        tbvPuntuaciones.setItems((ObservableList) puntuaciones);
         
     }
-
-    public void setListaPuntuaciones(List<PuntuacionObtenida> listaPuntuaciones) {
-        puntuaciones = FXCollections.observableList(listaPuntuaciones);
-    }
+    
+    
+    
     
 }

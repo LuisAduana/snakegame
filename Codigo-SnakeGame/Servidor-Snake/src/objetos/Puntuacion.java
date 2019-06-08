@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package objetos;
 
 import java.io.Serializable;
@@ -16,8 +11,9 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author luisb
+ * EntityClass que envía y recibe los objetos de la Base de datos.
+ * @author Luis Bonilla.
+ * @author Rodrigo.
  */
 @Entity
 @Table(name = "PUNTUACION")

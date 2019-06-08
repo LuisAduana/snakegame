@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package interfaz;
 
 import java.awt.Color;
@@ -10,11 +5,19 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author soy-y
+ * Interfaz del cliente.
+ * 
+ * @author Fernando.
+ * @author Luis Bonilla.
  */
 public interface ICliente extends Remote{
-    
+   
+   /**
+    * Método que inicializa la serpiente en el cliente.
+    * @param color El tipo de color que le tocó en el servidor.
+    * @param nombre El nombre dado en el servidor.
+    * @throws RemoteException En caso de no lograr la conexión con éxito.
+    */
    public void iniciarSerpiente(Color color, String nombre) throws RemoteException;
    
 }

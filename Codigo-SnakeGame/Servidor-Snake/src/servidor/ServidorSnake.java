@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servidor;
 
 import clases.PuntuacionObtenida;
@@ -19,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author luisb
- * @author FerC
+ * Clase que implementa la interfaz y los eventos dentro del juego.
+ * @author Luis Bonilla
+ * @author Fernando
  */
 
 public class ServidorSnake extends UnicastRemoteObject implements IServer {

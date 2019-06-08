@@ -17,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -27,10 +26,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import clases.PuntuacionObtenida;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
+ * 
+ * @author Fernando.
  * @author Luis Aduana.
+ * @author Rodrigo.
  */
 public class VistaPrincipalController implements Initializable {
        
@@ -44,10 +48,12 @@ public class VistaPrincipalController implements Initializable {
     private static final String NOMBRE_REGISTRO = "GameServer";
     private static final String NOMBRE_SERVER = "localhost";
     private static final int PUERTO_SERVER = 3232;
+    private static final String MENSAJE_ERROR_CONEXION = "No se ha podido "
+            + "lograr una conexión con el servidor \nInténtelo más tarde.";
     private Registry registro;
     private Alert dialogo;
     private IServer server;
-    private ResourceBundle resourceBundle;
+    private VistaPrincipalController vistaPrincipalControler;
     private ClienteSnake clienteSnake;
     private List<PuntuacionObtenida> puntuaciones;
     
@@ -62,13 +68,14 @@ public class VistaPrincipalController implements Initializable {
             mensajeError.setText(validacion);
             try {
                 prepararConexion();
-                if (this.server.esDisponible()) {
+                if (server.esDisponible()) {
+                    clienteSnake = new ClienteSnake(server);
                     server.iniciarJugador(clienteSnake, nombreJugador.getText());
                 } else {
                     informacionSistema("La sala está llena, inténtelo más tarde");
                 }
             } catch (RemoteException ex) {
-                informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+                informacionSistema(MENSAJE_ERROR_CONEXION);
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -87,33 +94,38 @@ public class VistaPrincipalController implements Initializable {
             prepararConexion();
             puntuaciones = server.consultarPuntuaciones();
             
-            TablaPuntuacionesController puntuacionesController = new TablaPuntuacionesController();
-            puntuacionesController.setListaPuntuaciones(puntuaciones);
+            FXMLLoader loader = new FXMLLoader();
+            AnchorPane root = (AnchorPane)loader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml").openStream());
+            
+            TablaPuntuacionesController puntuacionesController = (TablaPuntuacionesController) loader.getController();
+            puntuacionesController.setListaPuntuaciones(vistaPrincipalControler);
                      
-            Parent root = FXMLLoader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml"), resourceBundle);
-            Stage stage = new Stage();
+            Stage stageTablaPuntuaciones = new Stage();
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
+            stageTablaPuntuaciones.setScene(scene);
+            stageTablaPuntuaciones.alwaysOnTopProperty();
+            stageTablaPuntuaciones.setResizable(false);
+            stageTablaPuntuaciones.initModality(Modality.APPLICATION_MODAL);
                 
-            stage.show();
+            stageTablaPuntuaciones.show();
         } catch (RemoteException ex) {
-            informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+            informacionSistema(MENSAJE_ERROR_CONEXION);
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            informacionSistema("No se ha podido lograr una conexión con el servidor \nInténtelo más tarde.");
+            informacionSistema(MENSAJE_ERROR_CONEXION);
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void prepararConexion() throws RemoteException {
         try {
+            
             registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
-            
-            clienteSnake = new ClienteSnake(server);
 
         } catch (NotBoundException ex) {
+            informacionSistema(MENSAJE_ERROR_CONEXION);
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -153,9 +165,18 @@ public class VistaPrincipalController implements Initializable {
         dialogo.showAndWait();
     }
     
+    public List<PuntuacionObtenida> getPuntuaciones() {
+        return puntuaciones;
+    }
+    
+    /**
+     * 
+     * @param url
+     * @param resourceBundle 
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
+        vistaPrincipalControler = this;
     }    
     
 }
