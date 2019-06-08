@@ -5,11 +5,9 @@
  */
 package snake;
 
-import snake.Comida;
-import snake.Coordenada;
-import snake.Snake;
+import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 import javafx.scene.paint.Color;
 
 /**
@@ -17,7 +15,8 @@ import javafx.scene.paint.Color;
  * @author ferzo
  */
 
-public class Tablero {
+public class Tablero implements Serializable{
+    private static final long serialVersionUID = 232L;
     public static final int TAMANO = 10;
     public static final Color COLOR = new Color(0.1, 0.1, 0.1,1);
     
@@ -44,12 +43,10 @@ public class Tablero {
         return(new Coordenada(x, y));
     }
     
-    private Coordenada getPosicionAleatoria(){
-        Random random = new Random();
+    private Coordenada getPosicionAleatoria() {
+        SecureRandom random = new SecureRandom();
         Coordenada coord;
-        
-        coord =  new Coordenada(random.nextInt(columnas), random.nextInt(filas));
-        
+        coord = new Coordenada(random.nextInt(columnas), random.nextInt(filas));
         return coord;
     }
     
@@ -75,11 +72,11 @@ public class Tablero {
         return filas;
     }
 
-    public double getAncho() {
+    public int getAncho() {
         return filas * TAMANO;
     }
 
-    public double getAltura() {
+    public int getAltura() {
         return columnas * TAMANO;
     }
 

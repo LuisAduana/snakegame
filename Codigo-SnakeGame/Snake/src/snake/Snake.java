@@ -82,7 +82,8 @@ public class Snake implements Serializable{
     }
 
     private boolean estaParada() {
-        return avanceX == 0 & avanceY == 0;
+        return avanceX == 0 
+                && avanceY == 0;
     }
 
     /**

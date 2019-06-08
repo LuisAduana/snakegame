@@ -17,6 +17,10 @@ public class Coordenada implements Serializable{
         this.coordX = x;
         this.coordY = y;
     }
+
+    public Coordenada(int nextInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     /**
      * 
@@ -32,7 +36,9 @@ public class Coordenada implements Serializable{
     public boolean equals(Object other){
         if(!(other instanceof Coordenada)) return false;
         Coordenada coord = (Coordenada) other;
-        return coordX == coord.coordX & coordY == coord.coordY;
+        boolean b = (coordX == coord.coordX)
+                && (coordY == coord.coordY);
+        return b;
     }
     
 //GETTERS & SETTERS-------------------------------------------------------------

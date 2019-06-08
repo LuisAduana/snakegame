@@ -5,7 +5,6 @@
  */
 package servidor.snake;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,11 +27,12 @@ public class ActualizarSerpientes implements Runnable{
     @Override
     public void run() {
         while (true) {
+            System.out.println("Serpientes: ");
             System.out.println(this.server.getTablero().getSnakes().size());
-            if (this.server.getTablero().getSnakes().size() >= 1 ) {
-                this.server.getTablero().actualizarPosicion();
 
-                System.out.println("actualizar");
+            System.out.println("");
+            if (!this.server.getTablero().getSnakes().isEmpty()) {
+                this.server.getTablero().actualizarPosicion();
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {

@@ -5,8 +5,8 @@
  */
 package controladores;
 
-import Interfaces.ICliente;
-import Interfaces.IServer;
+import interfaces.ICliente;
+import interfaces.IServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

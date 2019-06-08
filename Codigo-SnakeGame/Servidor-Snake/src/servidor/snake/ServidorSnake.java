@@ -5,14 +5,15 @@
  */
 package servidor.snake;
 
-import Interfaces.ICliente;
+import interfaces.ICliente;
 import snake.Snake;
-import Interfaces.IServer;
+import interfaces.IServer;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
 import snake.Comida;
@@ -28,8 +29,7 @@ import snake.Tablero;
 public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
-    private static final long  SerialVersionUID = 9090898209349823403L;
-    private final int PORT = 3232;
+    public static final int PORT = 3232;
     private Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
     private static final int ALTURA_VENTANA = 500;
@@ -47,19 +47,21 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     @Override
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-        if (colores.size() > 0) {
+        if (!colores.isEmpty()) {
             String color = colores.get(0);
             this.colores.remove(0);
-            System.out.println("1" + color);
+            SecureRandom random = new SecureRandom();
             Snake serpiente = new Snake(nombre, color,
-                    new Coordenada((int) (Math.random() * 10), (int) (Math.random() * 10)));
+                    new Coordenada(random.nextInt(Tablero.TAMANO),
+                            random.nextInt(
+                            Tablero.TAMANO)));
             serpientes.add(serpiente);
             actualizarTablero();
             cliente.definirColor(color);
         }
 
     }
-    
+
     /**
      * Inicializa el sevidor.
      */
@@ -150,6 +152,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
             if (snake.getColorViva().equalsIgnoreCase(color)) {
 
                 switch (direccion) {
+
                     case UP:
                         snake.setArriba();
                         break;
@@ -163,12 +166,13 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
                         snake.setDer();
                         break;
 
+
                 }
             }
         }
 
     }
-    
+
     public Tablero getTablero() {
         return this.tablero;
     }
