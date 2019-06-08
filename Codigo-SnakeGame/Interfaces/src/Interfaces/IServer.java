@@ -11,6 +11,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
+import snake.Comida;
 import snake.Snake;
 
 /**
@@ -24,4 +25,5 @@ public interface IServer extends Remote{
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException;
     public void eliminarSerpiente(String color) throws RemoteException;
     public ArrayList<Snake> recuperarSerpientes() throws RemoteException;
+    public Comida generarComida() throws RemoteException;
 }

@@ -23,12 +23,12 @@ public class PintarJuego {
         contexto.setFill(Tablero.COLOR);
         contexto.fillRect(0, 0, tablero.getAncho(), tablero.getAltura());               
     }
-    /*
+    
+    
     public static void pintarComida(Tablero tablero, GraphicsContext contexto){
         
         pintarCoordenada(tablero.getComida().getCoordenada(), contexto, Comida.COLOR);
     }
-    */
     
     public static void pintarSnake(Tablero tablero, GraphicsContext contexto) {
         tablero.getSnakes().forEach((snake) -> {

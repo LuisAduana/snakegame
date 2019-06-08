@@ -15,6 +15,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
+import snake.Comida;
 import snake.Coordenada;
 import snake.Tablero;
 
@@ -170,5 +171,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     
     public Tablero getTablero() {
         return this.tablero;
+    }
+
+    @Override
+    public Comida generarComida() throws RemoteException {
+        return this.tablero.getComida();
     }
 }

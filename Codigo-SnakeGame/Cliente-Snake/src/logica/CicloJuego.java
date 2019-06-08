@@ -52,6 +52,7 @@ public class CicloJuego implements Runnable{
             
             try {
                 this.tablero.setSnakes(this.cliente.recuperarSerpientes());
+                this.tablero.setComida(this.cliente.generarComida());
             } catch (RemoteException ex) {
                 Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -59,6 +60,7 @@ public class CicloJuego implements Runnable{
             float t = System.currentTimeMillis();
             
             PintarJuego.pintar(tablero, contexto);
+            PintarJuego.pintarComida(tablero, contexto);
             PintarJuego.pintarSnake(tablero, contexto);
             
             

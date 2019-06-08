@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
+import snake.Comida;
 import snake.Snake;
 
 /**
@@ -83,4 +84,9 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
    public void moverSerpiente (KeyCode direcion) throws RemoteException {
        this.server.moverSerpiente(direcion, this.color);
    }
+
+    
+    public Comida generarComida() throws RemoteException {
+       return this.server.generarComida();
+    }
 }

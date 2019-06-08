@@ -7,7 +7,7 @@ package Interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import snake.Snake;
+import snake.Comida;
 
 
 /**
@@ -17,4 +17,5 @@ import snake.Snake;
 public interface ICliente extends Remote{
     
    public void definirColor(String color) throws RemoteException;
+   
 }

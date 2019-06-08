@@ -94,4 +94,8 @@ public class Tablero {
     public Comida getComida() {
         return comida;
     }
+    
+    public void setComida(Comida comida) {
+        this.comida = comida;
+    }
 }
