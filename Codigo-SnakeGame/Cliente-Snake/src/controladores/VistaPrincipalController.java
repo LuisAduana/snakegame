@@ -50,11 +50,8 @@ public class VistaPrincipalController implements Initializable {
     private static final int PUERTO_SERVER = 3232;
     private static final String MENSAJE_ERROR_CONEXION = "No se ha podido "
             + "lograr una conexión con el servidor \nInténtelo más tarde.";
-    private Registry registro;
-    private Alert dialogo;
     private IServer server;
     private VistaPrincipalController vistaPrincipalControler;
-    private ClienteSnake clienteSnake;
     private List<PuntuacionObtenida> puntuaciones;
     
     /**
@@ -69,7 +66,7 @@ public class VistaPrincipalController implements Initializable {
             try {
                 prepararConexion();
                 if (server.esDisponible()) {
-                    clienteSnake = new ClienteSnake(server);
+                    ClienteSnake clienteSnake = new ClienteSnake(server);
                     server.iniciarJugador(clienteSnake, nombreJugador.getText());
                 } else {
                     informacionSistema("La sala está llena, inténtelo más tarde");
@@ -108,9 +105,6 @@ public class VistaPrincipalController implements Initializable {
             stageTablaPuntuaciones.initModality(Modality.APPLICATION_MODAL);
                 
             stageTablaPuntuaciones.show();
-        } catch (RemoteException ex) {
-            informacionSistema(MENSAJE_ERROR_CONEXION);
-            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             informacionSistema(MENSAJE_ERROR_CONEXION);
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,13 +114,12 @@ public class VistaPrincipalController implements Initializable {
     private void prepararConexion() throws RemoteException {
         try {
             
-            registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
+            Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 
         } catch (NotBoundException ex) {
             informacionSistema(MENSAJE_ERROR_CONEXION);
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -157,7 +150,7 @@ public class VistaPrincipalController implements Initializable {
      * @param informacionMensajeError Mensaje que se muestra en la información del dialogo.
      */
     private void informacionSistema(String informacionMensajeError) {
-        dialogo = new Alert(AlertType.INFORMATION);
+        Alert dialogo = new Alert(AlertType.INFORMATION);
         dialogo.setTitle("Información del sistema.");
         dialogo.setHeaderText(null);
         dialogo.setContentText(informacionMensajeError);

@@ -6,6 +6,7 @@ import interfaz.IServer;
 import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Objects;
 
 
 /**
@@ -14,19 +15,18 @@ import java.rmi.server.UnicastRemoteObject;
  * @author Fernando.
  * @author Luis Bonilla.
  */
-public class ClienteSnake extends UnicastRemoteObject implements ICliente {
+class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
     private Snake serpiente;
-    private static final long  SerialVersionUID = 9090898209349823403L;
-    private final int PORT = 3232;
-    public  IServer server;
+    private static final long  serialVersionUID = 9090898209349823403L;
+    private  IServer server;
     
     /**
      * Constructor de la clase ClienteSnake.
      * @param server Recibe la interfaz a implementar.
      * @throws RemoteException Excepcion en caso de que no se logre una conexión.
      */
-    ClienteSnake(IServer server) throws RemoteException{
+    ClienteSnake(IServer server) throws RemoteException {
         this.server =server;
     }
 
@@ -49,7 +49,25 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     @Override
     public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
         this.serpiente = new Snake(color, this, nombre);
-        System.out.println(color);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ClienteSnake)) {
+            return false;
+        } else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.serpiente);
+        hash = 31 * hash + Objects.hashCode(this.server);
+        return hash;
+    }
+    
+    
     
 }

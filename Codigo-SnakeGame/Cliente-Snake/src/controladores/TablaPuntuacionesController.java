@@ -28,18 +28,15 @@ public class TablaPuntuacionesController implements Initializable {
     private TableColumn<PuntuacionObtenida, String> tbcJugador;
     @FXML
     private TableColumn<PuntuacionObtenida, Integer> tbcPuntuacion;
-
-    private ObservableList<PuntuacionObtenida> puntuacionesObtenidas;
-    private VistaPrincipalController vistaPrincipalControler;
-    
+   
     /**
      * Método que pinta la lista en la ventana.
      * @param vistaPrincipalController Recibe la instancia que lo invoca para acceder a sus parámetros.
      */
     public void setListaPuntuaciones(VistaPrincipalController vistaPrincipalController) {
-        vistaPrincipalControler = vistaPrincipalController;
-        
-        puntuacionesObtenidas = FXCollections.observableList(vistaPrincipalControler.getPuntuaciones());
+        VistaPrincipalController vistaPrincipalControler = vistaPrincipalController;
+        ObservableList<PuntuacionObtenida> puntuacionesObtenidas = FXCollections
+                .observableList(vistaPrincipalControler.getPuntuaciones());
         
         tbcJugador.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, String>("nombre"));
         tbcPuntuacion.setCellValueFactory( new PropertyValueFactory<PuntuacionObtenida, Integer>("puntuacion"));
@@ -51,7 +48,7 @@ public class TablaPuntuacionesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        // Este método inicializa la clase sin ninguna operación, ya que los elementos se cargan en el método setListaPuntuaciones.
     }
     
     

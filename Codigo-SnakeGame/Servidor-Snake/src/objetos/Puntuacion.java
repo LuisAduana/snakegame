@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Puntuacion.findAll", query = "SELECT p FROM Puntuacion p"),
     @NamedQuery(name = "Puntuacion.findByIdcliente", query = "SELECT p FROM Puntuacion p WHERE p.idcliente = :idcliente"),
     @NamedQuery(name = "Puntuacion.findByNombre", query = "SELECT p FROM Puntuacion p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacion = :puntuacion"),
-    @NamedQuery(name = "Puntuacion.findSortByPuntuacion", query = "SELECT p FROM Puntuacion p ORDER BY p.puntuacion DESC" )})
+    @NamedQuery(name = "Puntuacion.findByPuntuacion", query = "SELECT p FROM Puntuacion p WHERE p.puntuacionAtributo = :puntuacionAtributo"),
+    @NamedQuery(name = "Puntuacion.findSortByPuntuacion", query = "SELECT p FROM Puntuacion p ORDER BY p.puntuacionAtributo DESC" )})
 public class Puntuacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class Puntuacion implements Serializable {
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "PUNTUACION")
-    private Integer puntuacion;
+    private Integer puntuacionAtributo;
 
     public Puntuacion() {
     }
@@ -66,11 +66,11 @@ public class Puntuacion implements Serializable {
     }
 
     public Integer getPuntuacion() {
-        return puntuacion;
+        return puntuacionAtributo;
     }
 
     public void setPuntuacion(Integer puntuacion) {
-        this.puntuacion = puntuacion;
+        this.puntuacionAtributo = puntuacion;
     }
 
     @Override
@@ -82,15 +82,12 @@ public class Puntuacion implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Puntuacion)) {
             return false;
         }
         Puntuacion other = (Puntuacion) object;
-        if ((this.idcliente == null && other.idcliente != null) || (this.idcliente != null && !this.idcliente.equals(other.idcliente))) {
-            return false;
-        }
-        return true;
+        return !((this.idcliente == null && other.idcliente != null) || (this.idcliente != null && !this.idcliente.equals(other.idcliente)));
     }
 
     @Override

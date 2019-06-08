@@ -17,8 +17,6 @@ class ConexionBD {
     
     private EntityManagerFactory emf;
     private EntityManager em;
-    private List<Puntuacion> puntuacionesConsultadas;
-    private List<PuntuacionObtenida> puntuacionesEnviadas;
     
     /**
      * Constructor de la clase ConexionBD.
@@ -34,7 +32,7 @@ class ConexionBD {
      * @return List<PuntuacionObtenida> Regresa una lista de puntuaciones obtenidas.
      */
     public List<PuntuacionObtenida> consultarPuntiaciones () {
-        puntuacionesConsultadas = new ArrayList<>();    
+        List<Puntuacion> puntuacionesConsultadas;   
         puntuacionesConsultadas = em.createNamedQuery("Puntuacion.findSortByPuntuacion", Puntuacion.class).getResultList();
         
         em.getTransaction().commit();
@@ -42,7 +40,7 @@ class ConexionBD {
         em.close();
         emf.close();
         
-        puntuacionesEnviadas = new ArrayList<>();
+        List<PuntuacionObtenida> puntuacionesEnviadas = new ArrayList<>();
         
         for (Puntuacion puntuacion : puntuacionesConsultadas) {
             PuntuacionObtenida puntuacionObtenida = new PuntuacionObtenida();
