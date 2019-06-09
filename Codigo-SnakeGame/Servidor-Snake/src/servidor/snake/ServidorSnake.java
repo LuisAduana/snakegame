@@ -39,12 +39,13 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
 
   @Override
   public void colisionSerpiente(String colorSerpiente) throws RemoteException {
-    System.out.println("Se ejecutó");
-    Snake snakeCliente = obtieneSerpiente(colorSerpiente);
-    for (Snake snakeEnemiga : this.serpientes) {
-      if (!(snakeCliente.equals(snakeEnemiga))){
-        if (snakeCliente.getCabeza().getLocation().equals(snakeEnemiga.getCabeza().getLocation())) {
-          System.out.println(snakeCliente.getColorViva() + " choco con " + snakeEnemiga.getColorViva());
+    Snake serpienteUsuario = obtieneSerpiente(colorSerpiente);
+    for (Snake serpienteServidor : this.serpientes) {
+      if (!(serpienteUsuario.equals(serpienteServidor))){
+        for (Coordenada parteSerpiente: serpienteServidor.getCuerpo()){
+          if (serpienteUsuario.getCabeza().getLocation().equals(parteSerpiente.getLocation())){
+            System.out.println(serpienteUsuario.getColorViva()+"Ha chocado "+serpienteServidor.getColorViva());
+          }
         }
       }
     }
