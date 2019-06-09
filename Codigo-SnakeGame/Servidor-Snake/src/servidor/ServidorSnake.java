@@ -5,6 +5,7 @@ import snake.PuntuacionObtenida;
 import interfaces.ICliente;
 import snake.Snake;
 import interfaces.IServer;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -26,7 +27,7 @@ import snake.Tablero;
  * @author Fernando
  */
 
-public class ServidorSnake extends UnicastRemoteObject  implements IServer{
+public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     public static final int PORT = 3232;
@@ -71,6 +72,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         this.tablero.setSnakes(this.serpientes);
     }
     
+    
+    /**
+     * Inicializa el servidor
+     */
     public void iniciarServidor() {
         this.iniciarListaDeColores();
         this.serpientes = new ArrayList();
@@ -114,7 +119,11 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         return dispoibilidad;
     }
 
-    
+    /**
+     * Elimina la serpiente del servidor.
+     * @param color color de la serpiente a eliminar
+     * @throws RemoteException 
+     */
     
     @Override
     public void eliminarSerpiente(String color) throws RemoteException {
@@ -126,6 +135,11 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         }
     }
 
+    /**
+     * Consulta el historial de puntuaciones.
+     * @return regresa una lista con todas las puntuaciones guardadas.
+     * @throws RemoteException 
+     */
     
     @Override
     public List<PuntuacionObtenida> consultarPuntuaciones() throws RemoteException {
@@ -138,7 +152,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
      */
     
     @Override
-    public ArrayList<Snake> recuperarSerpientes() {
+    public List<Snake> recuperarSerpientes() {
         return this.serpientes;
     }
 
@@ -167,6 +181,8 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
                         break;
                     case RIGHT:
                         snake.setDer();
+                        break;
+                    default:
                         break;
 
                 }

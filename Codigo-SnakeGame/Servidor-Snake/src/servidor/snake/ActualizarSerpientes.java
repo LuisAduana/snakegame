@@ -21,7 +21,6 @@ public class ActualizarSerpientes implements Runnable{
         long limiteCiclo = 0;
         while (true) {
             System.out.flush(); // NOSONAR");
-            System.out.println(this.server.getTablero().getSnakes().isEmpty());
             if (!this.server.getTablero().getSnakes().isEmpty()) {
                 this.server.getTablero().actualizarPosicion();
                 

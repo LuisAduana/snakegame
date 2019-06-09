@@ -32,8 +32,6 @@ import snake.PuntuacionObtenida;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import logica.CicloJuego;
 import snake.Tablero;
 
@@ -68,6 +66,7 @@ public class VistaPrincipalController implements Initializable {
     private VistaPrincipalController vistaPrincipalControler;
     private List<PuntuacionObtenida> puntuaciones;
     private  ClienteSnake clienteSnake;
+    public static final String MENSAJEINFO = "Información del sistema.";
     
     /**
      * Método que controla el evento del botón de la interfaz al presionarse.
@@ -86,7 +85,7 @@ public class VistaPrincipalController implements Initializable {
                     
                 } else {
                     Alert dialogo = new Alert(AlertType.INFORMATION);
-                    dialogo.setTitle("Información del sistema.");
+                    dialogo.setTitle(MENSAJEINFO);
                     dialogo.setHeaderText(null);
                     dialogo.setContentText("La sala está llena, inténtelo más tarde");
                     dialogo.initStyle(StageStyle.UTILITY);
@@ -94,7 +93,7 @@ public class VistaPrincipalController implements Initializable {
                 }
             } catch (NotBoundException | RemoteException ex) {
                 Alert dialogo = new Alert(AlertType.INFORMATION);
-                dialogo.setTitle("Información del sistema.");
+                dialogo.setTitle(MENSAJEINFO);
                 dialogo.setHeaderText(null);
                 dialogo.setContentText("No se ha podido lograr una conexión "
                         + "con el servidor \nInténtelo más tarde.");
@@ -180,7 +179,7 @@ public class VistaPrincipalController implements Initializable {
      */
     private void informacionSistema(String informacionMensajeError) {
         Alert dialogo = new Alert(AlertType.INFORMATION);
-        dialogo.setTitle("Información del sistema.");
+        dialogo.setTitle(MENSAJEINFO);
         dialogo.setHeaderText(null);
         dialogo.setContentText(informacionMensajeError);
         dialogo.initStyle(StageStyle.UTILITY);

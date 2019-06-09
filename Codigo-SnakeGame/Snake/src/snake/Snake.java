@@ -12,7 +12,7 @@ public class Snake implements Serializable{
     private static final long serialVersionUID = 8799656478674716638L;
     private String colorViva;
     public static final String MUERTA = "RED";
-    
+    private int puntuacion;
     private Coordenada cabeza;
     private List<Coordenada> cuerpo;
     private int longitud;
@@ -21,6 +21,22 @@ public class Snake implements Serializable{
     private int avanceX;
     private int avanceY;
 
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+
+    /**
+     * Suma la n cantidad de puntos a la puntuación actual.
+     * @param puntos puntos que se van a agregar a la puntuación.
+     */
+    public void sumarPuntos(int puntos) {
+        this.puntuacion += puntos;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -77,10 +93,18 @@ public class Snake implements Serializable{
         return cuerpo;
     }
 
+    /**
+     * Comprueba si la serpiente sigue viva.
+     * @return true si la longitud de la serpiente es mayor a 0.
+     */
     public boolean estaViva() {
         return vivo || longitud == 1;
     }
 
+    /**
+     * Comprueba si lo serpiente está en movimiento.
+     * @return true si la serpiente no se mueve.
+     */
     private boolean estaParada() {
         return avanceX == 0 
                 && avanceY == 0;
@@ -131,7 +155,7 @@ public class Snake implements Serializable{
         avanceX = 1;
         avanceY = 0;
     }
-//GETTERS Y SETTERS-------------------------------------------------------------
+    
    public void setCabeza(Coordenada cabeza){
        this.cabeza = cabeza;
    }

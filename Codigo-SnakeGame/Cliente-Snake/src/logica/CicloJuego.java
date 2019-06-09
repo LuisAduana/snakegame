@@ -10,7 +10,6 @@ import controladores.ClienteSnake;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import snake.Snake;
 import javafx.scene.canvas.GraphicsContext;
 /**
  *
@@ -72,7 +71,8 @@ public class CicloJuego implements Runnable{
                     Thread.sleep((long) (tiempo - t));
                     
                 }catch(InterruptedException ex){
-                    
+                    Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread.currentThread().interrupt();
                     
                 }
             }

@@ -19,8 +19,7 @@ import snake.Snake;
  */
 public class ClienteSnake extends UnicastRemoteObject implements ICliente {
 
-    private static final long  serialVersionUID = 9090898209349823403L;
-    private  IServer server;
+    private  transient  IServer server;
     private String color;
     
     /**

@@ -30,7 +30,6 @@ hs_err_pid*
 /ICliente/nbproject/private/
 /ICliente/dist/
 /ICliente/build/
-<<<<<<< HEAD
 /utileria/nbproject/private/
 /Codigo-SnakeGame/ICliente/nbproject/private/
 /Codigo-SnakeGame/IServer/nbproject/private/
@@ -77,11 +76,3 @@ nbdist/
 .sonarlint/
 
 # End of https://www.gitignore.io/api/java,netbeans,sonarqube
-=======
-/Codigo-SnakeGame/Snake/build/
-/Codigo-SnakeGame/Snake/dist/
-/Codigo-SnakeGame/ICliente/dist/
-/Codigo-SnakeGame/Interfaces/nbproject/private/
-/Codigo-SnakeGame/Interfaces/build/
-/Codigo-SnakeGame/Interfaces/dist/
->>>>>>> MovimientoSnake
