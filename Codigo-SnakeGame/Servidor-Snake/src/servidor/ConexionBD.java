@@ -1,6 +1,6 @@
 package servidor;
 
-import clases.PuntuacionObtenida;
+import snake.PuntuacionObtenida;
 import objetos.Puntuacion;
 import java.util.ArrayList;
 import java.util.List;

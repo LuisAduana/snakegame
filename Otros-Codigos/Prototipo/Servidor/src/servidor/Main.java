@@ -21,8 +21,16 @@ public class Main {
     public static void main(String[] args) {
         Servidor servidor;
         try {
+<<<<<<< HEAD:Otros-Codigos/Prototipo/Servidor/src/servidor/Main.java
             servidor = new Servidor();
             servidor.iniciarServidor();
+=======
+            ss = new ServidorSnake();
+            ss.iniciarServidor();
+            
+            (new Thread(new ActualizarSerpientes(ss))).start();
+            
+>>>>>>> MovimientoSnake:Codigo-SnakeGame/Servidor-Snake/src/servidor/snake/Main.java
         } catch (RemoteException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

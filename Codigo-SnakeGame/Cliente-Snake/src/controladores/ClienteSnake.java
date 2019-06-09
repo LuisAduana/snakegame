@@ -1,25 +1,27 @@
 package controladores;
 
-import clases.Snake;
-import interfaz.ICliente;
-import interfaz.IServer;
-import java.awt.Color;
+
+import interfaces.ICliente;
+import interfaces.IServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Objects;
-
+import javafx.scene.input.KeyCode;
+import snake.Comida;
+import snake.Snake;
 
 /**
- * Clase encargada de manejar los atributos de la Serpiente del cliente e implementa los métdos de la interfaz de usuario.
- * 
- * @author Fernando.
- * @author Luis Bonilla.
+ *
+ * @author Fernando
+ * @author Luis Bonilla
+ * @author Rodrigo
  */
-class ClienteSnake extends UnicastRemoteObject implements ICliente {
-    
-    private Snake serpiente;
+public class ClienteSnake extends UnicastRemoteObject implements ICliente {
+
     private static final long  serialVersionUID = 9090898209349823403L;
     private  IServer server;
+    private String color;
     
     /**
      * Constructor de la clase ClienteSnake.
@@ -29,13 +31,13 @@ class ClienteSnake extends UnicastRemoteObject implements ICliente {
     ClienteSnake(IServer server) throws RemoteException {
         this.server =server;
     }
-
-    public Snake getSerpiente() {
-        return serpiente;
+    
+    public String getColor() {
+        return color;
     }
 
-    public void setSerpiente(Snake serpiente) {
-        this.serpiente = serpiente;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public IServer getServer() {
@@ -45,10 +47,46 @@ class ClienteSnake extends UnicastRemoteObject implements ICliente {
     public void setServer(IServer server) {
         this.server = server;
     }
-
+    
+    /**
+    * Define el color del cliente.
+    * @param color String.
+    * @throws RemoteException 
+    */
     @Override
-    public void iniciarSerpiente(Color color, String nombre) throws RemoteException {
-        this.serpiente = new Snake(color, this, nombre);
+    public void definirColor(String color) throws RemoteException {
+        this.color = color;
+    }
+    
+    
+    /**
+    * permite recuperar las serpientes registradas en el servidor.
+    * @return null si no hay jugadores registrados.
+    * @throws RemoteException 
+    */
+    
+   public List<Snake> recuperarSerpientes() throws RemoteException {
+       return server.recuperarSerpientes();
+    }
+   
+   /**
+   * Permite registrar un jugador nuevo.
+   * @param nombre del jugador.
+   * @throws RemoteException 
+   */
+   
+   public void iniciarJugador(String nombre) throws RemoteException {
+       this.server.iniciarJugador(this, nombre);
+   }
+    
+   
+    public void moverSerpiente (KeyCode direcion) throws RemoteException {
+        server.moverSerpiente(direcion, this.color);
+    }
+
+    
+    public Comida generarComida() throws RemoteException {
+       return server.generarComida();
     }
 
     @Override
@@ -62,12 +100,11 @@ class ClienteSnake extends UnicastRemoteObject implements ICliente {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 31 * hash + Objects.hashCode(this.serpiente);
-        hash = 31 * hash + Objects.hashCode(this.server);
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.color);
+        hash = 97 * hash + Objects.hashCode(this.server);
         return hash;
     }
-    
     
     
 }

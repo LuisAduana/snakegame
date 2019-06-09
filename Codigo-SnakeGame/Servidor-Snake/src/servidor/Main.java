@@ -3,6 +3,7 @@ package servidor;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import servidor.snake.ActualizarSerpientes;
 
 /**
  * Clase que inicializa al ServidorSnake.
@@ -19,6 +20,7 @@ public class Main {
         try {
             ss = new ServidorSnake();
             ss.iniciarServidor();
+            (new Thread(new ActualizarSerpientes(ss))).start();
         } catch (RemoteException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

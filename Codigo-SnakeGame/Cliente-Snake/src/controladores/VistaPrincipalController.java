@@ -1,7 +1,8 @@
 package controladores;
 
-import interfaz.IServer;
+
 import java.io.IOException;
+import interfaces.IServer;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -18,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -25,9 +28,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import clases.PuntuacionObtenida;
+import snake.PuntuacionObtenida;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import logica.CicloJuego;
+import snake.Tablero;
 
 /**
  * Clase que gestiona los eventos en la VistaPrincipal.
@@ -37,7 +45,13 @@ import javafx.stage.Modality;
  * @author Rodrigo.
  */
 public class VistaPrincipalController implements Initializable {
-       
+    
+    private static final int ANCHO_VENTANA = 500;
+    private static final int ALTURA_VENTANA = 500;
+    private Stage stageActual;
+    private CicloJuego ciclo;
+    private GraphicsContext contexto;
+    
     @FXML
     TextField nombreJugador;
     @FXML
@@ -53,10 +67,11 @@ public class VistaPrincipalController implements Initializable {
     private IServer server;
     private VistaPrincipalController vistaPrincipalControler;
     private List<PuntuacionObtenida> puntuaciones;
+    private  ClienteSnake clienteSnake;
     
     /**
-     * Método que maneja el evento al pulsar el botón iniciar juego.
-     * @param event Evento de ActionEvent
+     * Método que controla el evento del botón de la interfaz al presionarse.
+     * @param event Evento del boton presionado
      */
     @FXML
     private void iniciarJuego(ActionEvent event) {
@@ -64,16 +79,28 @@ public class VistaPrincipalController implements Initializable {
         if ("".equals(validacion)) {
             mensajeError.setText(validacion);
             try {
-                prepararConexion();
+                intentoConexion();
                 if (server.esDisponible()) {
-                    ClienteSnake clienteSnake = new ClienteSnake(server);
-                    server.iniciarJugador(clienteSnake, nombreJugador.getText());
+                    this.clienteSnake.iniciarJugador(nombreJugador.getText());
+                    iniciarJuego();
+                    
                 } else {
-                    informacionSistema("La sala está llena, inténtelo más tarde");
+                    Alert dialogo = new Alert(AlertType.INFORMATION);
+                    dialogo.setTitle("Información del sistema.");
+                    dialogo.setHeaderText(null);
+                    dialogo.setContentText("La sala está llena, inténtelo más tarde");
+                    dialogo.initStyle(StageStyle.UTILITY);
+                    dialogo.showAndWait();
                 }
-            } catch (RemoteException ex) {
-                informacionSistema(MENSAJE_ERROR_CONEXION);
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NotBoundException | RemoteException ex) {
+                Alert dialogo = new Alert(AlertType.INFORMATION);
+                dialogo.setTitle("Información del sistema.");
+                dialogo.setHeaderText(null);
+                dialogo.setContentText("No se ha podido lograr una conexión "
+                        + "con el servidor \nInténtelo más tarde.");
+                dialogo.initStyle(StageStyle.UTILITY);
+                dialogo.showAndWait();
+                Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             mensajeError.setText(validacion);
@@ -83,7 +110,8 @@ public class VistaPrincipalController implements Initializable {
     /**
      * Método que maneja el evento al pulsar el botón ver puntuaciones.
      * @param event Evento de ActionEvent
-     */
+     **/
+    
     @FXML
     private void verPuntuaciones(ActionEvent event) {
         try {
@@ -110,6 +138,7 @@ public class VistaPrincipalController implements Initializable {
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     
     private void prepararConexion() throws RemoteException {
         try {
@@ -170,6 +199,64 @@ public class VistaPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vistaPrincipalControler = this;
-    }    
+    }  
     
+    
+    
+    private void iniciarJuego() {
+        Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
+        contexto = canvas.getGraphicsContext2D();
+        StackPane root = new StackPane();
+        
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(e ->{
+           
+            try {
+                    this.clienteSnake.moverSerpiente(e.getCode());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        });
+        
+        try {
+            resetGame();
+        } catch (RemoteException ex) {
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        root.getChildren().add(canvas);
+        Scene scene = new Scene(root);
+        
+        stageActual.setTitle("Snake Game");
+        stageActual.setOnCloseRequest(e -> System.exit(0));
+        stageActual.setScene(scene);
+        
+        (new Thread(ciclo)).start();
+    }
+    
+    /**
+     * Este método intenta realizar la conexión al servidor.
+     * @throws RemoteException Si no se logra conectar al servidor lanza la excepción al método padre.
+     * @throws NotBoundException Si no se encuentra el puerto disponible lanza la excepción al méotodo padre.
+     */
+    
+    private void intentoConexion() throws RemoteException, NotBoundException {
+        
+            Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
+            server = (IServer) registro.lookup(NOMBRE_REGISTRO);
+
+            this.clienteSnake = new ClienteSnake(server);
+
+    }
+    
+
+    private void resetGame() throws RemoteException{
+        Tablero tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
+        tablero.setSnakes(clienteSnake.recuperarSerpientes());
+        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake);     
+    }
+    
+    void setStage(Stage stage) {
+        this.stageActual = stage;
+    }
 }
