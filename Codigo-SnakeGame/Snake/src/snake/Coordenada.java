@@ -36,9 +36,16 @@ public class Coordenada implements Serializable{
     public boolean equals(Object other){
         if(!(other instanceof Coordenada)) return false;
         Coordenada coord = (Coordenada) other;
-        boolean b = (coordX == coord.coordX)
+        return(coordX == coord.coordX)
                 && (coordY == coord.coordY);
-        return b;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + this.coordX;
+        hash = 29 * hash + this.coordY;
+        return hash;
     }
     
 //GETTERS & SETTERS-------------------------------------------------------------

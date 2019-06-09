@@ -9,21 +9,23 @@ import interfaces.ICliente;
 import interfaces.IServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javafx.scene.input.KeyCode;
 import snake.Comida;
 import snake.Snake;
 
 /**
  *
- * @author soy-y
+ * @author Fernando
+ * @author Luis Bonilla
+ * @author Rodrigo
  */
 public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
     private String color;
-    private static final long  SerialVersionUID = 9090898209349823403L;
-    private final int PORT = 3232;
-    public  IServer server;
+    private static final long  serialVersionUID = 9090898209349823403L;
+    private IServer server;
 
     public String getColor() {
         return color;
@@ -32,8 +34,6 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     public void setColor(String color) {
         this.color = color;
     }
-
-    
 
     public IServer getServer() {
         return server;
@@ -49,44 +49,62 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
     
     
     /**
-     * Define el color del cliente.
-     * @param color String.
-     * @throws RemoteException 
-     */
+    * Define el color del cliente.
+    * @param color String.
+    * @throws RemoteException 
+    */
     @Override
     public void definirColor(String color) throws RemoteException {
         this.color = color;
-        System.out.println(this.color);
     }
     
     
     /**
-     * permite recuperar las serpientes registradas en el servidor.
-     * @return null si no hay jugadores registrados.
-     * @throws RemoteException 
-     */
+    * permite recuperar las serpientes registradas en el servidor.
+    * @return null si no hay jugadores registrados.
+    * @throws RemoteException 
+    */
     
-   public ArrayList<Snake> recuperarSerpientes() throws RemoteException {
-       return this.server.recuperarSerpientes();
+   public List<Snake> recuperarSerpientes() throws RemoteException {
+       return server.recuperarSerpientes();
     }
    
    /**
-    * Permite registrar un jugador nuevo.
-    * @param nombre del jugador.
-    * @throws RemoteException 
-    */
+   * Permite registrar un jugador nuevo.
+   * @param nombre del jugador.
+   * @throws RemoteException 
+   */
    
    public void iniciarJugador(String nombre) throws RemoteException {
        this.server.iniciarJugador(this, nombre);
    }
     
    
-   public void moverSerpiente (KeyCode direcion) throws RemoteException {
-       this.server.moverSerpiente(direcion, this.color);
-   }
+    public void moverSerpiente (KeyCode direcion) throws RemoteException {
+        server.moverSerpiente(direcion, this.color);
+    }
 
     
     public Comida generarComida() throws RemoteException {
-       return this.server.generarComida();
+       return server.generarComida();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ClienteSnake)) {
+            return false;
+        } else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.color);
+        hash = 97 * hash + Objects.hashCode(this.server);
+        return hash;
+    }
+    
+    
 }

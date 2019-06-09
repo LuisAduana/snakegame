@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package interfaces;
-
-
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.input.KeyCode;
 import snake.Comida;
 import snake.Snake;
 
 /**
  *
- * @author soy-y
+ * @author Fernando
+ * @author Luis Bonilla
  */
 public interface IServer extends Remote{
     
@@ -24,6 +18,6 @@ public interface IServer extends Remote{
     public boolean esDisponible() throws RemoteException;
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException;
     public void eliminarSerpiente(String color) throws RemoteException;
-    public ArrayList<Snake> recuperarSerpientes() throws RemoteException;
+    public List<Snake> recuperarSerpientes() throws RemoteException;
     public Comida generarComida() throws RemoteException;
 }

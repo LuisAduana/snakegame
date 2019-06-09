@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logica;
 
 import snake.Tablero;
@@ -10,16 +5,17 @@ import controladores.ClienteSnake;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import snake.Snake;
 import javafx.scene.canvas.GraphicsContext;
 /**
  *
- * @author ferzo
+ * @author Fernando
+ * @author Luis Bonilla
+ * @author Rodrigo
  */
 public class CicloJuego implements Runnable{
     //Framerate
     private int framerate;
-    private float tiempo;
+    private final float tiempo;
     //Variable para saber si está en ejecución
     private boolean ejecucion;
     //Variable para saber si hay una tecla presionada
@@ -31,7 +27,7 @@ public class CicloJuego implements Runnable{
     //El contexto se encarga de renderizar la parte gráfica del tablero
     private final GraphicsContext contexto;
     
-    private ClienteSnake cliente;
+    private final ClienteSnake cliente;
     
     
     public CicloJuego(Tablero tablero, GraphicsContext contexto, ClienteSnake cliente){
@@ -51,8 +47,8 @@ public class CicloJuego implements Runnable{
         while(ejecucion && !pausado){
             
             try {
-                this.tablero.setSnakes(this.cliente.recuperarSerpientes());
-                this.tablero.setComida(this.cliente.generarComida());
+                tablero.setSnakes(cliente.recuperarSerpientes());
+                tablero.setComida(cliente.generarComida());
             } catch (RemoteException ex) {
                 Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -68,12 +64,11 @@ public class CicloJuego implements Runnable{
             t = System.currentTimeMillis() - t;
             
             if(t<tiempo){
-                try{
+                try {
                     Thread.sleep((long) (tiempo - t));
-                    
-                }catch(InterruptedException ex){
-                    
-                    
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread.currentThread().interrupt();
                 }
             }
         }

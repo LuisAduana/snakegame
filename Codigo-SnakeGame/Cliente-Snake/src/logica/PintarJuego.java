@@ -1,24 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logica;
 
 import snake.Tablero;
 import snake.Comida;
 import snake.Coordenada;
-import snake.Snake;
-import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
  *
- * @author ferzo
+ * @author Fernando.
+ * @author Luis Bonilla.
  */
 
 public class PintarJuego {
+        
+    private PintarJuego() {
+        throw new IllegalStateException();
+    }
+    
     public static void pintar(Tablero tablero, GraphicsContext contexto){
         contexto.setFill(Tablero.COLOR);
         contexto.fillRect(0, 0, tablero.getAncho(), tablero.getAltura());               
@@ -31,14 +30,10 @@ public class PintarJuego {
     }
     
     public static void pintarSnake(Tablero tablero, GraphicsContext contexto) {
-        tablero.getSnakes().forEach((snake) -> {
+        tablero.getSnakes().forEach(snake -> 
             snake.getCuerpo().forEach(coord -> 
-                    pintarCoordenada(coord, contexto, snake.getColorViva()));
-            /*
-            if (!snake.estaViva()) {
-            pintarCoordenada(snake.getCabeza(), contexto, Snake.MUERTA);
-            }
-        */      });
+                    pintarCoordenada(coord, contexto, snake.getColorViva()))
+            );
 
     }
     

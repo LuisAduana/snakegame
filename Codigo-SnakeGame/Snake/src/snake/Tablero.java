@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package snake;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.paint.Color;
 
 /**
- *
- * @author ferzo
+ * 
+ * @author Fernando
+ * @author Luis Bonilla
+ * @author Rodrigo
  */
 
 public class Tablero implements Serializable{
@@ -23,14 +21,14 @@ public class Tablero implements Serializable{
     private final int columnas;
     private final int filas;
     
-    private ArrayList<Snake> snakes;
+    private List<Snake> snakes;
     private Comida comida;
 
     public Tablero(double ancho, double alto){
-        this.columnas = (int) ancho/TAMANO;
-        this.filas = (int) alto/TAMANO;
+        columnas = (int) ancho/TAMANO;
+        filas = (int) alto/TAMANO;
         snakes = new ArrayList();
-        this.comida = new Comida(getPosicionAleatoria());
+        comida = new Comida(getPosicionAleatoria());
     }
     
     public Coordenada wrap(Coordenada coord){
@@ -80,12 +78,12 @@ public class Tablero implements Serializable{
         return columnas * TAMANO;
     }
 
-    public ArrayList<Snake> getSnakes() {
+    public List<Snake> getSnakes() {
         return snakes;
     }
     
-    public void setSnakes(ArrayList<Snake> serpientes) {
-        this.snakes = serpientes;
+    public void setSnakes(List<Snake> serpientes) {
+        snakes = serpientes;
     }
 
     public Comida getComida() {

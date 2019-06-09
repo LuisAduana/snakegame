@@ -38,10 +38,8 @@ public class VistaPrincipalController implements Initializable {
     private static final String NOMBRE_REGISTRO = "GameServer";
     private static final String NOMBRE_SERVIDOR = "localhost";
     private static final int PUERTO_SERVIDOR = 3232;
-    private Registry registro;
     private Stage stageActual;
     private CicloJuego ciclo;
-    private Tablero tablero;
     private GraphicsContext contexto;
     
     @FXML
@@ -49,7 +47,6 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     Label mensajeError;
     
-    private Alert dialogo;
     private IServer server;
     
     private  ClienteSnake clienteSnake;
@@ -92,7 +89,7 @@ public class VistaPrincipalController implements Initializable {
                     iniciarJuego();
                     
                 } else {
-                    dialogo = new Alert(AlertType.INFORMATION);
+                    Alert dialogo = new Alert(AlertType.INFORMATION);
                     dialogo.setTitle("Información del sistema.");
                     dialogo.setHeaderText(null);
                     dialogo.setContentText("La sala está llena, inténtelo más tarde");
@@ -100,7 +97,7 @@ public class VistaPrincipalController implements Initializable {
                     dialogo.showAndWait();
                 }
             } catch (NotBoundException | RemoteException ex) {
-                dialogo = new Alert(AlertType.INFORMATION);
+                Alert dialogo = new Alert(AlertType.INFORMATION);
                 dialogo.setTitle("Información del sistema.");
                 dialogo.setHeaderText(null);
                 dialogo.setContentText("No se ha podido lograr una conexión "
@@ -153,7 +150,7 @@ public class VistaPrincipalController implements Initializable {
     
     private void intentoConexion() throws RemoteException, NotBoundException {
         
-            registro = LocateRegistry.getRegistry(NOMBRE_SERVIDOR, PUERTO_SERVIDOR);
+            Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVIDOR, PUERTO_SERVIDOR);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 
             this.clienteSnake = new ClienteSnake(server);
@@ -161,12 +158,12 @@ public class VistaPrincipalController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        // Este método inicializa la clase sin ninguna operación, ya que los elementos se cargan en el método setListaPuntuaciones. 
     }
 
     private void resetGame() throws RemoteException{
-        tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
-        tablero.setSnakes(this.clienteSnake.recuperarSerpientes());
+        Tablero tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
+        tablero.setSnakes(clienteSnake.recuperarSerpientes());
         ciclo = new CicloJuego(tablero, contexto, this.clienteSnake);     
     }
     

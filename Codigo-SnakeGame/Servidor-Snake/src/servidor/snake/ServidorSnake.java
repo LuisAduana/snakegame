@@ -8,13 +8,15 @@ package servidor.snake;
 import interfaces.ICliente;
 import snake.Snake;
 import interfaces.IServer;
-import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import snake.Comida;
 import snake.Coordenada;
@@ -35,7 +37,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     private static final int ALTURA_VENTANA = 500;
     
     public ServidorSnake() throws RemoteException {
-        
+        // Constructor de la clase ServidorSnake no recibe ni hace nada.
     }
     
     /**
@@ -75,13 +77,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
         this.serpientes = new ArrayList();
         this.tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
         try {
-            String direccion = (InetAddress.getLocalHost()).toString();
-            System.out.println("Servidor iniciado en " + direccion + ":" + PORT);
             Registry registro = LocateRegistry.createRegistry(PORT);
             registro.bind("GameServer", (IServer) this);
-            System.out.println("Servidor Iniciado");
         } catch (Exception ex) {
-            System.out.println(ex);
+            Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -131,11 +130,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     /**
      * Recupera las serpientes registradas en el servidor.
      * @return lista vacía si no se ha registrado ningun jugador.
-     * @throws RemoteException.
      */
     
     @Override
-    public ArrayList<Snake> recuperarSerpientes() throws RemoteException {
+    public ArrayList<Snake> recuperarSerpientes() {
         return this.serpientes;
     }
 
@@ -165,7 +163,8 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
                     case RIGHT:
                         snake.setDer();
                         break;
-
+                    default:
+                        break;
 
                 }
             }
@@ -181,4 +180,25 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     public Comida generarComida() throws RemoteException {
         return this.tablero.getComida();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ServidorSnake)) {
+            return false;
+        } else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.colores);
+        hash = 29 * hash + Objects.hashCode(this.serpientes);
+        hash = 29 * hash + Objects.hashCode(this.tablero);
+        return hash;
+    }
+    
+    
+    
 }
