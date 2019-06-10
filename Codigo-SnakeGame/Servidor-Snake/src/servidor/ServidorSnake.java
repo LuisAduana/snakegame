@@ -1,10 +1,9 @@
 package servidor;
 
-
 import snake.PuntuacionObtenida;
 import interfaces.ICliente;
 import snake.Snake;
-import interfaces.IServer;
+import Interfaces.IServer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -28,6 +27,7 @@ import snake.Tablero;
  */
 
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
+  
     private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     public static final int PORT = 3232;
@@ -39,6 +39,17 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     public ServidorSnake() throws RemoteException {
         // Constructor de la clase ServidorSnake no recibe ni hace nada.
     }
+
+  @Override
+  public void desregistraCallBackCliente(String color) throws RemoteException {
+    for (Snake serpiente : this.serpientes) {
+      if (serpiente.getColorViva().equals(color)) {
+        this.serpientes.remove(serpiente);
+        this.colores.add(color);
+      }
+    }
+    actualizarTablero();
+  }
     
     /**
      * Permite registrar un jugador nuevo si colores disponibles 

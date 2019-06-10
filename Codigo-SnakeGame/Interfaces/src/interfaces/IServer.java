@@ -51,5 +51,12 @@ public interface IServer extends Remote{
      */
     public List<PuntuacionObtenida> consultarPuntuaciones() throws RemoteException;
     
+  /**
+   * Quita el registro del cliente en el Servidor.
+   * @param Color Envía el color de la serpiente para liberar espacio en el server.
+   * @throws RemoteException
+   */
+  public void desregistraCallBackCliente(String color) throws RemoteException;
+
 }
 

@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.event.ActionEvent;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,6 +32,7 @@ import snake.PuntuacionObtenida;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
+import javafx.stage.*;
 import logica.CicloJuego;
 import snake.Tablero;
 
@@ -138,6 +139,10 @@ public class VistaPrincipalController implements Initializable {
         }
     }
     
+    private void sacaJugador() throws RemoteException{
+      this.server.desregistraCallBackCliente(clienteSnake.getColor());
+    }
+    
     
     private void prepararConexion() throws RemoteException {
         try {
@@ -227,9 +232,18 @@ public class VistaPrincipalController implements Initializable {
         Scene scene = new Scene(root);
         
         stageActual.setTitle("Snake Game");
-        stageActual.setOnCloseRequest(e -> System.exit(0));
+        stageActual.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+            try {
+              sacaJugador();
+              stageActual.close();
+            } catch (RemoteException ex) {
+              Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          }
+      });  
         stageActual.setScene(scene);
-        
+       
         (new Thread(ciclo)).start();
     }
     
