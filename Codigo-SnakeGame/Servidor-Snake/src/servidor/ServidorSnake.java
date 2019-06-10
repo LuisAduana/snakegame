@@ -5,12 +5,14 @@ import interfaces.ICliente;
 import snake.Snake;
 import interfaces.IServer;
 import java.io.Serializable;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +83,7 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
         try {
             Registry registro = LocateRegistry.createRegistry(PORT);
             registro.bind("GameServer", (IServer) this);
-        } catch (Exception ex) {
+        } catch (AlreadyBoundException | RemoteException ex) {
             Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -123,28 +125,32 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
      * @throws RemoteException
      */
     @Override
-    public void eliminarSerpiente(String color) throws RemoteException {
+    public synchronized void eliminarSerpiente(String color) throws RemoteException {
         System.out.println("Entro");
         System.out.println("Color : " + color);
         System.out.println("Tamaño actual lista: " + serpientes.size());
-        /*for(Snake snake : this.serpientes){
-            if (snake.getColorViva().equals(color)) {
-                colores.add(color);
-                serpientes.remove(snake);
-            }
-        }*/
-
-        Iterator<Snake> it = serpientes.iterator();
-
-        while (it.hasNext()) {
-            Snake item = it.next();
-            if (item.getColorViva().equals(color)) {
-                colores.add(color);
-                serpientes.remove(item);
+        Snake serpienteEliminar = encontrarSerpienteEliminar(color);
+        if (serpienteEliminar != null) {
+            try {
+                serpientes.remove(serpienteEliminar);
+            } catch (ConcurrentModificationException ex) {
+                serpientes.remove(serpienteEliminar);
+                Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                serpientes.remove(serpienteEliminar);
             }
         }
 
         System.out.println("Tamaño final lista: " + serpientes.size());
+    }
+
+    private Snake encontrarSerpienteEliminar(String color) {
+        for (Snake snake : serpientes) {
+            if (snake.getColorViva().equals(color)) {
+                return snake;
+            }
+        }
+        return null;
     }
 
     /**

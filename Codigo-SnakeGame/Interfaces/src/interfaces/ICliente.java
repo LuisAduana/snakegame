@@ -18,7 +18,6 @@ public interface ICliente extends Remote{
     /**
     * Método que inicializa la serpiente en el cliente.
     * @param color El tipo de color que le tocó en el servidor.
-    * @param nombre El nombre dado en el servidor.
     * @throws RemoteException En caso de no lograr la conexión con éxito.
     */
     
