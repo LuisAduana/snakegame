@@ -6,9 +6,11 @@
 package logica;
 
 import snake.Tablero;
+import snake.Snake;
 import controladores.ClienteSnake;
 import controladores.VistaPrincipalController;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;

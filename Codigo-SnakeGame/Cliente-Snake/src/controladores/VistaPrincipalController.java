@@ -221,12 +221,12 @@ public class VistaPrincipalController implements Initializable {
 
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e -> {
-
             try {
-                this.clienteSnake.moverSerpiente(e.getCode());
-            } catch (RemoteException ex) {
-                Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    this.clienteSnake.moverSerpiente(e.getCode());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
         });
 
         try {
@@ -320,6 +320,9 @@ public class VistaPrincipalController implements Initializable {
         this.puntuacionesL = puntuacionesL;
     }
     
-    
+ public void finalizarJuego() {
+     informacionSistema("Fin del juego");
+     clienteSnake.setColor("");
+ }   
     
 }

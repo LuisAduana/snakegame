@@ -255,4 +255,12 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
         return hash;
     }
 
+    public void recuperarColores(ArrayList<Snake> serpientes) { {
+        for (Snake s : serpientes) {
+            this.colores.add(s.getColorViva());
+        }
+    }
+        
+    }
+    
 }

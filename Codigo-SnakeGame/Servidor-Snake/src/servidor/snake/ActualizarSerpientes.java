@@ -15,12 +15,14 @@ public class ActualizarSerpientes implements Runnable{
         this.server = server;
     }
 
+    
     @Override
     public void run() {
         long limiteCiclo = 0;
         while (true) {
             System.out.flush(); // NOSONAR");
             if (!this.server.getTablero().getSnakes().isEmpty()) {
+                
                 this.server.getTablero().calcularChoques();
                 this.server.getTablero().actualizarPosicion();
                 try {

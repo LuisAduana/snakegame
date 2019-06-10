@@ -104,5 +104,6 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
         return hash;
     }
     
+    
    
 }

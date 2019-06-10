@@ -51,5 +51,7 @@ public interface IServer extends Remote{
      */
     public List<PuntuacionObtenida> consultarPuntuaciones() throws RemoteException;
     
+    
+    
 }
 
