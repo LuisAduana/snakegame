@@ -78,7 +78,6 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
        this.server.iniciarJugador(this, nombre);
    }
     
-   
     public void moverSerpiente (KeyCode direcion) throws RemoteException {
         server.moverSerpiente(direcion, this.color);
     }
@@ -105,5 +104,5 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
         return hash;
     }
     
-    
+   
 }

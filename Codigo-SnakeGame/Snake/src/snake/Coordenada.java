@@ -1,12 +1,13 @@
 package snake;
 
+import java.awt.*;
 import java.io.Serializable;
 
 /**
  *
  * @author ferzo
  */
-public class Coordenada implements Serializable{
+public class Coordenada extends Point implements Serializable{
     private static final long serialVersionUID = 879965647867471663L;
     private int coordX;
     private int coordY;
@@ -65,5 +66,5 @@ public class Coordenada implements Serializable{
         this.coordY = coordY;
     }
     
-    
+
 }

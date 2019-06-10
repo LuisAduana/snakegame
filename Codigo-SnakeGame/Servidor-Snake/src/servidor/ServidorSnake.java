@@ -5,7 +5,6 @@ import snake.PuntuacionObtenida;
 import interfaces.ICliente;
 import snake.Snake;
 import interfaces.IServer;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -39,6 +38,22 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     public ServidorSnake() throws RemoteException {
         // Constructor de la clase ServidorSnake no recibe ni hace nada.
     }
+
+ 
+  private void eliminaSerpiente(Snake serpiente){
+    colores.add(serpiente.getColorViva());
+                this.serpientes.remove(serpiente);
+  }
+  
+  private Snake obtieneSerpiente(String colorSerpiente){
+    for (Snake snake : this.serpientes) {
+            if (snake.getColorViva().equalsIgnoreCase(colorSerpiente)) {
+                return snake;
+            }
+  }
+    return null;
+  }
+
     
     /**
      * Permite registrar un jugador nuevo si colores disponibles 
@@ -63,7 +78,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
         }
 
     }
-
+    
     /**
      * Inicializa el sevidor.
      */
@@ -167,7 +182,6 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
         for (Snake snake : this.serpientes) {
             if (snake.getColorViva().equalsIgnoreCase(color)) {
-
                 switch (direccion) {
 
                     case UP:

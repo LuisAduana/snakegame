@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javafx.scene.paint.Color;
 
 /**
@@ -53,7 +54,6 @@ public class Tablero implements Serializable{
      */
     
     public void actualizarPosicion(){
-        
         for (Snake snake : this.snakes) {
             if(comida.getCoordenada().equals(snake.getCabeza())){
             snake.extender(wrap(snake.transferirCoordenada()));
@@ -61,11 +61,46 @@ public class Tablero implements Serializable{
             comida.setCoordenada(getPosicionAleatoria());
         }else{
             snake.mover(wrap(snake.transferirCoordenada()));
+           
         }
         }
         
         
     }
+    
+    /**
+     * Calcula los jugadores chocan, y elimina de la partida todos los jugadores que hayan chocado.
+     */
+    public List<Snake>  calcularChoques() {
+        ArrayList<Snake> auxSerpientes = new ArrayList();
+        for (Snake snake : this.snakes) {
+            
+            for (Snake serpiente : this.snakes) {
+                
+                if (!snake.equals(serpiente)) {
+                    
+                    for (Coordenada c : serpiente.getCuerpo()) {
+                        if (snake.getCabeza().equals(c)) {
+                            auxSerpientes.add(snake);
+                        }
+                    }
+                    
+                } else {
+                    if (snake.estaViva()) {
+                        auxSerpientes.add(snake);
+                    }
+                }
+            }
+            
+        }
+        
+        for (Snake snake : auxSerpientes) {
+            this.snakes.remove(snake);
+        }
+        
+        return auxSerpientes;
+    }
+    
     
     public int getColumnas() {
         return columnas;

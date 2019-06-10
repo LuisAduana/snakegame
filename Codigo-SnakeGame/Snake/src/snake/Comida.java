@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  * @author ferzo
  */
+
 public class Comida implements Serializable{
     private static final long serialVersionUID = 17L;
     private Coordenada coordenada;

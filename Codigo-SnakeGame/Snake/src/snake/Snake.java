@@ -1,8 +1,11 @@
 package snake;
 
 import java.io.Serializable;
+import java.nio.*;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.image.*;
+import javafx.scene.paint.*;
 
 /**
  *
@@ -13,6 +16,17 @@ public class Snake implements Serializable{
     private String colorViva;
     public static final String MUERTA = "RED";
     private int puntuacion;
+    private ArrayList<Coordenada> posicionSerpiente;
+
+
+  public ArrayList<Coordenada> getPosicionSerpiente() {
+    return posicionSerpiente;
+  }
+
+  public void setPosicionSerpiente(ArrayList<Coordenada> posicionSerpiente) {
+    this.posicionSerpiente = posicionSerpiente;
+  }
+
     private Coordenada cabeza;
     private List<Coordenada> cuerpo;
     private int longitud;
@@ -117,6 +131,10 @@ public class Snake implements Serializable{
         if (!estaParada()) {
             moverCoordenada(coord);
         }
+    }
+    
+    public void despliegaCoordenada(Coordenada direccion){
+      
     }
     
     public Coordenada transferirCoordenada(){

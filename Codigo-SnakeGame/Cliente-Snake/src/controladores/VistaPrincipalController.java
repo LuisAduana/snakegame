@@ -82,7 +82,6 @@ public class VistaPrincipalController implements Initializable {
                 if (server.esDisponible()) {
                     this.clienteSnake.iniciarJugador(nombreJugador.getText());
                     iniciarJuego();
-                    
                 } else {
                     Alert dialogo = new Alert(AlertType.INFORMATION);
                     dialogo.setTitle(MENSAJEINFO);
@@ -206,7 +205,6 @@ public class VistaPrincipalController implements Initializable {
         Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
         contexto = canvas.getGraphicsContext2D();
         StackPane root = new StackPane();
-        
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e ->{
            
@@ -240,7 +238,6 @@ public class VistaPrincipalController implements Initializable {
      */
     
     private void intentoConexion() throws RemoteException, NotBoundException {
-        
             Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
 

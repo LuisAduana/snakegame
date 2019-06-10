@@ -3,7 +3,6 @@ package servidor.snake;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import servidor.ServidorSnake;
-
 /**
  *
  * @author Fernando
@@ -22,8 +21,8 @@ public class ActualizarSerpientes implements Runnable{
         while (true) {
             System.out.flush(); // NOSONAR");
             if (!this.server.getTablero().getSnakes().isEmpty()) {
+                this.server.getTablero().calcularChoques();
                 this.server.getTablero().actualizarPosicion();
-                
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {
