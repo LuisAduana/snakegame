@@ -9,6 +9,7 @@ import snake.Comida;
 import snake.Coordenada;
 import snake.Snake;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javafx.scene.paint.Color;
 
@@ -66,6 +67,36 @@ public class Tablero {
         
         
     }
+    
+    /**
+     * Calcula los jugadores chocan, y elimina de la partida todos los jugadores que hayan chocado.
+     */
+    public List<Snake>  calcularChoques() {
+        ArrayList<Snake> auxSerpientes = new ArrayList();
+        for (Snake snake : this.snakes) {
+            
+            for (Snake serpiente : this.snakes) {
+                
+                if (!snake.equals(serpiente)) {
+                    
+                    for (Coordenada c : serpiente.getCuerpo()) {
+                        if (snake.getCabeza().equals(c)) {
+                            auxSerpientes.add(snake);
+                        }
+                    }
+                    
+                }
+            }
+            
+        }
+        
+        for (Snake snake : auxSerpientes) {
+            this.snakes.remove(snake);
+        }
+        
+        return auxSerpientes;
+    }
+    
     
     public int getColumnas() {
         return columnas;

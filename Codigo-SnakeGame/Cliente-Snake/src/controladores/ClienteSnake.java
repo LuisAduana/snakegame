@@ -84,10 +84,4 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
        this.server.moverSerpiente(direcion, this.color);
    }
    
-   public void colisionSerpiente() throws RemoteException{
-     if (this.server.colisionSerpiente(this.color)){
-       this.server.eliminarSerpiente(this.color);
-     }
-   }
-
 }

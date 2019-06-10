@@ -8,7 +8,6 @@ package servidor.snake;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  *
  * @author soy-y
@@ -25,8 +24,10 @@ public class ActualizarSerpientes implements Runnable{
     @Override
     public void run() {
         while (true) {
-            System.out.println(this.server.getTablero().getSnakes().size());
+            System.out.flush();
             if (this.server.getTablero().getSnakes().size() >= 1 ) {
+                
+                this.server.getTablero().calcularChoques();
                 this.server.getTablero().actualizarPosicion();
                 try {
                     Thread.sleep(50);

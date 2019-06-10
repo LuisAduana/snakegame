@@ -121,7 +121,6 @@ public class VistaPrincipalController implements Initializable {
         canvas.setOnKeyPressed(e ->{
            
             try {
-                    this.clienteSnake.colisionSerpiente();
                     this.clienteSnake.moverSerpiente(e.getCode());
                 } catch (RemoteException ex) {
                     Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);

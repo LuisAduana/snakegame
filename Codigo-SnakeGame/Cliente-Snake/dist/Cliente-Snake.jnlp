@@ -8,9 +8,9 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Cliente-Snake.jar" size="10283" download="eager" />
-    <jar href="lib\Interfaces.jar" size="1528" download="eager" />
-    <jar href="lib\Snake.jar" size="9737" download="eager" />
+    <jar href="Cliente-Snake.jar" size="10217" download="eager" />
+    <jar href="lib\Interfaces.jar" size="1490" download="eager" />
+    <jar href="lib\Snake.jar" size="10425" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Cliente-Snake" >
     <param name="requiredFXVersion" value="8.0+"/>
