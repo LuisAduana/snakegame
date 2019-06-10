@@ -57,6 +57,7 @@ public class VistaPrincipalController implements Initializable {
     private Stage stageActual;
     private CicloJuego ciclo;
     private GraphicsContext contexto;
+    private ObservableList<Snake> puntuacionesL;
     
     @FXML
     TextField nombreJugador;
@@ -232,23 +233,12 @@ public class VistaPrincipalController implements Initializable {
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        List<Snake> listaSerpientes = new ArrayList<>();
-        Snake snake1 = new Snake();
-        snake1.setColorViva("CYAN");
-        snake1.setNombre("Luis");
-        snake1.setPuntuacion(3000);
-        Snake snake2 = new Snake();
-        snake2.setColorViva("PURPLE");
-        snake2.setNombre("Fernando");
-        snake2.setPuntuacion(3001);
-        listaSerpientes.add(snake1);
-        listaSerpientes.add(snake2);
         
-        final ObservableList<Snake> puntuacionesL = FXCollections.observableList(listaSerpientes);
-
-        TableColumn colorCol = new TableColumn();
+        try {
+            puntuacionesL = FXCollections.observableList(this.clienteSnake.recuperarSerpientes());
+            TableColumn colorCol = new TableColumn();
         colorCol.setText("Color");
-        colorCol.setCellValueFactory(new PropertyValueFactory("color"));
+        colorCol.setCellValueFactory(new PropertyValueFactory("colorViva"));
         TableColumn nombreCol = new TableColumn();
         nombreCol.setText("Nombre");
         nombreCol.setCellValueFactory(new PropertyValueFactory("nombre"));
@@ -269,6 +259,11 @@ public class VistaPrincipalController implements Initializable {
         stageActual.setOnCloseRequest(e -> System.exit(0));
         stageActual.setScene(scene);
         (new Thread(ciclo)).start();
+        } catch (RemoteException ex) {
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
     }
     
     /**
@@ -290,10 +285,21 @@ public class VistaPrincipalController implements Initializable {
     private void resetGame() throws RemoteException{
         Tablero tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
         tablero.setSnakes(clienteSnake.recuperarSerpientes());
-        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake);     
+        ciclo = new CicloJuego(tablero, contexto, this.clienteSnake, this.vistaPrincipalControler);     
     }
     
     void setStage(Stage stage) {
         this.stageActual = stage;
     }
+
+    public ObservableList<Snake> getPuntuacionesL() {
+        return puntuacionesL;
+    }
+
+    public void setPuntuacionesL(ObservableList<Snake> puntuacionesL) {
+        this.puntuacionesL = puntuacionesL;
+    }
+    
+    
+    
 }

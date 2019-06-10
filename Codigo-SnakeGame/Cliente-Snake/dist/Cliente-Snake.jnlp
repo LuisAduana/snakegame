@@ -8,9 +8,9 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Cliente-Snake.jar" size="13972" download="eager" />
-    <jar href="lib\Interfaces.jar" size="1633" download="eager" />
-    <jar href="lib\Snake.jar" size="11368" download="eager" />
+    <jar href="Cliente-Snake.jar" size="13947" download="eager" />
+    <jar href="lib\Interfaces.jar" size="1632" download="eager" />
+    <jar href="lib\Snake.jar" size="11367" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="controladores.Main"  name="Cliente-Snake" />
   <update check="always"/>

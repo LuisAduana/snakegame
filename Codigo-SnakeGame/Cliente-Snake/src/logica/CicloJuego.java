@@ -7,10 +7,14 @@ package logica;
 
 import snake.Tablero;
 import controladores.ClienteSnake;
+import controladores.VistaPrincipalController;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 /**
  *
  * @author ferzo
@@ -29,11 +33,12 @@ public class CicloJuego implements Runnable{
     private final Tablero tablero;
     //El contexto se encarga de renderizar la parte gráfica del tablero
     private final GraphicsContext contexto;
-    
+    private VistaPrincipalController vpc;
     private ClienteSnake cliente;
     
     
-    public CicloJuego(Tablero tablero, GraphicsContext contexto, ClienteSnake cliente){
+    public CicloJuego(Tablero tablero, GraphicsContext contexto, ClienteSnake cliente,
+            VistaPrincipalController vpc){
         this.contexto = contexto;
         this.tablero = tablero;
         framerate = 20;
@@ -41,6 +46,7 @@ public class CicloJuego implements Runnable{
         ejecucion = true;
         teclaPresionada = false;    
         this.cliente = cliente;
+        this.vpc = vpc;
         
     }
    
@@ -51,6 +57,7 @@ public class CicloJuego implements Runnable{
             
             try {
                 this.tablero.setSnakes(this.cliente.recuperarSerpientes());
+                this.vpc.getPuntuacionesL().setAll(this.cliente.recuperarSerpientes());
                 this.tablero.setComida(this.cliente.generarComida());
             } catch (RemoteException ex) {
                 Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
