@@ -15,5 +15,14 @@ import java.rmi.RemoteException;
  */
 public interface ICliente extends Remote{
     
-   public void definirColor(String color) throws RemoteException;
+
+    /**
+    * Método que inicializa la serpiente en el cliente.
+    * @param color El tipo de color que le tocó en el servidor.
+    * @throws RemoteException En caso de no lograr la conexión con éxito.
+    */
+    
+    public void definirColor(String color) throws RemoteException;
+   
+   
 }
