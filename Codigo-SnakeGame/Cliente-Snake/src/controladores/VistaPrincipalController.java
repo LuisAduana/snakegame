@@ -117,7 +117,6 @@ public class VistaPrincipalController implements Initializable {
         Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
         contexto = canvas.getGraphicsContext2D();
         StackPane root = new StackPane();
-        
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e ->{
            

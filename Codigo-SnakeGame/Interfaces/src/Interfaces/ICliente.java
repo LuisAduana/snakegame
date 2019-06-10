@@ -14,6 +14,6 @@ import java.rmi.RemoteException;
  * @author soy-y
  */
 public interface ICliente extends Remote{
-    
+  
    public void definirColor(String color) throws RemoteException;
 }

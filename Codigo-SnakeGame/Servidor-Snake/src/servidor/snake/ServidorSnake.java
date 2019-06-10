@@ -8,6 +8,7 @@ package servidor.snake;
 import Interfaces.ICliente;
 import snake.Snake;
 import Interfaces.IServer;
+import java.awt.*;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -38,17 +39,26 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer{
     }
 
   @Override
-  public void colisionSerpiente(String colorSerpiente) throws RemoteException {
+  public boolean colisionSerpiente(String colorSerpiente) throws RemoteException {
     Snake serpienteUsuario = obtieneSerpiente(colorSerpiente);
     for (Snake serpienteServidor : this.serpientes) {
-      if (!(serpienteUsuario.equals(serpienteServidor))){
-        for (Coordenada parteSerpiente: serpienteServidor.getCuerpo()){
+      System.out.println("Entro a loopear serpientes");
+      if (!(serpienteServidor.getColorViva().equals(colorSerpiente))){
+        System.out.println("Encontro a una serpiente que no era el cliente");
+        for (Coordenada parteSerpiente : serpienteServidor.getCuerpo()){
+          System.out.println("Evaluo por dentro de la serpiente");
           if (serpienteUsuario.getCabeza().getLocation().equals(parteSerpiente.getLocation())){
-            System.out.println(serpienteUsuario.getColorViva()+"Ha chocado "+serpienteServidor.getColorViva());
+            return true;
           }
         }
       }
     }
+    return false;
+  }
+  
+  private void eliminaSerpiente(Snake serpiente){
+    colores.add(serpiente.getColorViva());
+                this.serpientes.remove(serpiente);
   }
   
   private Snake obtieneSerpiente(String colorSerpiente){
