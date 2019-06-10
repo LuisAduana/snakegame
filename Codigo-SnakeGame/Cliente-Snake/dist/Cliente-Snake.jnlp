@@ -9,7 +9,7 @@
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
     <jar href="Cliente-Snake.jar" size="13102" download="eager" />
-    <jar href="lib\Interfaces.jar" size="2203" download="eager" />
+    <jar href="lib\Interfaces.jar" size="1632" download="eager" />
     <jar href="lib\Snake.jar" size="12544" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Cliente-Snake" >

@@ -1,8 +1,8 @@
 package servidor;
 
 
-import snake.PuntuacionObtenida;
 import interfaces.ICliente;
+import snake.PuntuacionObtenida;
 import snake.Snake;
 import interfaces.IServer;
 import java.rmi.RemoteException;

@@ -86,7 +86,7 @@ public class Tablero implements Serializable{
                     }
                     
                 } else {
-                    if (snake.estaViva()) {
+                    if (!snake.estaViva()) {
                         auxSerpientes.add(snake);
                     }
                 }
