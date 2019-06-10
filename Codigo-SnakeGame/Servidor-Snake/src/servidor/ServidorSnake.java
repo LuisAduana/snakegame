@@ -1,6 +1,5 @@
 package servidor;
 
-
 import snake.PuntuacionObtenida;
 import interfaces.ICliente;
 import snake.Snake;
@@ -12,6 +11,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -23,30 +23,30 @@ import snake.Tablero;
 
 /**
  * Clase que implementa la interfaz y los eventos dentro del juego.
+ *
  * @author Luis Bonilla
  * @author Fernando
  */
+public class ServidorSnake extends UnicastRemoteObject implements IServer {
 
-public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     private ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     public static final int PORT = 3232;
     private Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
     private static final int ALTURA_VENTANA = 500;
-    
-    
+
     public ServidorSnake() throws RemoteException {
         // Constructor de la clase ServidorSnake no recibe ni hace nada.
     }
-    
+
     /**
-     * Permite registrar un jugador nuevo si colores disponibles 
+     * Permite registrar un jugador nuevo si colores disponibles
+     *
      * @param cliente del jugador que es iniciado.
      * @param nombre nombre del jugador registrado.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    
     @Override
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
         if (!colores.isEmpty()) {
@@ -56,7 +56,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
             Snake serpiente = new Snake(nombre, color,
                     new Coordenada(random.nextInt(Tablero.TAMANO),
                             random.nextInt(
-                            Tablero.TAMANO)));
+                                    Tablero.TAMANO)));
             serpientes.add(serpiente);
             actualizarTablero();
             cliente.definirColor(color);
@@ -67,12 +67,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     /**
      * Inicializa el sevidor.
      */
-    
     private void actualizarTablero() {
         this.tablero.setSnakes(this.serpientes);
     }
-    
-    
+
     /**
      * Inicializa el servidor
      */
@@ -87,10 +85,9 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
             Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     private void iniciarListaDeColores() {
-        this. colores = new ArrayList();
+        this.colores = new ArrayList();
         colores.add("CYAN");
         colores.add("PURPLE");
         colores.add("GREEN");
@@ -101,68 +98,85 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
         colores.add("GRAY");
         colores.add("SALMON");
         colores.add("BLUE");
-        
+
     }
 
     /**
      * Permite saber si hay lugares disponibles para un jugador nuevo.
+     *
      * @return true si hay menos de 10 jugadores registrado
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    
     @Override
     public boolean esDisponible() throws RemoteException {
         boolean dispoibilidad = true;
         if (colores.isEmpty()) {
             dispoibilidad = false;
-        } 
+        }
         return dispoibilidad;
     }
 
     /**
      * Elimina la serpiente del servidor.
+     *
      * @param color color de la serpiente a eliminar
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    
     @Override
     public void eliminarSerpiente(String color) throws RemoteException {
-        for(Snake snake : this.serpientes){
-            if (snake.getColorViva() == color) {
+        System.out.println("Entro");
+        System.out.println("Color : " + color);
+        System.out.println("Tamaño actual lista: " + serpientes.size());
+        /*for(Snake snake : this.serpientes){
+            if (snake.getColorViva().equals(color)) {
                 colores.add(color);
                 serpientes.remove(snake);
             }
+        }*/
+
+        Iterator<Snake> it = serpientes.iterator();
+
+        while (it.hasNext()) {
+            Snake item = it.next();
+            if (item.getColorViva().equals(color)) {
+                colores.add(color);
+                serpientes.remove(item);
+            }
         }
+
+        System.out.println("Tamaño final lista: " + serpientes.size());
     }
 
     /**
      * Consulta el historial de puntuaciones.
+     *
      * @return regresa una lista con todas las puntuaciones guardadas.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    
     @Override
     public List<PuntuacionObtenida> consultarPuntuaciones() throws RemoteException {
         ConexionBD conexion = new ConexionBD();
         return conexion.consultarPuntiaciones();
     }
+
     /**
      * Recupera las serpientes registradas en el servidor.
+     *
      * @return lista vacía si no se ha registrado ningun jugador.
      */
-    
     @Override
     public List<Snake> recuperarSerpientes() {
         return this.serpientes;
     }
 
     /**
-     * Recupera la dirección nueva para cambiar la dirección de una serpiente con un color determinado
+     * Recupera la dirección nueva para cambiar la dirección de una serpiente
+     * con un color determinado
+     *
      * @param direccion dirección nueva de la serpiente
      * @param color color de la serpiente que se va a mover
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    
     @Override
     public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
         for (Snake snake : this.serpientes) {
@@ -219,5 +233,4 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
         return hash;
     }
 
-    
 }
