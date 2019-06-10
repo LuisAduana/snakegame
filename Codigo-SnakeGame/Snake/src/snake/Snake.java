@@ -21,6 +21,10 @@ public class Snake implements Serializable{
     private int avanceX;
     private int avanceY;
 
+    public Snake () {
+        
+    }
+            
     public int getPuntuacion() {
         return puntuacion;
     }

@@ -8,12 +8,15 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,14 +28,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import snake.PuntuacionObtenida;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
 import logica.CicloJuego;
+import snake.Snake;
 import snake.Tablero;
 
 /**
@@ -203,6 +211,7 @@ public class VistaPrincipalController implements Initializable {
     
     
     private void iniciarJuego() {
+        HBox hbox = new HBox();
         Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
         contexto = canvas.getGraphicsContext2D();
         StackPane root = new StackPane();
@@ -223,13 +232,42 @@ public class VistaPrincipalController implements Initializable {
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        root.getChildren().add(canvas);
-        Scene scene = new Scene(root);
+        List<Snake> listaSerpientes = new ArrayList<>();
+        Snake snake1 = new Snake();
+        snake1.setColorViva("CYAN");
+        snake1.setNombre("Luis");
+        snake1.setPuntuacion(3000);
+        Snake snake2 = new Snake();
+        snake2.setColorViva("PURPLE");
+        snake2.setNombre("Fernando");
+        snake2.setPuntuacion(3001);
+        listaSerpientes.add(snake1);
+        listaSerpientes.add(snake2);
         
+        final ObservableList<Snake> puntuacionesL = FXCollections.observableList(listaSerpientes);
+
+        TableColumn colorCol = new TableColumn();
+        colorCol.setText("Color");
+        colorCol.setCellValueFactory(new PropertyValueFactory("color"));
+        TableColumn nombreCol = new TableColumn();
+        nombreCol.setText("Nombre");
+        nombreCol.setCellValueFactory(new PropertyValueFactory("nombre"));
+        TableColumn puntuacionCol = new TableColumn();
+        puntuacionCol.setText("Puntuacion");
+        puntuacionCol.setCellValueFactory(new PropertyValueFactory("puntuacion"));
+        TableView tableView = new TableView();
+        tableView.setItems(puntuacionesL);
+        tableView.getColumns().addAll(colorCol, nombreCol, puntuacionCol);
+        tableView.setDisable(true);
+        
+        root.getChildren().add(canvas);
+        hbox.getChildren().add(root);
+        hbox.getChildren().add(tableView);
+        Scene scene = new Scene(hbox);
+
         stageActual.setTitle("Snake Game");
         stageActual.setOnCloseRequest(e -> System.exit(0));
         stageActual.setScene(scene);
-        
         (new Thread(ciclo)).start();
     }
     
