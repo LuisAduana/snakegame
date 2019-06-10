@@ -275,7 +275,9 @@ public class VistaPrincipalController implements Initializable {
         stageActual.setOnCloseRequest(event
                 -> {
             try {
+                
                 server.eliminarSerpiente(clienteSnake.getColor());
+                this.ciclo.pausar();
                 stageActual.close();
             } catch (RemoteException ex) {
                 Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);

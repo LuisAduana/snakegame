@@ -54,7 +54,6 @@ public class CicloJuego implements Runnable{
     @Override
     public void run(){
         while(ejecucion && !pausado){
-            
             try {
                 this.tablero.setSnakes(this.cliente.recuperarSerpientes());
                 this.vpc.getPuntuacionesL().setAll(this.cliente.recuperarSerpientes());
@@ -83,6 +82,11 @@ public class CicloJuego implements Runnable{
                     
                 }
             }
+        } 
+        try {
+            this.finalize();
+        } catch (Throwable ex) {
+            Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
             
