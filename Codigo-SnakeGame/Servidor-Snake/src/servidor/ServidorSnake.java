@@ -137,6 +137,7 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
                 serpientes.remove(serpienteEliminar);
                 Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
+                colores.add(color);
                 serpientes.remove(serpienteEliminar);
             }
         }
