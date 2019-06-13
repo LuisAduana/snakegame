@@ -28,7 +28,7 @@ import snake.Tablero;
  */
 
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
-    private ArrayList<String> colores;
+    protected ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     public static final int PORT = 3232;
     private Tablero tablero;
@@ -76,7 +76,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     /**
      * Inicializa el servidor
      */
-    public void iniciarServidor() {
+    protected void iniciarServidor() {
         this.iniciarListaDeColores();
         this.serpientes = new ArrayList();
         this.tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
@@ -130,7 +130,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
         for(Snake snake : this.serpientes){
             if (snake.getColorViva() == color) {
                 colores.add(color);
-                serpientes.remove(snake);
+                this.serpientes.remove(snake);
             }
         }
     }
@@ -152,7 +152,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
      */
     
     @Override
-    public List<Snake> recuperarSerpientes() {
+    public ArrayList<Snake> recuperarSerpientes() {
         return this.serpientes;
     }
 
@@ -194,6 +194,10 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     public Tablero getTablero() {
         return this.tablero;
     }
+    
+    public ArrayList<String> getColores() {
+    return this.colores;
+  }
 
     @Override
     public Comida generarComida() throws RemoteException {

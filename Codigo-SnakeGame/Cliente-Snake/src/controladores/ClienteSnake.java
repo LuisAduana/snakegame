@@ -19,7 +19,7 @@ import snake.Snake;
  */
 public class ClienteSnake extends UnicastRemoteObject implements ICliente {
 
-    private  transient  IServer server;
+    private transient  IServer server;
     private String color;
     
     /**
@@ -27,7 +27,7 @@ public class ClienteSnake extends UnicastRemoteObject implements ICliente {
      * @param server Recibe la interfaz a implementar.
      * @throws RemoteException Excepcion en caso de que no se logre una conexión.
      */
-    ClienteSnake(IServer server) throws RemoteException {
+    public ClienteSnake(IServer server) throws RemoteException {
         this.server =server;
     }
     
