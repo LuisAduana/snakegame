@@ -46,7 +46,7 @@ public class Snake implements Serializable{
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
-
+    
     /**
      * Suma la n cantidad de puntos a la puntuación actual.
      * @param puntos puntos que se van a agregar a la puntuación.

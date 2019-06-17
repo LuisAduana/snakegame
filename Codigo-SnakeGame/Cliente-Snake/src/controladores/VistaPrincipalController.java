@@ -64,7 +64,11 @@ public class VistaPrincipalController implements Initializable {
     Label mensajeError;
     @FXML
     Button btnVerPuntuaciones;
-
+    
+    private Pattern patron;
+    private static final String PATRON_PERMITIDO = "^([a-z]|[A-Z]|[0-9]){3,12}$";
+    private static final int TAMAÑO_MAXIMO = 12;
+    private static final int TAMAÑO_MINIMO = 3;
     private static final String NOMBRE_REGISTRO = "GameServer";
     private static final String NOMBRE_SERVER = "localhost";
     private static final int PUERTO_SERVER = 3232;
@@ -83,7 +87,7 @@ public class VistaPrincipalController implements Initializable {
      */
     @FXML
     private void iniciarJuego(ActionEvent event) {
-        String validacion = validarNickname();
+        String validacion = validarNickname(nombreJugador.getText());
         if ("".equals(validacion)) {
             mensajeError.setText(validacion);
             try {
@@ -123,59 +127,41 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     private void verPuntuaciones(ActionEvent event) {
         try {
-
             prepararConexion();
             puntuaciones = server.consultarPuntuaciones();
-
             FXMLLoader loader = new FXMLLoader();
-            AnchorPane root = (AnchorPane) loader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml").openStream());
-
+            AnchorPane root = (AnchorPane)loader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml").openStream());
             TablaPuntuacionesController puntuacionesController = (TablaPuntuacionesController) loader.getController();
             puntuacionesController.setListaPuntuaciones(vistaPrincipalControler);
-
             Stage stageTablaPuntuaciones = new Stage();
             Scene scene = new Scene(root);
             stageTablaPuntuaciones.setScene(scene);
             stageTablaPuntuaciones.alwaysOnTopProperty();
             stageTablaPuntuaciones.setResizable(false);
             stageTablaPuntuaciones.initModality(Modality.APPLICATION_MODAL);
-
             stageTablaPuntuaciones.show();
         } catch (IOException ex) {
             informacionSistema(MENSAJE_ERROR_CONEXION);
             Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void prepararConexion() throws RemoteException {
-        try {
-
-            Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
-            server = (IServer) registro.lookup(NOMBRE_REGISTRO);
-
-        } catch (NotBoundException ex) {
-            informacionSistema(MENSAJE_ERROR_CONEXION);
-            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
     /**
      * Método que valida el nombre del usuario.
      *
      * @return Regresa el resultado de la validacion (Si la validación es
      * correcta regresa una cadena vacía)
      */
-    private String validarNickname() {
-        if ("".equals(nombreJugador.getText().trim())) {
+    protected String validarNickname(String datoValidar) {
+        if ("".equals(datoValidar.trim())) {
             return "Ingrese un nombre";
-        } else if (nombreJugador.getText().trim().length() > 12) {
+        } else if (datoValidar.trim().length() > TAMAÑO_MAXIMO) {
             return "Nombre debe ser menor a 12 caracteres";
-        } else if (nombreJugador.getText().trim().length() < 3) {
+        } else if (datoValidar.trim().length() < TAMAÑO_MINIMO) {
             return "Nombre es demasiado corto";
         } else {
-
-            Pattern patron = Pattern.compile("^([a-z]|[A-Z]|[0-9]){3,12}$");
-            Matcher match = patron.matcher(nombreJugador.getText().trim());
+            this.patron = Pattern.compile(PATRON_PERMITIDO);
+            Matcher match = patron.matcher(datoValidar.trim());
             if (match.find()) {
                 return "";
             } else {
@@ -211,8 +197,8 @@ public class VistaPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         vistaPrincipalControler = this;
-    }
-
+    }  
+    
     private void iniciarJuego() {
         HBox hbox = new HBox();
         Canvas canvas = new Canvas(ANCHO_VENTANA, ALTURA_VENTANA);
@@ -293,13 +279,22 @@ public class VistaPrincipalController implements Initializable {
      * @throws NotBoundException Si no se encuentra el puerto disponible lanza
      * la excepción al méotodo padre.
      */
-    private void intentoConexion() throws RemoteException, NotBoundException {
+    public void intentoConexion() throws RemoteException, NotBoundException {
             Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
-
-        this.clienteSnake = new ClienteSnake(server);
-
+            this.clienteSnake = new ClienteSnake(server);
     }
+    
+    public void prepararConexion() throws RemoteException {
+        try {
+            Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
+            server = (IServer) registro.lookup(NOMBRE_REGISTRO);
+        } catch (NotBoundException ex) {
+            informacionSistema(MENSAJE_ERROR_CONEXION);
+            Logger.getLogger(VistaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     private void resetGame() throws RemoteException {
         Tablero tablero = new Tablero(ANCHO_VENTANA, ALTURA_VENTANA);
