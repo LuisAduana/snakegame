@@ -22,6 +22,7 @@ public class Tablero implements Serializable{
     private final int columnas;
     private final int filas;
     
+    public List<Coordenada> puntosOcupados;
     private List<Snake> snakes;
     private Comida comida;
 
@@ -40,6 +41,19 @@ public class Tablero implements Serializable{
         if(x < 0)x = filas -1;
         if(y < 0)y = columnas -1;
         return(new Coordenada(x, y));
+    }
+    
+    private List<Coordenada> getPosicionLibre(){
+      return this.puntosOcupados;
+    }
+   
+    private void setPuntosOcupados(){
+      for (Snake serpiente: this.snakes){
+        for (Coordenada punto : serpiente.getCuerpo()){
+          this.puntosOcupados.add(punto);
+        }
+        this.puntosOcupados.add(this.comida.getCoordenada());
+      }
     }
     
     private Coordenada getPosicionAleatoria() {

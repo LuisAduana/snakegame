@@ -72,6 +72,12 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
             String color = colores.get(0);
             this.colores.remove(0);
             SecureRandom random = new SecureRandom();
+            for (Coordenada punto : Tablero.puntosOcupados){
+            if (!(new Coordenada(random.nextInt(Tablero.TAMANO),
+                    random.nextInt(Tablero.TAMANO))).
+                    equals(punto.getLocation())){
+            }
+            }
             Snake serpiente = new Snake(nombre, color,
                     new Coordenada(random.nextInt(Tablero.TAMANO),
                             random.nextInt(
