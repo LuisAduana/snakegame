@@ -116,7 +116,6 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
         colores.add("GRAY");
         colores.add("SALMON");
         colores.add("BLUE");
-
     }
 
     /**
@@ -142,9 +141,6 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
      */
     @Override
     public synchronized void eliminarSerpiente(String color) throws RemoteException {
-        System.out.println("Entro");
-        System.out.println("Color : " + color);
-        System.out.println("Tamaño actual lista: " + serpientes.size());
         Snake serpienteEliminar = encontrarSerpienteEliminar(color);
         if (serpienteEliminar != null) {
             try {
@@ -157,8 +153,6 @@ public class ServidorSnake extends UnicastRemoteObject implements IServer {
                 serpientes.remove(serpienteEliminar);
             }
         }
-
-        System.out.println("Tamaño final lista: " + serpientes.size());
     }
 
     private Snake encontrarSerpienteEliminar(String color) {
