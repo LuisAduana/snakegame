@@ -29,6 +29,8 @@ public class ServidorSnakeTest {
   List<Snake> serpientes;
   private static String colorSerpiente = "";
   private static String nombreUsuario = "";
+  private static String nombreJugadorExpulsado = "";
+  private static String nombreJugadorDisponibilidad = "";
   private static ClienteSnake clienteSnake;
   private static ClienteSnake clienteSnakeUno;
   private static ClienteSnake clienteSnakeDos;
@@ -42,7 +44,9 @@ public class ServidorSnakeTest {
   private static ClienteSnake clienteSnakeDiez;
   private static ClienteSnake clienteSnakeEliminarServidor;
   private static ClienteSnake clienteSnakeEliminarColor;
+  private static ClienteSnake clienteSnakeMover;
   private static boolean resultadoDisponibilidad;
+  private static KeyCode valorArriba;
   
   public ServidorSnakeTest() {   
   }
@@ -62,9 +66,13 @@ public class ServidorSnakeTest {
     clienteSnakeNueve = new ClienteSnake(server);
     clienteSnakeDiez = new ClienteSnake(server);
     clienteSnake = new ClienteSnake(server);
+    clienteSnakeMover = new ClienteSnake(server);
     servidor = new ServidorSnake();
     servidorDos = new ServidorSnake();
     servidorTres = new ServidorSnake();
+    servidor.iniciarServidor();
+    servidorDos.iniciarServidor();
+    servidorTres.iniciarServidor();
   }
   
   @AfterClass
@@ -85,7 +93,6 @@ public class ServidorSnakeTest {
   @org.junit.Test
   public void testIniciarJugador() throws Exception {
      setUpClass();
-     this.servidor.iniciarServidor();
      this.nombreUsuario = "Prueba";
      this.servidor.iniciarJugador(clienteSnake, nombreUsuario);
      for (Snake serpiente : servidor.recuperarSerpientes()){
@@ -101,7 +108,6 @@ public class ServidorSnakeTest {
   @org.junit.Test
   public void testJuegoLleno() throws Exception {
      setUpClass();
-     this.servidor.iniciarServidor();
      this.servidor.iniciarJugador(clienteSnakeUno, "Prueba1");
      this.servidor.iniciarJugador(clienteSnakeDos, "Prueba2");
      this.servidor.iniciarJugador(clienteSnakeTres, "Prueba3");
@@ -122,20 +128,19 @@ public class ServidorSnakeTest {
   @org.junit.Test
   public void testExpulsarJugadorListaSerpientes() throws Exception {
      setUpClass();
-     this.servidorDos.iniciarServidor();
-     String nombreJugador = "Prueba";
-     this.servidorDos.iniciarJugador(clienteSnakeEliminarServidor, nombreJugador);
+     this.nombreJugadorExpulsado = "PruebaExpulsar";
+     this.servidorDos.iniciarJugador(clienteSnakeEliminarServidor, nombreJugadorExpulsado);
      for (Snake serpiente : servidorDos.recuperarSerpientes()){
-       if (serpiente.getNombre().equals(nombreJugador)){
+       if (serpiente.getNombre().equals(nombreJugadorExpulsado)){
          this.colorSerpiente = serpiente.getColorViva();
        }
      } 
      this.servidorDos.eliminarSerpiente(this.colorSerpiente);
      for (Snake serpiente : servidorDos.recuperarSerpientes()){
-       Assert.assertNotEquals(serpiente.getNombre(), nombreJugador);
-       return;
+       Assert.assertEquals(serpiente.getNombre(), nombreJugadorExpulsado);
+       fail("Serpiente se encuentra en el servidor");
      } 
-     fail("Serpiente se encuentra en el servidor");
+     return;
   }
   
   /**
@@ -144,16 +149,87 @@ public class ServidorSnakeTest {
   @org.junit.Test
   public void testDisponibilidadColorJugadorExpulsado() throws Exception {
      setUpClass();
-     this.servidorTres.iniciarServidor();
-     String nombreJugador = "Prueba";
-     this.servidorTres.iniciarJugador(clienteSnakeEliminarColor, nombreJugador);
+     this.nombreJugadorDisponibilidad = "PruebaColor";
+     this.servidorTres.iniciarJugador(clienteSnakeEliminarColor,nombreJugadorDisponibilidad);
      String colorSerpienteEliminada = this.servidorTres.getColores().get(0);
      this.servidorTres.eliminarSerpiente(clienteSnakeEliminarColor.getColor());
      for (String color : servidorTres.getColores()){
-       Assert.assertNotEquals(colorSerpienteEliminada, color);
+       Assert.assertEquals(colorSerpienteEliminada, color);
        return;
     } 
      fail("No existe color serpiente en el servidor.");
+  }
+  
+  /**
+   * Test of iniciarJugador method, of class ServidorSnake.
+   */
+  @org.junit.Test
+  public void testMovimientoSerpienteArriba() throws Exception {
+     setUpClass();
+     Snake snake = null;
+     this.nombreJugadorDisponibilidad = "PruebaColor";
+     this.servidorTres.iniciarJugador(clienteSnakeMover,nombreJugadorDisponibilidad);
+     for (Snake serpiente : this.servidorTres.getSerpientes()){
+       if (serpiente.getNombre().equals(nombreJugadorDisponibilidad)){
+         snake = serpiente;
+       }
+     }
+     valorArriba = this.servidorTres.moverSerpiente(KeyCode.UP, snake.getColorViva());
+     Assert.assertEquals(KeyCode.UP, valorArriba);
+  }
+  
+  /**
+   * Test of iniciarJugador method, of class ServidorSnake.
+   */
+  @org.junit.Test
+  public void testMovimientoSerpienteDerecha() throws Exception {
+     setUpClass();
+     Snake snake = null;
+     this.nombreJugadorDisponibilidad = "PruebaColor";
+     this.servidorTres.iniciarJugador(clienteSnakeMover,nombreJugadorDisponibilidad);
+     for (Snake serpiente : this.servidorTres.getSerpientes()){
+       if (serpiente.getNombre().equals(nombreJugadorDisponibilidad)){
+         snake = serpiente;
+       }
+     }
+     valorArriba = this.servidorTres.moverSerpiente(KeyCode.RIGHT, snake.getColorViva());
+     Assert.assertEquals(KeyCode.RIGHT, valorArriba);
+  }
+  
+  /**
+   * Test of iniciarJugador method, of class ServidorSnake.
+   */
+  @org.junit.Test
+  public void testMovimientoSerpienteIzquierda() throws Exception {
+     setUpClass();
+     Snake snake = null;
+     this.nombreJugadorDisponibilidad = "PruebaColor";
+     this.servidorTres.iniciarJugador(clienteSnakeMover,nombreJugadorDisponibilidad);
+     for (Snake serpiente : this.servidorTres.getSerpientes()){
+       if (serpiente.getNombre().equals(nombreJugadorDisponibilidad)){
+         snake = serpiente;
+       }
+     }
+     valorArriba = this.servidorTres.moverSerpiente(KeyCode.LEFT, snake.getColorViva());
+     Assert.assertEquals(KeyCode.LEFT, valorArriba);
+  }
+  
+  /**
+   * Test of iniciarJugador method, of class ServidorSnake.
+   */
+  @org.junit.Test
+  public void testMovimientoSerpienteAbajo() throws Exception {
+     setUpClass();
+     Snake snake = null;
+     this.nombreJugadorDisponibilidad = "PruebaColor";
+     this.servidorTres.iniciarJugador(clienteSnakeMover,nombreJugadorDisponibilidad);
+     for (Snake serpiente : this.servidorTres.getSerpientes()){
+       if (serpiente.getNombre().equals(nombreJugadorDisponibilidad)){
+         snake = serpiente;
+       }
+     }
+     valorArriba = this.servidorTres.moverSerpiente(KeyCode.DOWN, snake.getColorViva());
+     Assert.assertEquals(KeyCode.DOWN, valorArriba);
   }
   
 }

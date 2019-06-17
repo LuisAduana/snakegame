@@ -15,6 +15,7 @@ public class Snake implements Serializable{
     private int puntuacion;
     private Coordenada cabeza;
     private List<Coordenada> cuerpo;
+    private int tamañoActual = cuerpo.size();
     private int longitud;
     private boolean vivo = true;
     private String nombre;
@@ -27,6 +28,10 @@ public class Snake implements Serializable{
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
+    }
+    
+    public int getTamañoActual(){
+      return this.tamañoActual;
     }
 
     /**

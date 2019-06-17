@@ -1,4 +1,4 @@
-package servidor;
+  package servidor;
 
 
 import snake.PuntuacionObtenida;
@@ -11,9 +11,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
@@ -30,6 +28,10 @@ import snake.Tablero;
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     protected ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
+
+  public ArrayList<Snake> getSerpientes() {
+    return this.serpientes;
+  }
     public static final int PORT = 3232;
     private Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
@@ -126,14 +128,29 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
      */
     
     @Override
-    public void eliminarSerpiente(String color) throws RemoteException {
-        for(Snake snake : this.serpientes){
-            if (snake.getColorViva() == color) {
-                colores.add(color);
-                this.serpientes.remove(snake);
-            }
-        }
+  public void eliminarSerpiente(String color) throws RemoteException {
+    Snake serpienteEliminar = encontrarSerpienteEliminar(color);
+    if (serpienteEliminar != null) {
+      try {
+        serpientes.remove(serpienteEliminar);
+      } catch (ConcurrentModificationException ex) {
+        serpientes.remove(serpienteEliminar);
+        Logger.getLogger(ServidorSnake.class.getName()).log(Level.SEVERE, null, ex);
+      } finally {
+        colores.add(color);
+        serpientes.remove(serpienteEliminar);
+      }
     }
+  }
+        
+  private Snake encontrarSerpienteEliminar(String color) {
+    for (Snake serpiente : this.serpientes) {
+      if (serpiente.getColorViva().equals(color)) {
+        return serpiente;
+      }
+    }
+    return null;
+  }
 
     /**
      * Consulta el historial de puntuaciones.
@@ -164,7 +181,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
      */
     
     @Override
-    public void moverSerpiente(KeyCode direccion, String color) throws RemoteException {
+    public KeyCode moverSerpiente(KeyCode direccion, String color) throws RemoteException {
         for (Snake snake : this.serpientes) {
             if (snake.getColorViva().equalsIgnoreCase(color)) {
 
@@ -172,23 +189,23 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
 
                     case UP:
                         snake.setArriba();
-                        break;
+                        return direccion;
                     case DOWN:
                         snake.setAbajo();
-                        break;
+                        return direccion;
                     case LEFT:
                         snake.setIzq();
-                        break;
+                        return direccion;
                     case RIGHT:
                         snake.setDer();
-                        break;
+                        return direccion;
                     default:
-                        break;
+                        return direccion;
 
                 }
             }
         }
-
+        return direccion;
     }
 
     public Tablero getTablero() {

@@ -8,8 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Cliente-Snake.jar" size="13213" download="eager" />
-    <jar href="lib\Interfaces.jar" size="1632" download="eager" />
+    <jar href="Cliente-Snake.jar" size="13221" download="eager" />
+    <jar href="lib\Interfaces.jar" size="1659" download="eager" />
     <jar href="lib\Snake.jar" size="11293" download="eager" />
     <jar href="lib\junit-4.12.jar" size="316791" download="eager" />
     <jar href="lib\junit.jar" size="235295" download="eager" />

@@ -16,7 +16,7 @@ import snake.Snake;
  */
 public interface IServer extends Remote{
     
-    public void moverSerpiente(KeyCode direccion, String color) throws RemoteException;
+    public KeyCode moverSerpiente(KeyCode direccion, String color) throws RemoteException;
     public List<Snake> recuperarSerpientes() throws RemoteException;
     public Comida generarComida() throws RemoteException;
     
