@@ -4,16 +4,20 @@ import snake.PuntuacionObtenida;
 import objetos.Puntuacion;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import snake.Snake;
 
 /**
  * Clase que estructura las consultas hacia la base de datos.
  * @author Luis Bonilla
  * @author Rodrigo
  */
-class ConexionBD {
+public class ConexionBD {
     
     private EntityManagerFactory emf;
     private EntityManager em;
@@ -21,7 +25,7 @@ class ConexionBD {
     /**
      * Constructor de la clase ConexionBD.
      */
-    ConexionBD() {
+    public ConexionBD() {
         emf = Persistence.createEntityManagerFactory("Servidor-SnakePU");
         em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -51,6 +55,35 @@ class ConexionBD {
         }
         
         return puntuacionesEnviadas;
+    }
+
+    public List<Snake> registrarPuntuaciones(List<Snake> listaPuntuaciones) {
+        try {
+            for (Snake snake : listaPuntuaciones) {
+                Puntuacion puntuacion = new Puntuacion();
+                Integer idPuntuacion = contarRegistros() + 1;
+                puntuacion.setIdcliente(idPuntuacion);
+                puntuacion.setNombre(snake.getNombre());
+                puntuacion.setPuntuacion(snake.getPuntuacion());
+                em.persist(puntuacion);
+            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (!listaPuntuaciones.isEmpty()) {
+                listaPuntuaciones.clear();
+            }
+            em.close();
+            emf.close();
+        }
+        return listaPuntuaciones;
+    }
+    
+    private Integer contarRegistros() {
+        Query query = em.createQuery("SELECT COUNT(p) FROM Puntuacion p");
+        long resultado = (Long) query.getSingleResult();
+        return (int) resultado;
     }
     
 }

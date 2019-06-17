@@ -70,6 +70,7 @@ public class Tablero implements Serializable{
     
     /**
      * Calcula los jugadores chocan, y elimina de la partida todos los jugadores que hayan chocado.
+     * @return calcularChoques regresa las serpientes que colisionaron.
      */
     public List<Snake>  calcularChoques() {
         ArrayList<Snake> auxSerpientes = new ArrayList();
