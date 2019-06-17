@@ -115,5 +115,7 @@ public class VistaPrincipalControllerTest {
   respuestaValidacion = vistaPrincipal.validarNickname(datoPrueba);
   assertEquals(RESPUESTA_ESPERADA_INCORRECTO, respuestaValidacion);
   }
+  
+  
 
 }

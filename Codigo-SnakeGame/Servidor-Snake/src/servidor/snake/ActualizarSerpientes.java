@@ -23,7 +23,6 @@ public class ActualizarSerpientes implements Runnable{
             System.out.flush(); // NOSONAR");
             if (!this.server.getTablero().getSnakes().isEmpty()) {
                 this.server.getTablero().actualizarPosicion();
-                
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {

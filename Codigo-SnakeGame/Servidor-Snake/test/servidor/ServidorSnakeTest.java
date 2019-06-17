@@ -73,6 +73,7 @@ public class ServidorSnakeTest {
     servidor.iniciarServidor();
     servidorDos.iniciarServidor();
     servidorTres.iniciarServidor();
+    
   }
   
   @AfterClass
@@ -232,4 +233,16 @@ public class ServidorSnakeTest {
      Assert.assertEquals(KeyCode.DOWN, valorArriba);
   }
   
+//  /**
+//   * Test of consultarPuntuaciones method, of class VistaPrincipallController.
+//   */
+//  @org.junit.Test
+//  public void testValidarConexionBd() throws RemoteException {
+//    setUpClass();
+//    this.servidor.iniciarServidor();
+//    servidor.getTablero();
+////    servidor.
+//    
+//  }
+
 }

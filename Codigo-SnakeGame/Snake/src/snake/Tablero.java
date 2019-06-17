@@ -52,20 +52,17 @@ public class Tablero implements Serializable{
      * Actualiza la posición de cada serpiente.
      */
     
-    public void actualizarPosicion(){
-        
-        for (Snake snake : this.snakes) {
-            if(comida.getCoordenada().equals(snake.getCabeza())){
-            snake.extender(wrap(snake.transferirCoordenada()));
-            snake.sumarPuntos(Comida.VALOR);
-            comida.setCoordenada(getPosicionAleatoria());
-        }else{
-            snake.mover(wrap(snake.transferirCoordenada()));
-        }
-        }
-        
-        
+  public void actualizarPosicion() {
+    for (Snake snake : this.snakes) {
+      if (comida.getCoordenada().equals(snake.getCabeza())) {
+        snake.extender(wrap(snake.transferirCoordenada()));
+        snake.sumarPuntos(Comida.VALOR);
+        comida.setCoordenada(getPosicionAleatoria());
+      } else {
+        snake.mover(wrap(snake.transferirCoordenada()));
+      }
     }
+  }
     
     public int getColumnas() {
         return columnas;

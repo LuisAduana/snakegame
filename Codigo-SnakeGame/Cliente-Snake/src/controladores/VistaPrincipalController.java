@@ -120,20 +120,16 @@ public class VistaPrincipalController implements Initializable {
         try {
             prepararConexion();
             puntuaciones = server.consultarPuntuaciones();
-            
             FXMLLoader loader = new FXMLLoader();
             AnchorPane root = (AnchorPane)loader.load(getClass().getResource("/vistas/TablaPuntuaciones.fxml").openStream());
-            
             TablaPuntuacionesController puntuacionesController = (TablaPuntuacionesController) loader.getController();
             puntuacionesController.setListaPuntuaciones(vistaPrincipalControler);
-                     
             Stage stageTablaPuntuaciones = new Stage();
             Scene scene = new Scene(root);
             stageTablaPuntuaciones.setScene(scene);
             stageTablaPuntuaciones.alwaysOnTopProperty();
             stageTablaPuntuaciones.setResizable(false);
             stageTablaPuntuaciones.initModality(Modality.APPLICATION_MODAL);
-                
             stageTablaPuntuaciones.show();
         } catch (IOException ex) {
             informacionSistema(MENSAJE_ERROR_CONEXION);
@@ -225,7 +221,6 @@ public class VistaPrincipalController implements Initializable {
      * @throws RemoteException Si no se logra conectar al servidor lanza la excepción al método padre.
      * @throws NotBoundException Si no se encuentra el puerto disponible lanza la excepción al méotodo padre.
      */
-    
     public void intentoConexion() throws RemoteException, NotBoundException {
             Registry registro = LocateRegistry.getRegistry(NOMBRE_SERVER, PUERTO_SERVER);
             server = (IServer) registro.lookup(NOMBRE_REGISTRO);
