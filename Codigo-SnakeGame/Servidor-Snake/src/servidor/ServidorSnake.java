@@ -33,10 +33,16 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   public ArrayList<Snake> getSerpientes() {
     return this.serpientes;
   }
+    
+    
     public static final int PORT = 3232;
-    private Tablero tablero;
+    private static Coordenada puntoPosible;
+    private Snake jugador;
+    private String colorSerpienteNueva;
+    private  Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
     private static final int ALTURA_VENTANA = 500;
+    private static final int CABEZA = 0;
 
     public ServidorSnake() throws RemoteException {
         // Constructor de la clase ServidorSnake no recibe ni hace nada.
@@ -66,22 +72,53 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
      * @throws RemoteException
      */
   
-    @Override
-    public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-        if (!colores.isEmpty()) {
-            String color = colores.get(0);
-            this.colores.remove(0);
-            SecureRandom random = new SecureRandom();
-            Snake serpiente = new Snake(nombre, color,
-                    new Coordenada(random.nextInt(Tablero.TAMANO),
-                            random.nextInt(
-                                    Tablero.TAMANO)));
-            serpientes.add(serpiente);
-            actualizarTablero();
-            cliente.definirColor(color);
+  @Override
+  public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
+      jugador = new Snake(nombre, colorSerpiente(), posicionValida());
+      serpientes.add(jugador);
+      actualizarTablero();
+      cliente.definirColor(colorSerpienteNueva);
+  }
+  
+  private Coordenada posicionValida(){
+    if (getCoordenadasLibres() != null) {
+      for (Coordenada punto : getCoordenadasLibres()) {
+        puntoPosible = creacionPosicionSnake();
+        if (!puntoPosible.equals(punto.getLocation())) {
+          return puntoPosible;
         }
-
+      }
     }
+    return creacionPosicionSnake();
+  }
+  
+  private String colorSerpiente(){
+    colorSerpienteNueva = colores.get(CABEZA);
+    this.colores.remove(CABEZA);
+    return colorSerpienteNueva;
+  }
+  
+  private Coordenada creacionPosicionSnake(){
+    SecureRandom random = new SecureRandom();
+    Coordenada puntoCreacionSerpiente = new Coordenada();
+    puntoCreacionSerpiente.setCoordY(random.nextInt(Tablero.columnas));
+    puntoCreacionSerpiente.setCoordX(random.nextInt(Tablero.filas));
+    return puntoCreacionSerpiente;
+  } 
+    
+  private List<Coordenada> getCoordenadasLibres() {
+    List<Coordenada> coordenadasLibres = new ArrayList();
+    if (!serpientes.isEmpty()) {
+      for (Snake serpiente : serpientes) {
+        for (Coordenada punto : serpiente.getCuerpo()) {
+          coordenadasLibres.add(punto);
+        }
+      }
+      return coordenadasLibres;
+    }
+    return null;
+  }
+    
     
     /**
      * Inicializa el sevidor.

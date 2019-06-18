@@ -20,7 +20,6 @@ public class Coordenada extends Point implements Serializable{
     }
 
     public Coordenada(int nextInt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**

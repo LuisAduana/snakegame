@@ -19,10 +19,11 @@ public class Tablero implements Serializable{
     public static final int TAMANO = 10;
     public static final Color COLOR = new Color(0.1, 0.1, 0.1,1);
     
-    private final int columnas;
-    private final int filas;
+    public static int columnas;
+    public static int filas;
     
-    private List<Snake> snakes;
+    public static List<Coordenada> puntosOcupados;
+    public static List<Snake> snakes;
     private Comida comida;
 
     public Tablero(double ancho, double alto){
@@ -41,6 +42,7 @@ public class Tablero implements Serializable{
         if(y < 0)y = columnas -1;
         return(new Coordenada(x, y));
     }
+    
     
     private Coordenada getPosicionAleatoria() {
         SecureRandom random = new SecureRandom();
