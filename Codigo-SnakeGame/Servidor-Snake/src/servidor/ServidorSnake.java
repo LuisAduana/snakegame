@@ -34,7 +34,9 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     return this.serpientes;
   }
     public static final int PORT = 3232;
-    private Tablero tablero;
+    private Coordenada puntoPosible;
+    private Snake nuevoJugador;
+    private  Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
     private static final int ALTURA_VENTANA = 500;
 
@@ -68,26 +70,43 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   
     @Override
     public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-        if (!colores.isEmpty()) {
-            String color = colores.get(0);
-            this.colores.remove(0);
-            SecureRandom random = new SecureRandom();
-            for (Coordenada punto : Tablero.puntosOcupados){
-            if (!(new Coordenada(random.nextInt(Tablero.TAMANO),
-                    random.nextInt(Tablero.TAMANO))).
-                    equals(punto.getLocation())){
+      SecureRandom random = new SecureRandom();
+      if (!colores.isEmpty()) {
+        String color = colores.get(0);
+        this.colores.remove(0);
+        puntoPosible = new Coordenada();
+        if (getCoordenadasLibres()==null) {
+           this.puntoPosible.setCoordY(random.nextInt(Tablero.columnas));
+           this.puntoPosible.setCoordX(random.nextInt(Tablero.filas));
+           nuevoJugador = new Snake(nombre, color, puntoPosible);
+        } else {
+          for (Coordenada punto : getCoordenadasLibres()) {
+           this.puntoPosible.setCoordY(random.nextInt(Tablero.columnas));
+           this.puntoPosible.setCoordX(random.nextInt(Tablero.filas));
+            if (!puntoPosible.equals(punto.getLocation())) {
+              nuevoJugador = new Snake(nombre, color, puntoPosible);
             }
-            }
-            Snake serpiente = new Snake(nombre, color,
-                    new Coordenada(random.nextInt(Tablero.TAMANO),
-                            random.nextInt(
-                                    Tablero.TAMANO)));
-            serpientes.add(serpiente);
-            actualizarTablero();
-            cliente.definirColor(color);
+          }
         }
-
+        serpientes.add(nuevoJugador);
+        actualizarTablero();
+        cliente.definirColor(color);
+      }
     }
+    
+      private List<Coordenada> getCoordenadasLibres() {
+        List<Coordenada> coordenadasLibres = new ArrayList();
+    if (!serpientes.isEmpty()) {
+      for (Snake serpiente : serpientes) {
+        for (Coordenada punto : serpiente.getCuerpo()) {
+          coordenadasLibres.add(punto);
+        }
+      }
+      return coordenadasLibres;
+    }
+    return null;
+  }
+    
     
     /**
      * Inicializa el sevidor.

@@ -134,7 +134,7 @@ public class ServidorSnakeTest {
        if (serpiente.getNombre().equals(nombreJugadorExpulsado)){
          this.colorSerpiente = serpiente.getColorViva();
        }
-     } 
+     }
      this.servidorDos.eliminarSerpiente(this.colorSerpiente);
      for (Snake serpiente : servidorDos.recuperarSerpientes()){
        Assert.assertEquals(serpiente.getNombre(), nombreJugadorExpulsado);
