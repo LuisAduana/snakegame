@@ -154,6 +154,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
         colores.add("GRAY");
         colores.add("SALMON");
         colores.add("BLUE");
+        Collections.shuffle(colores);
     }
 
     /**
