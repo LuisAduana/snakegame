@@ -1,6 +1,6 @@
-projectKey=ScannerSnakeSnake
+projectKey=snake-prueba
 serverUrl=http://localhost:9000
-serverVersion=7.6.0.21501
-dashboardUrl=http://localhost:9000/dashboard?id=ScannerSnakeSnake
-ceTaskId=AWs6Zy66BhQWyZhmX84a
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWs6Zy66BhQWyZhmX84a
+serverVersion=7.7.0.23042
+dashboardUrl=http://localhost:9000/dashboard?id=snake-prueba
+ceTaskId=AWtw16VvHnFmFH1g8z-m
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWtw16VvHnFmFH1g8z-m
