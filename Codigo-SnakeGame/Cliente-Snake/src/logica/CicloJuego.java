@@ -81,11 +81,6 @@ public class CicloJuego implements Runnable{
                 }
             }
         } 
-        try {
-            this.finalize();
-        } catch (Throwable ex) {
-            Logger.getLogger(CicloJuego.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
             
             public void pararJuego(){
