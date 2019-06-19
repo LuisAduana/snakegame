@@ -29,7 +29,6 @@ import snake.Tablero;
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     protected ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
-
   public ArrayList<Snake> getSerpientes() {
     return this.serpientes;
   }

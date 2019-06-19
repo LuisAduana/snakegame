@@ -7,7 +7,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -65,10 +64,10 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     Button btnVerPuntuaciones;
     
-    private Pattern patron;
-    private static final String PATRON_PERMITIDO = "^([a-z]|[A-Z]|[0-9]){3,12}$";
-    private static final int TAMAÑO_MAXIMO = 12;
-    private static final int TAMAÑO_MINIMO = 3;
+    
+    private static String patronPermitido = "^([a-z]|[A-Z]|[0-9]){3,12}$";
+    private static int numeroDoce = 12;
+    private static int numeroTres = 3;
     private static final String NOMBRE_REGISTRO = "GameServer";
     private static final String NOMBRE_SERVER = "localhost";
     private static final int PUERTO_SERVER = 3232;
@@ -155,12 +154,12 @@ public class VistaPrincipalController implements Initializable {
     protected String validarNickname(String datoValidar) {
         if ("".equals(datoValidar.trim())) {
             return "Ingrese un nombre";
-        } else if (datoValidar.trim().length() > TAMAÑO_MAXIMO) {
+        } else if (datoValidar.trim().length() > numeroDoce) {
             return "Nombre debe ser menor a 12 caracteres";
-        } else if (datoValidar.trim().length() < TAMAÑO_MINIMO) {
+        } else if (datoValidar.trim().length() < numeroTres) {
             return "Nombre es demasiado corto";
         } else {
-            this.patron = Pattern.compile(PATRON_PERMITIDO);
+          Pattern patron = Pattern.compile(patronPermitido);
             Matcher match = patron.matcher(datoValidar.trim());
             if (match.find()) {
                 return "";
