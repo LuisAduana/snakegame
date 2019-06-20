@@ -38,7 +38,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     private static Coordenada puntoPosible;
     private Snake jugador;
     private String colorSerpienteNueva;
-    private  Tablero tablero;
+    private Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
     private static final int ALTURA_VENTANA = 500;
     private static final int CABEZA = 0;
@@ -100,8 +100,8 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   private Coordenada creacionPosicionSnake(){
     SecureRandom random = new SecureRandom();
     Coordenada puntoCreacionSerpiente = new Coordenada();
-    puntoCreacionSerpiente.setCoordY(random.nextInt(Tablero.columnas));
-    puntoCreacionSerpiente.setCoordX(random.nextInt(Tablero.filas));
+    puntoCreacionSerpiente.setCoordY(random.nextInt(this.tablero.getColumnas()));
+    puntoCreacionSerpiente.setCoordX(random.nextInt(this.tablero.getFilas()));
     return puntoCreacionSerpiente;
   } 
     

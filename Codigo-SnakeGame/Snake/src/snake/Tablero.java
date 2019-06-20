@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javafx.scene.paint.Color;
 
 /**
@@ -18,12 +17,9 @@ public class Tablero implements Serializable{
     private static final long serialVersionUID = 232L;
     public static final int TAMANO = 10;
     public static final Color COLOR = new Color(0.1, 0.1, 0.1,1);
-    
-    public static int columnas;
-    public static int filas;
-    
-    public static List<Coordenada> puntosOcupados;
-    public static List<Snake> snakes;
+    private int columnas;
+    private int filas;
+    private List<Snake> snakes;
     private Comida comida;
 
     public Tablero(double ancho, double alto){
@@ -70,36 +66,35 @@ public class Tablero implements Serializable{
     /**
      * Calcula los jugadores chocan, y elimina de la partida todos los jugadores que hayan chocado.
      * @return calcularChoques regresa las serpientes que colisionaron.
-     */
-    public List<Snake>  calcularChoques() {
-        ArrayList<Snake> auxSerpientes = new ArrayList();
-        for (Snake snake : this.snakes) {
-            
-            for (Snake serpiente : this.snakes) {
-                
-                if (!snake.equals(serpiente)) {
-                    
-                    for (Coordenada c : serpiente.getCuerpo()) {
-                        if (snake.getCabeza().equals(c)) {
-                            auxSerpientes.add(snake);
-                        }
-                    }
-                    
-                } else {
-                    if (!snake.estaViva()) {
-                        auxSerpientes.add(snake);
-                    }
-                }
-            }
-            
-        }
-        
-        for (Snake snake : auxSerpientes) {
-            this.snakes.remove(snake);
-        }
-        
-        return auxSerpientes;
+     */    
+  public List<Snake> calcularChoques() {
+    ArrayList<Snake> colisiones = new ArrayList();
+    for (Snake serpienteMovimiento : this.snakes) {
+      for (Snake serpienteGolpeada : this.snakes) {
+        agregaColisiones(serpienteMovimiento,
+                serpienteGolpeada, colisiones);
+      }
     }
+    remueveSerpientesColisionadas(colisiones);
+    return colisiones;
+  }
+    
+  private void remueveSerpientesColisionadas(List<Snake> serpientesColisionadas) {
+    for (Snake snake : serpientesColisionadas) {
+      this.snakes.remove(snake);
+    }
+  }
+    
+  private void agregaColisiones(Snake serpienteMovimiento,
+          Snake serpienteGolpeada, ArrayList<Snake> colisiones) {
+    if (!serpienteMovimiento.equals(serpienteGolpeada)) {
+      for (Coordenada punto : serpienteGolpeada.getCuerpo()) {
+        if (serpienteMovimiento.getCabeza().equals(punto)) {
+          colisiones.add(serpienteMovimiento);
+        }
+      }
+    } 
+  }
     
     
     public int getColumnas() {
@@ -133,4 +128,5 @@ public class Tablero implements Serializable{
     public void setComida(Comida comida) {
         this.comida = comida;
     }
+    
 }

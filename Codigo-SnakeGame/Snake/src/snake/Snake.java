@@ -16,14 +16,14 @@ public class Snake implements Serializable{
     private String colorViva;
     public static final String MUERTA = "RED";
     private int puntuacion;
-    private ArrayList<Coordenada> posicionSerpiente;
+    private List<Coordenada> posicionSerpiente;
 
 
-  public ArrayList<Coordenada> getPosicionSerpiente() {
+  public List<Coordenada> getPosicionSerpiente() {
     return posicionSerpiente;
   }
 
-  public void setPosicionSerpiente(ArrayList<Coordenada> posicionSerpiente) {
+  public void setPosicionSerpiente(List<Coordenada> posicionSerpiente) {
     this.posicionSerpiente = posicionSerpiente;
   }
 
@@ -136,11 +136,8 @@ public class Snake implements Serializable{
             moverCoordenada(coord);
         }
     }
-    
-    public void despliegaCoordenada(Coordenada direccion){
-      
-    }
-    
+ 
+   
     public Coordenada transferirCoordenada(){
         return this.cabeza.transferirCoordenada(avanceX, avanceY);
     }
