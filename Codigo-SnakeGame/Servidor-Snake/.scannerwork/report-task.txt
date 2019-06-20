@@ -2,5 +2,5 @@ projectKey=servidor-prueba
 serverUrl=http://localhost:9000
 serverVersion=7.7.0.23042
 dashboardUrl=http://localhost:9000/dashboard?id=servidor-prueba
-ceTaskId=AWtxf6KWHnFmFH1g8z-n
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWtxf6KWHnFmFH1g8z-n
+ceTaskId=AWtzbfV71Rkx3v1xAA2H
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWtzbfV71Rkx3v1xAA2H

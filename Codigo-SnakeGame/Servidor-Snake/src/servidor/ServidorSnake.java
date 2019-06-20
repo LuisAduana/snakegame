@@ -29,6 +29,7 @@ import snake.Tablero;
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     protected ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
+    
   public ArrayList<Snake> getSerpientes() {
     return this.serpientes;
   }
@@ -80,7 +81,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   }
   
   private Coordenada posicionValida(){
-    if (getCoordenadasLibres() != null) {
+    if (!getCoordenadasLibres().isEmpty()) {
       for (Coordenada punto : getCoordenadasLibres()) {
         puntoPosible = creacionPosicionSnake();
         if (!puntoPosible.equals(punto.getLocation())) {
@@ -115,7 +116,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
       }
       return coordenadasLibres;
     }
-    return null;
+    return coordenadasLibres;
   }
     
     
