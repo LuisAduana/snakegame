@@ -1,6 +1,5 @@
   package servidor;
 
-import snake.PuntuacionObtenida;
 import interfaces.ICliente;
 import snake.PuntuacionObtenida;
 import snake.Snake;
@@ -27,7 +26,7 @@ import snake.Tablero;
  */
 
 public class ServidorSnake extends UnicastRemoteObject  implements IServer {
-    protected ArrayList<String> colores;
+    protected transient ArrayList<String> colores;
     private ArrayList<Snake> serpientes;
     
   public ArrayList<Snake> getSerpientes() {
@@ -36,8 +35,6 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     
     
     public static final int PORT = 3232;
-    private static Coordenada puntoPosible;
-    private Snake jugador;
     private String colorSerpienteNueva;
     private Tablero tablero;
     private static final int ANCHO_VENTANA = 500;
@@ -47,23 +44,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
     public ServidorSnake() throws RemoteException {
         // Constructor de la clase ServidorSnake no recibe ni hace nada.
     }
-
- 
-  private void eliminaSerpiente(Snake serpiente){
-    colores.add(serpiente.getColorViva());
-                this.serpientes.remove(serpiente);
-  }
   
-  private Snake obtieneSerpiente(String colorSerpiente){
-    for (Snake snake : this.serpientes) {
-            if (snake.getColorViva().equalsIgnoreCase(colorSerpiente)) {
-                return snake;
-            }
-  }
-    return null;
-  }
-
- 
     /**
      * Permite registrar un jugador nuevo si colores disponibles
      *
@@ -74,7 +55,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   
   @Override
   public void iniciarJugador(ICliente cliente, String nombre) throws RemoteException {
-      jugador = new Snake(nombre, colorSerpiente(), posicionValida());
+      Snake jugador = new Snake(nombre, colorSerpiente(), posicionValida());
       serpientes.add(jugador);
       actualizarTablero();
       cliente.definirColor(colorSerpienteNueva);
@@ -83,7 +64,7 @@ public class ServidorSnake extends UnicastRemoteObject  implements IServer {
   private Coordenada posicionValida(){
     if (!getCoordenadasLibres().isEmpty()) {
       for (Coordenada punto : getCoordenadasLibres()) {
-        puntoPosible = creacionPosicionSnake();
+       Coordenada puntoPosible = creacionPosicionSnake();
         if (!puntoPosible.equals(punto.getLocation())) {
           return puntoPosible;
         }
