@@ -18,12 +18,9 @@ public class Tablero implements Serializable{
     private static final long serialVersionUID = 232L;
     public static final int TAMANO = 10;
     public static final Color COLOR = new Color(0.1, 0.1, 0.1,1);
-    
-    public static int columnas;
-    public static int filas;
-    
-    public static List<Coordenada> puntosOcupados;
-    public static List<Snake> snakes;
+    private int columnas;
+    private int filas;
+    private List<Snake> snakes;
     private Comida comida;
 
     public Tablero(double ancho, double alto){
@@ -133,4 +130,5 @@ public class Tablero implements Serializable{
     public void setComida(Comida comida) {
         this.comida = comida;
     }
+    
 }
