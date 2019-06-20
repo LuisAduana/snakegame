@@ -2,5 +2,5 @@ projectKey=snake-prueba
 serverUrl=http://localhost:9000
 serverVersion=7.7.0.23042
 dashboardUrl=http://localhost:9000/dashboard?id=snake-prueba
-ceTaskId=AWty13Hv1Rkx3v1xAA2C
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWty13Hv1Rkx3v1xAA2C
+ceTaskId=AWtzU4Ub1Rkx3v1xAA2F
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWtzU4Ub1Rkx3v1xAA2F
